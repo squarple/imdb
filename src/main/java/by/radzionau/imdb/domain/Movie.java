@@ -7,7 +7,7 @@ public class Movie {
     private Long movieId;
     private String title;
     private String logline;
-    private Year releaseYear;
+    private int releaseYear;
     private Blob cover; //todo какой хранить формат? Blob или что-то другое? (может File?)
     private MovieType movieType;
 
@@ -15,7 +15,7 @@ public class Movie {
 
     }
 
-    public Movie(Long movieId, String title, String logline, Year releaseYear, Blob cover, MovieType movieType) {
+    public Movie(Long movieId, String title, String logline, int releaseYear, Blob cover, MovieType movieType) {
         this.movieId = movieId;
         this.title = title;
         this.logline = logline;
@@ -24,7 +24,7 @@ public class Movie {
         this.movieType = movieType;
     }
 
-    public Movie(String title, String logline, Year releaseYear, Blob cover, MovieType movieType) {
+    public Movie(String title, String logline, int releaseYear, Blob cover, MovieType movieType) {
         this.movieId = 0L; //fixme инициализация id, если его нету, как надо делать???
         this.title = title;
         this.logline = logline;
@@ -53,11 +53,11 @@ public class Movie {
         this.logline = logline;
     }
 
-    public Year getReleaseYear() {
+    public int getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(Year releaseYear) {
+    public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
 
@@ -89,7 +89,7 @@ public class Movie {
         return movieId.equals(movie.movieId)
                 && title.equals(movie.title)
                 && logline.equals(movie.logline)
-                && releaseYear.equals(movie.releaseYear)
+                && releaseYear == movie.releaseYear
                 && cover.equals(movie.cover)
                 && movieType.equals(movie.movieType);
     }
@@ -99,7 +99,7 @@ public class Movie {
         int result = movieId.hashCode();
         result = result * 31 + title.hashCode();
         result = result * 31 + logline.hashCode();
-        result = result * 31 + releaseYear.hashCode();
+        result = result * 31 + releaseYear;
         result = result * 31 + cover.hashCode();
         result = result * 31 + movieType.hashCode();
         return result;
