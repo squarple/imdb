@@ -1,7 +1,7 @@
 package by.radzionau.imdb.dao.impl;
 
 import by.radzionau.imdb.dao.GenreDao;
-import by.radzionau.imdb.domain.*;
+import by.radzionau.imdb.domain.Genre;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.pool.CustomConnectionPool;
@@ -25,18 +25,18 @@ public class GenreDaoImpl implements GenreDao {
     private static final String SQL_SELECT_ALL_GENRES = "SELECT genre_id, name " +
             "FROM genre";
     private static final String SQL_SELECT_GENRES_OF_MOVIE_BY_MOVIE_ID =
-            "SELECT genre_id, name FROM genre WHERE genre_id = " +
+            "SELECT genre_id, name FROM genre WHERE genre_id IN " +
                     "(SELECT genre_id FROM movie_genres WHERE movie_id = ?)";
 
     @Override
-    public void add(Genre genre) throws DaoException {
+    public int add(Genre genre) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT_GENRE)
         ) {
             statement.setString(1, genre.getName());
-
-            statement.executeUpdate();
+            int rowsUpdate = statement.executeUpdate();
+            return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a genre={}", genre);
             throw new DaoException("Error while adding a genre=" + genre, e);

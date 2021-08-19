@@ -6,7 +6,7 @@ import by.radzionau.imdb.exception.DaoException;
 import java.util.List;
 
 public interface GenreDao {
-    void add(Genre genre) throws DaoException;
+    int add(Genre genre) throws DaoException;
 
     List<Genre> findAll() throws DaoException;
 
