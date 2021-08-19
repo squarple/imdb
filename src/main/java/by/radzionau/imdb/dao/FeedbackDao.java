@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FeedbackDao {
-    void add(Feedback feedback) throws DaoException;
+    int add(Feedback feedback) throws DaoException;
 
-    //void update(Feedback feedback) throws DaoException;
+    int updateFeedbackStatus(Long feedbackId, FeedbackStatus feedbackStatus) throws DaoException;
 
-    //void delete(Movie movie) throws DaoException; //todo удалять или давать роль BLOCKED ???
+    int delete(Feedback feedback) throws DaoException;
 
     Optional<Feedback> findFeedbackById(Long feedbackId) throws DaoException;
 

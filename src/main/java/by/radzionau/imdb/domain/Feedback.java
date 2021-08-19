@@ -1,10 +1,10 @@
 package by.radzionau.imdb.domain;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Feedback {
     private Long feedbackId;
-    private Timestamp feedbackDate; //todo какой хранить формат???
+    private LocalDateTime feedbackDate;
     private int score;
     private String content;
     private Long movieId;
@@ -15,7 +15,7 @@ public class Feedback {
 
     }
 
-    public Feedback(Long feedbackId, Timestamp feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
+    public Feedback(Long feedbackId, LocalDateTime feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
         this.feedbackId = feedbackId;
         this.feedbackDate = feedbackDate;
         this.score = score;
@@ -25,8 +25,8 @@ public class Feedback {
         this.feedbackStatus = feedbackStatus;
     }
 
-    public Feedback(Timestamp feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
-        this.feedbackId = 0L; //fixme инициализация id, если его нету, как надо делать???
+    public Feedback(LocalDateTime feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
+        this.feedbackId = -1L;
         this.feedbackDate = feedbackDate;
         this.score = score;
         this.content = content;
@@ -39,11 +39,11 @@ public class Feedback {
         return feedbackId;
     }
 
-    public Timestamp getFeedbackDate() {
+    public LocalDateTime getFeedbackDate() {
         return feedbackDate;
     }
 
-    public void setFeedbackDate(Timestamp feedbackDate) {
+    public void setFeedbackDate(LocalDateTime feedbackDate) {
         this.feedbackDate = feedbackDate;
     }
 
