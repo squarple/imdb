@@ -28,6 +28,18 @@ public class GenreDaoImpl implements GenreDao {
             "SELECT genre_id, name FROM genre WHERE genre_id IN " +
                     "(SELECT genre_id FROM movie_genres WHERE movie_id = ?)";
 
+    private GenreDaoImpl() {
+
+    }
+
+    private static final class MySqlGenreDaoInstanceHolder {
+        private static final GenreDao INSTANCE = new GenreDaoImpl();
+    }
+
+    public static GenreDao getInstance() {
+        return GenreDaoImpl.MySqlGenreDaoInstanceHolder.INSTANCE;
+    }
+
     @Override
     public int add(Genre genre) throws DaoException {
         try (
