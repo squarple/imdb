@@ -2,8 +2,7 @@ package by.radzionau.imdb.domain;
 
 public enum FeedbackStatus {
     UNDER_CONSIDERATION(1),
-    APPROVED(2),
-    BLOCKED(3);
+    APPROVED(2);
 
     private final int id;
 

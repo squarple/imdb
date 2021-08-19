@@ -24,7 +24,7 @@ public class User {
     }
 
     public User(String login, String mail, String name, String surname, UserRole role, UserStatus status) {
-        this.userId = 0L; //fixme инициализация id, если его нету, как надо делать???
+        this.userId = -1L;
         this.login = login;
         this.mail = mail;
         this.name = name;

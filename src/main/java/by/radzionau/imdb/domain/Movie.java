@@ -1,21 +1,20 @@
 package by.radzionau.imdb.domain;
 
-import java.sql.Blob;
-import java.time.Year;
+import java.io.InputStream;
 
 public class Movie {
     private Long movieId;
     private String title;
     private String logline;
     private int releaseYear;
-    private Blob cover; //todo какой хранить формат? Blob или что-то другое? (может File?)
+    private InputStream cover;
     private MovieType movieType;
 
     public Movie() {
 
     }
 
-    public Movie(Long movieId, String title, String logline, int releaseYear, Blob cover, MovieType movieType) {
+    public Movie(Long movieId, String title, String logline, int releaseYear, InputStream cover, MovieType movieType) {
         this.movieId = movieId;
         this.title = title;
         this.logline = logline;
@@ -24,8 +23,8 @@ public class Movie {
         this.movieType = movieType;
     }
 
-    public Movie(String title, String logline, int releaseYear, Blob cover, MovieType movieType) {
-        this.movieId = 0L; //fixme инициализация id, если его нету, как надо делать???
+    public Movie(String title, String logline, int releaseYear, InputStream cover, MovieType movieType) {
+        this.movieId = -1L;
         this.title = title;
         this.logline = logline;
         this.releaseYear = releaseYear;
@@ -61,11 +60,11 @@ public class Movie {
         this.releaseYear = releaseYear;
     }
 
-    public Blob getCover() {
+    public InputStream getCover() {
         return cover;
     }
 
-    public void setCover(Blob cover) {
+    public void setCover(InputStream cover) {
         this.cover = cover;
     }
 

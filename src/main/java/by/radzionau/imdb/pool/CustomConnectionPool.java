@@ -5,7 +5,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -15,8 +18,8 @@ public class CustomConnectionPool {
     private static CustomConnectionPool instance;
     private static final int DEFAULT_POOL_SIZE = 30;
     private static final AtomicBoolean isInitialized = new AtomicBoolean(false);
-    private final BlockingDeque<ProxyConnection> freeConnections;
-    private final BlockingDeque<ProxyConnection> busyConnections;
+    private final BlockingDeque<Connection> freeConnections;
+    private final BlockingDeque<Connection> busyConnections;
 
     private CustomConnectionPool() {
         freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
@@ -28,7 +31,7 @@ public class CustomConnectionPool {
                 connection = ConnectionFactory.createConnection();
                 freeConnections.offer(connection);
             } catch (SQLException e) {
-                logger.error("Connection can't be created.");
+                logger.error("Connection can't be created.", e);
             }
         }
         if (freeConnections.isEmpty()) {
@@ -47,9 +50,9 @@ public class CustomConnectionPool {
         return instance;
     }
 
-    public ProxyConnection getConnection() throws ConnectionPoolException {
+    public Connection getConnection() throws ConnectionPoolException {
         try {
-            ProxyConnection connection = freeConnections.take();
+            Connection connection = freeConnections.take();
             busyConnections.put(connection);
             return connection;
         } catch (InterruptedException e) {
@@ -59,7 +62,7 @@ public class CustomConnectionPool {
         throw new ConnectionPoolException("Time out for getting connection");
     }
 
-    public void releaseConnection(Connection connection) {
+    public boolean releaseConnection(Connection connection) {
         if (connection instanceof ProxyConnection) {
             ProxyConnection proxyConnection = (ProxyConnection) connection;
             try {
@@ -69,11 +72,50 @@ public class CustomConnectionPool {
                     logger.error("Can't put connection in pool connection because connection isn't valid. {}", proxyConnection);
                 }
             } catch (InterruptedException e) {
-                logger.error("Cannot put connection {}", proxyConnection);
+                logger.error("Cannot put connection", e);
                 Thread.currentThread().interrupt();
+                return false;
             }
+            return true;
         } else {
             logger.error("Wild connection: {}", connection);
+            return false;
+        }
+    }
+
+    public void destroyPull() {
+        int countOfBusyConnections = busyConnections.size();
+        for (int i = 0; i < countOfBusyConnections; i++) {
+            try {
+                Connection connection = busyConnections.take();
+                freeConnections.put(connection);
+            } catch (InterruptedException e) {
+                logger.error("Cannot take connection", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        int countOfFreeConnections = freeConnections.size();
+        for (int i = 0; i < countOfFreeConnections; i++) {
+            try {
+                ProxyConnection proxyConnection = (ProxyConnection) freeConnections.take();
+                proxyConnection.reallyClose();
+            } catch (InterruptedException e) {
+                logger.error("Cannot take connection", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+        deregisterDrivers();
+    }
+
+    private void deregisterDrivers() {
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        try {
+            while (drivers.hasMoreElements()) {
+                DriverManager.deregisterDriver(drivers.nextElement());
+            }
+        } catch (SQLException e) {
+            logger.warn("Cannot deregister driver", e);
         }
     }
 }

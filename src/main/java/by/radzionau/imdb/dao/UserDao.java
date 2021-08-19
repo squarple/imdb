@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
-    void add(User user, String password) throws DaoException; //fixme правильная ли реализация?
+    int add(User user, String hashedPassword) throws DaoException;
 
-    void update(User user) throws DaoException;
+    int update(User user) throws DaoException;
 
-    //void delete(User user) throws DaoException; //todo удалять или давать роль BANNED ???
+    Optional<User> findUserByLogin(String login) throws DaoException;
 
-    Optional<User> findUserByLoginAndPassword(String login, String password) throws DaoException;
+    Optional<String> findUserPasswordByLogin(String login) throws DaoException;
 
     List<User> findUsersByStatus(UserStatus userStatus) throws DaoException;
 

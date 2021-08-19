@@ -28,39 +28,56 @@ public class UserDaoImpl implements UserDao {
     private static final String SQL_UPDATE_USER =
             "UPDATE usr SET login=?, mail=?, first_name=?, surname=?, usr_role_id=?, usr_status_id=? " +
                     "WHERE usr_id=?";
-    private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD =
+    private static final String SQL_SELECT_USER_BY_LOGIN =
             "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
                     "FROM usr " +
-                    "JOIN usr_role ON usr_role.usr_role_id = usr.usr_role_id " +
-                    "JOIN usr_status ON usr_status.usr_status_id = usr.usr_status_id " +
-                    "WHERE login=? AND password=?";
+                    "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
+                    "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
+                    "WHERE login=?";
+    private static final String SQL_SELECT_USER_PASSWORD_BY_LOGIN =
+            "SELECT password " +
+                    "FROM usr " +
+                    "WHERE login=?";
     private static final String SQL_SELECT_USERS_BY_STATUS =
             "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
                     "FROM usr " +
-                    "JOIN usr_role ON usr_role.usr_role_id = usr.usr_role_id " +
-                    "JOIN usr_status ON usr_status.usr_status_id = usr.usr_status_id " +
-                    "WHERE usr_status_id=?";
+                    "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
+                    "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
+                    "WHERE usr.usr_status_id=?";
     private static final String SQL_SELECT_USERS_BY_ROLE =
             "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
                     "FROM usr " +
-                    "JOIN usr_role ON usr_role.usr_role_id = usr.usr_role_id " +
-                    "JOIN usr_status ON usr_status.usr_status_id = usr.usr_status_id " +
-                    "WHERE usr_role_id=?";
+                    "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
+                    "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
+                    "WHERE usr.usr_role_id=?";
+
+    private UserDaoImpl() {
+
+    }
+
+    private static final class MySqlUserDaoInstanceHolder {
+        private static final UserDao INSTANCE = new UserDaoImpl();
+    }
+
+    public static UserDao getInstance() {
+        return MySqlUserDaoInstanceHolder.INSTANCE;
+    }
 
     @Override
-    public void add(User user, String password) throws DaoException {
+    public int add(User user, String hashedPassword) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT_USER)
         ) {
             statement.setString(1, user.getLogin());
-            statement.setString(2, password);   //todo зашифровать!!!
+            statement.setString(2, hashedPassword);
             statement.setString(3, user.getMail());
             statement.setString(4, user.getName());
             statement.setString(5, user.getSurname());
             statement.setLong(6, user.getRole().getId());
             statement.setLong(7, user.getStatus().getId());
-            statement.executeUpdate();
+            int rowsUpdate = statement.executeUpdate();
+            return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a user={}", user);
             throw new DaoException("Error while adding a user=" + user, e);
@@ -68,7 +85,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(User user) throws DaoException {
+    public int update(User user) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER)
@@ -80,7 +97,8 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(5, user.getRole().getId());
             statement.setLong(6, user.getStatus().getId());
             statement.setLong(7, user.getUserId());
-            statement.executeUpdate();
+            int rowsUpdate = statement.executeUpdate();
+            return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a user={}", user);
             throw new DaoException("Error while updating a user=" + user, e);
@@ -88,27 +106,39 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findUserByLoginAndPassword(String login, String password) throws DaoException {
+    public Optional<User> findUserByLogin(String login) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD)
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN)
         ) {
             statement.setString(1, login);
-            statement.setString(2, password);   //todo зашифровать!!!
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(new User(resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        UserRole.valueOf(resultSet.getString(6).toUpperCase()),
-                        UserStatus.valueOf(resultSet.getString(7).toUpperCase())
-                ));
+                return Optional.of(createUser(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a user");
             throw new DaoException("Error while selecting a user", e);
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> findUserPasswordByLogin(String login) throws DaoException {
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_PASSWORD_BY_LOGIN)
+        ) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String password = resultSet.getString(1);
+                return Optional.of(password);
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            logger.error("Error while selecting a password");
+            throw new DaoException("Error while selecting a password", e);
         }
 
         return Optional.empty();
@@ -124,14 +154,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(1, userStatus.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                users.add(new User(resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        UserRole.valueOf(resultSet.getString(6).toUpperCase()),
-                        UserStatus.valueOf(resultSet.getString(7).toUpperCase())
-                ));
+                users.add(createUser(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a users");
@@ -151,14 +174,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(1, userRole.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                users.add(new User(resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        UserRole.valueOf(resultSet.getString(6).toUpperCase()),
-                        UserStatus.valueOf(resultSet.getString(7).toUpperCase())
-                ));
+                users.add(createUser(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a users");
@@ -166,5 +182,17 @@ public class UserDaoImpl implements UserDao {
         }
 
         return users;
+    }
+
+    private User createUser(ResultSet resultSet) throws SQLException {
+        return new User(
+                resultSet.getLong(1),
+                resultSet.getString(2),
+                resultSet.getString(3),
+                resultSet.getString(4),
+                resultSet.getString(5),
+                UserRole.valueOf(resultSet.getString(6).toUpperCase()),
+                UserStatus.valueOf(resultSet.getString(7).toUpperCase())
+        );
     }
 }

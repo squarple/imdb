@@ -14,7 +14,7 @@ public class Genre {
     }
 
     public Genre(String name) {
-        this.genreId = 0L; //fixme инициализация id, если его нету, как надо делать???
+        this.genreId = -1L;
         this.name = name;
     }
 
