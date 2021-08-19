@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MovieDao {
-    void add(Movie movie) throws DaoException;
+    int add(Movie movie) throws DaoException;
 
-    void update(Movie movie) throws DaoException;
+    int update(Movie movie) throws DaoException;
 
     void delete(Movie movie) throws DaoException;
 
@@ -25,5 +25,5 @@ public interface MovieDao {
 
     List<Movie> findMoviesByMovieType(MovieType movieType) throws DaoException;
 
-
+    Optional<Double> findMovieScoreByMovieId(Long movieId) throws DaoException;
 }

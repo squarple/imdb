@@ -10,10 +10,7 @@ import by.radzionau.imdb.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,31 +31,50 @@ public class MovieDaoImpl implements MovieDao {
     private static final String SQL_SELECT_MOVIE_BY_ID =
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS movie_type " +
                     "FROM movie " +
-                    "JOIN movie_type ON movie.movie_type_id = movie_type.movie_type_id " +
+                    "JOIN movie_type ON movie.movie_type_id=movie_type.movie_type_id " +
                     "WHERE movie_id=?";
-    private static final String SQL_SELECT_MOVIE_BY_TITLE =
+    private static final String SQL_SELECT_MOVIES_BY_TITLE =
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS movie_type " +
                     "FROM movie " +
-                    "JOIN movie_type ON movie.movie_type_id = movie_type.movie_type_id " +
+                    "JOIN movie_type ON movie.movie_type_id=movie_type.movie_type_id " +
                     "WHERE title=?";
-    private static final String SQL_SELECT_MOVIE_BY_YEAR =
+    private static final String SQL_SELECT_MOVIES_BY_YEAR =
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS movie_type " +
                     "FROM movie " +
-                    "JOIN movie_type ON movie.movie_type_id = movie_type.movie_type_id " +
+                    "JOIN movie_type ON movie.movie_type_id=movie_type.movie_type_id " +
                     "WHERE release_year=?";
-    private static final String SQL_SELECT_MOVIE_BY_GENRE =
+    private static final String SQL_SELECT_MOVIES_BY_GENRE =
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS type " +
                     "FROM movie " +
-                    "JOIN movie_type ON movie.movie_type_id = movie_type.movie_type_id " +
-                    "WHERE movie_type.name=?";
-    private static final String SQL_SELECT_MOVIE_BY_MOVIE_TYPE =
+                    "JOIN movie_type ON movie.movie_type_id=movie_type.movie_type_id " +
+                    "WHERE movie_id IN" +
+                    "(SELECT movie_id " +
+                    "FROM movie_genres " +
+                    "WHERE genre_id=?)";
+    private static final String SQL_SELECT_MOVIES_BY_MOVIE_TYPE =
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS movie_type " +
                     "FROM movie " +
-                    "JOIN movie_type ON movie.movie_type_id = movie_type.movie_type_id " +
+                    "JOIN movie_type ON movie.movie_type_id=movie_type.movie_type_id " +
                     "WHERE movie.movie_type_id=?";
+    private static final String SQL_CALCULATE_MOVIE_SCORE_BY_MOVIE_ID = //todo need check
+            "SELECT AVG(score) AS avg_score " +
+                    "FROM feedback " +
+                    "WHERE movie_id=?";
+
+    private MovieDaoImpl() {
+
+    }
+
+    private static final class MySqlMovieDaoInstanceHolder {
+        private static final MovieDao INSTANCE = new MovieDaoImpl();
+    }
+
+    public static MovieDao getInstance() {
+        return MovieDaoImpl.MySqlMovieDaoInstanceHolder.INSTANCE;
+    }
 
     @Override
-    public void add(Movie movie) throws DaoException {
+    public int add(Movie movie) throws DaoException {  //todo convert InputStream to Blob
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT_MOVIE)
@@ -68,7 +84,8 @@ public class MovieDaoImpl implements MovieDao {
             statement.setInt(3, movie.getReleaseYear());
             statement.setBlob(4, movie.getCover());
             statement.setLong(5, movie.getMovieType().getId());
-            statement.executeUpdate();
+            int rowsUpdate = statement.executeUpdate();
+            return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a movie");
             throw new DaoException("Error while adding a movie", e);
@@ -76,7 +93,7 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public void update(Movie movie) throws DaoException {
+    public int update(Movie movie) throws DaoException {   //todo convert InputStream to Blob
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_MOVIE)
@@ -87,7 +104,8 @@ public class MovieDaoImpl implements MovieDao {
             statement.setBlob(4, movie.getCover());
             statement.setLong(5, movie.getMovieType().getId());
             statement.setLong(6, movie.getMovieId());
-            statement.executeUpdate();
+            int rowsUpdate = statement.executeUpdate();
+            return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a movie");
             throw new DaoException("Error while updating a movie", e);
@@ -117,14 +135,15 @@ public class MovieDaoImpl implements MovieDao {
             statement.setLong(1, movieId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(new Movie(
+                Movie movie = new Movie(
                         resultSet.getLong(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getInt(4),
-                        resultSet.getBlob(5),
+                        resultSet.getBlob(5).getBinaryStream(),
                         MovieType.valueOf(resultSet.getString(6).toUpperCase())
-                ));
+                );
+                return Optional.of(movie);
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
@@ -140,7 +159,7 @@ public class MovieDaoImpl implements MovieDao {
 
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIE_BY_TITLE)
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_TITLE)
         ) {
             statement.setString(1, title);
             ResultSet resultSet = statement.executeQuery();
@@ -150,7 +169,7 @@ public class MovieDaoImpl implements MovieDao {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getInt(4),
-                        resultSet.getBlob(5),
+                        resultSet.getBlob(5).getBinaryStream(),
                         MovieType.valueOf(resultSet.getString(6).toUpperCase())
                 ));
             }
@@ -168,7 +187,7 @@ public class MovieDaoImpl implements MovieDao {
 
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIE_BY_YEAR)
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_YEAR)
         ) {
             statement.setInt(1, year);
             ResultSet resultSet = statement.executeQuery();
@@ -178,7 +197,7 @@ public class MovieDaoImpl implements MovieDao {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getInt(4),
-                        resultSet.getBlob(5),
+                        resultSet.getBlob(5).getBinaryStream(),
                         MovieType.valueOf(resultSet.getString(6).toUpperCase())
                 ));
             }
@@ -196,7 +215,7 @@ public class MovieDaoImpl implements MovieDao {
 
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIE_BY_GENRE)
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_GENRE)
         ) {
             statement.setLong(1, genre.getGenreId());
             ResultSet resultSet = statement.executeQuery();
@@ -206,7 +225,7 @@ public class MovieDaoImpl implements MovieDao {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getInt(4),
-                        resultSet.getBlob(5),
+                        resultSet.getBlob(5).getBinaryStream(),
                         MovieType.valueOf(resultSet.getString(6).toUpperCase())
                 ));
             }
@@ -224,7 +243,7 @@ public class MovieDaoImpl implements MovieDao {
 
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIE_BY_MOVIE_TYPE)
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_MOVIE_TYPE)
         ) {
 
             statement.setLong(1, movieType.getId());
@@ -235,7 +254,7 @@ public class MovieDaoImpl implements MovieDao {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getInt(4),
-                        resultSet.getBlob(5),
+                        resultSet.getBlob(5).getBinaryStream(),
                         MovieType.valueOf(resultSet.getString(6).toUpperCase())
                 ));
             }
@@ -245,5 +264,25 @@ public class MovieDaoImpl implements MovieDao {
         }
 
         return movies;
+    }
+
+    @Override
+    public Optional<Double> findMovieScoreByMovieId(Long movieId) throws DaoException { //need check
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_CALCULATE_MOVIE_SCORE_BY_MOVIE_ID)
+        ) {
+            statement.setLong(1, movieId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Double score = resultSet.getDouble(1);
+                return Optional.of(score);
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            logger.error("Error while selecting a movie");
+            throw new DaoException("Error while selecting a movie", e);
+        }
+
+        return Optional.empty();
     }
 }
