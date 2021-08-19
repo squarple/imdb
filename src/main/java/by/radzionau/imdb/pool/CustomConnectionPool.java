@@ -76,4 +76,40 @@ public class CustomConnectionPool {
             logger.error("Wild connection: {}", connection);
         }
     }
+
+    public void destroyPull() {
+        int countOfBusyConnections = busyConnections.size();
+        for (int i = 0; i < countOfBusyConnections; i++) {
+            try {
+                Connection connection = busyConnections.take();
+                freeConnections.put(connection);
+            } catch (InterruptedException e) {
+                logger.error("Cannot take connection", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        int countOfFreeConnections = freeConnections.size();
+        for (int i = 0; i < countOfFreeConnections; i++) {
+            try {
+                ProxyConnection proxyConnection = (ProxyConnection) freeConnections.take();
+                proxyConnection.reallyClose();
+            } catch (InterruptedException e) {
+                logger.error("Cannot take connection", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+        deregisterDrivers();
+    }
+
+    private void deregisterDrivers() {
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        try {
+            while (drivers.hasMoreElements()) {
+                DriverManager.deregisterDriver(drivers.nextElement());
+            }
+        } catch (SQLException e) {
+            logger.warn("Cannot deregister driver", e);
+        }
+    }
 }
