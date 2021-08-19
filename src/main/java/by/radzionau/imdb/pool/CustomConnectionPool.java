@@ -62,7 +62,7 @@ public class CustomConnectionPool {
         throw new ConnectionPoolException("Time out for getting connection");
     }
 
-    public void releaseConnection(Connection connection) {
+    public boolean releaseConnection(Connection connection) {
         if (connection instanceof ProxyConnection) {
             ProxyConnection proxyConnection = (ProxyConnection) connection;
             try {
@@ -74,9 +74,12 @@ public class CustomConnectionPool {
             } catch (InterruptedException e) {
                 logger.error("Cannot put connection", e);
                 Thread.currentThread().interrupt();
+                return false;
             }
+            return true;
         } else {
             logger.error("Wild connection: {}", connection);
+            return false;
         }
     }
 
