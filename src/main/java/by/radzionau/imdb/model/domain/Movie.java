@@ -1,9 +1,9 @@
-package by.radzionau.imdb.domain;
+package by.radzionau.imdb.model.domain;
 
 import java.io.InputStream;
 
 public class Movie {
-    private Long movieId;
+    private Long movieId = -1L;
     private String title;
     private String logline;
     private int releaseYear;
@@ -24,7 +24,6 @@ public class Movie {
     }
 
     public Movie(String title, String logline, int releaseYear, InputStream cover, MovieType movieType) {
-        this.movieId = -1L;
         this.title = title;
         this.logline = logline;
         this.releaseYear = releaseYear;
@@ -34,6 +33,10 @@ public class Movie {
 
     public Long getMovieId() {
         return movieId;
+    }
+
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
     }
 
     public String getTitle() {
@@ -116,5 +119,51 @@ public class Movie {
                 .append(", movieType=").append(movieType)
                 .append('}');
         return sb.toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Movie movie;
+
+        public Builder() {
+            movie = new Movie();
+        }
+
+        public Builder setMovieId(Long movieId) {
+            movie.setMovieId(movieId);
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            movie.setTitle(title);
+            return this;
+        }
+
+        public Builder setLogline(String logline) {
+            movie.setLogline(logline);
+            return this;
+        }
+
+        public Builder setReleaseYear(int year) {
+            movie.setReleaseYear(year);
+            return this;
+        }
+
+        public Builder setCover(InputStream cover) {
+            movie.setCover(cover);
+            return this;
+        }
+
+        public Builder setMovieType(MovieType movieType) {
+            movie.setMovieType(movieType);
+            return this;
+        }
+
+        public Movie build() {
+            return movie;
+        }
     }
 }

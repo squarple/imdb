@@ -1,6 +1,6 @@
-package by.radzionau.imdb.dao;
+package by.radzionau.imdb.model.dao;
 
-import by.radzionau.imdb.domain.Genre;
+import by.radzionau.imdb.model.domain.Genre;
 import by.radzionau.imdb.exception.DaoException;
 
 import java.util.List;

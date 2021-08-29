@@ -1,11 +1,11 @@
-package by.radzionau.imdb.dao.impl;
+package by.radzionau.imdb.model.dao.impl;
 
-import by.radzionau.imdb.dao.FeedbackDao;
-import by.radzionau.imdb.domain.Feedback;
-import by.radzionau.imdb.domain.FeedbackStatus;
+import by.radzionau.imdb.model.dao.FeedbackDao;
+import by.radzionau.imdb.model.domain.Feedback;
+import by.radzionau.imdb.model.domain.FeedbackStatus;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
-import by.radzionau.imdb.pool.CustomConnectionPool;
+import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -115,15 +115,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
             statement.setLong(1, feedbackId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(new Feedback(
-                        resultSet.getLong(1),
-                        resultSet.getTimestamp(2).toLocalDateTime(),
-                        resultSet.getInt(3),
-                        resultSet.getString(4),
-                        resultSet.getLong(5),
-                        resultSet.getLong(6),
-                        FeedbackStatus.valueOf(resultSet.getString(7).toUpperCase())
-                ));
+                return Optional.of(createFeedback(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a feedback");
@@ -142,15 +134,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
             statement.setLong(1, movieId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                feedbacks.add(new Feedback(
-                        resultSet.getLong(1),
-                        resultSet.getTimestamp(2).toLocalDateTime(),
-                        resultSet.getInt(3),
-                        resultSet.getString(4),
-                        resultSet.getLong(5),
-                        resultSet.getLong(5),
-                        FeedbackStatus.valueOf(resultSet.getString(5).toUpperCase())
-                ));
+                feedbacks.add(createFeedback(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movies");
@@ -169,15 +153,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
             statement.setLong(1, feedbackStatus.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                feedbacks.add(new Feedback(
-                        resultSet.getLong(1),
-                        resultSet.getTimestamp(2).toLocalDateTime(),
-                        resultSet.getInt(3),
-                        resultSet.getString(4),
-                        resultSet.getLong(5),
-                        resultSet.getLong(5),
-                        FeedbackStatus.valueOf(resultSet.getString(5).toUpperCase())
-                ));
+                feedbacks.add(createFeedback(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movies");
@@ -185,5 +161,17 @@ public class FeedbackDaoImpl implements FeedbackDao {
         }
 
         return feedbacks;
+    }
+
+    private Feedback createFeedback(ResultSet resultSet) throws SQLException {
+        return Feedback.builder()
+                .setFeedbackId(resultSet.getLong(1))
+                .setFeedbackDate(resultSet.getTimestamp(2).toLocalDateTime())
+                .setScore(resultSet.getInt(3))
+                .setContent(resultSet.getString(4))
+                .setMovieId(resultSet.getLong(5))
+                .setUserId(resultSet.getLong(6))
+                .setFeedbackStatus(FeedbackStatus.valueOf(resultSet.getString(7).toUpperCase()))
+                .build();
     }
 }

@@ -1,9 +1,9 @@
-package by.radzionau.imdb.domain;
+package by.radzionau.imdb.model.domain;
 
 public class User {
-    private Long userId;
+    private Long userId = -1L;
     private String login;
-    private String mail;
+    private String email;
     private String name;
     private String surname;
     private UserRole role;
@@ -16,7 +16,7 @@ public class User {
     public User(Long userId, String login, String mail, String name, String surname, UserRole role, UserStatus status) {
         this.userId = userId;
         this.login = login;
-        this.mail = mail;
+        this.email = mail;
         this.name = name;
         this.surname = surname;
         this.role = role;
@@ -24,17 +24,22 @@ public class User {
     }
 
     public User(String login, String mail, String name, String surname, UserRole role, UserStatus status) {
-        this.userId = -1L;
         this.login = login;
-        this.mail = mail;
+        this.email = mail;
         this.name = name;
         this.surname = surname;
         this.role = role;
         this.status = status;
     }
 
+    //todo inner builder!!!
+
     public Long getUserId() {
         return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getLogin() {
@@ -45,12 +50,12 @@ public class User {
         this.login = login;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -96,7 +101,7 @@ public class User {
 
         return userId.equals(user.userId)
                 && login.equals(user.login)
-                && mail.equals(user.mail)
+                && email.equals(user.email)
                 && name.equals(user.name)
                 && surname.equals(user.surname)
                 && role.equals(user.role)
@@ -107,7 +112,7 @@ public class User {
     public int hashCode() {
         int result = userId.hashCode();
         result = result * 31 + login.hashCode();
-        result = result * 31 + mail.hashCode();
+        result = result * 31 + email.hashCode();
         result = result * 31 + name.hashCode();
         result = result * 31 + surname.hashCode();
         result = result * 31 + role.hashCode();
@@ -121,12 +126,63 @@ public class User {
         sb.append("User{")
                 .append("userId=").append(userId)
                 .append(", login=").append(login)
-                .append(", mail=").append(mail)
+                .append(", email=").append(email)
                 .append(", name=").append(name)
                 .append(", surname=").append(surname)
                 .append(", role=").append(role)
                 .append(", status=").append(status)
                 .append('}');
         return sb.toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private User user;
+
+        public Builder() {
+            user = new User();
+        }
+
+        public Builder setUserId(Long userId) {
+            user.setUserId(userId);
+            return this;
+        }
+
+        public Builder setLogin(String login) {
+            user.setLogin(login);
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            user.setEmail(email);
+            return this;
+        }
+
+        public Builder setName(String name) {
+            user.setName(name);
+            return this;
+        }
+
+        public Builder setSurname(String surname) {
+            user.setSurname(surname);
+            return this;
+        }
+
+        public Builder setRole(UserRole userRole) {
+            user.setRole(userRole);
+            return this;
+        }
+
+        public Builder setStatus(UserStatus userStatus) {
+            user.setStatus(userStatus);
+            return this;
+        }
+
+        public User build() {
+            return user;
+        }
     }
 }

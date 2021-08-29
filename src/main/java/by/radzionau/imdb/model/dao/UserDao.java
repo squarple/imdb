@@ -1,8 +1,8 @@
-package by.radzionau.imdb.dao;
+package by.radzionau.imdb.model.dao;
 
-import by.radzionau.imdb.domain.User;
-import by.radzionau.imdb.domain.UserRole;
-import by.radzionau.imdb.domain.UserStatus;
+import by.radzionau.imdb.model.domain.User;
+import by.radzionau.imdb.model.domain.UserRole;
+import by.radzionau.imdb.model.domain.UserStatus;
 import by.radzionau.imdb.exception.DaoException;
 
 import java.util.List;

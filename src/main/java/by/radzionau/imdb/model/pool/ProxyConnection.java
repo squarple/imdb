@@ -1,4 +1,4 @@
-package by.radzionau.imdb.pool;
+package by.radzionau.imdb.model.pool;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

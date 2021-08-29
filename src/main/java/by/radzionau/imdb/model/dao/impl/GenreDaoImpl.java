@@ -1,10 +1,10 @@
-package by.radzionau.imdb.dao.impl;
+package by.radzionau.imdb.model.dao.impl;
 
-import by.radzionau.imdb.dao.GenreDao;
-import by.radzionau.imdb.domain.Genre;
+import by.radzionau.imdb.model.dao.GenreDao;
+import by.radzionau.imdb.model.domain.Genre;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
-import by.radzionau.imdb.pool.CustomConnectionPool;
+import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,10 +64,7 @@ public class GenreDaoImpl implements GenreDao {
         ) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                genres.add(new Genre(
-                        resultSet.getLong(1),
-                        resultSet.getString(2)
-                ));
+                genres.add(createGenre(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a genres=");
@@ -88,10 +85,7 @@ public class GenreDaoImpl implements GenreDao {
             statement.setLong(1, movieId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                movies.add(new Genre(
-                        resultSet.getLong(1),
-                        resultSet.getString(2)
-                ));
+                movies.add(createGenre(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a genre");
@@ -99,5 +93,12 @@ public class GenreDaoImpl implements GenreDao {
         }
 
         return movies;
+    }
+
+    private Genre createGenre(ResultSet resultSet) throws SQLException {
+        return Genre.builder()
+                .setGenreId(resultSet.getLong(1))
+                .setName(resultSet.getString(2))
+                .build();
     }
 }

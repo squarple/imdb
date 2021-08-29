@@ -1,7 +1,7 @@
-package by.radzionau.imdb.dao;
+package by.radzionau.imdb.model.dao;
 
-import by.radzionau.imdb.domain.Feedback;
-import by.radzionau.imdb.domain.FeedbackStatus;
+import by.radzionau.imdb.model.domain.Feedback;
+import by.radzionau.imdb.model.domain.FeedbackStatus;
 import by.radzionau.imdb.exception.DaoException;
 
 import java.util.List;

@@ -1,12 +1,12 @@
-package by.radzionau.imdb.dao.impl;
+package by.radzionau.imdb.model.dao.impl;
 
-import by.radzionau.imdb.dao.UserDao;
-import by.radzionau.imdb.domain.User;
-import by.radzionau.imdb.domain.UserRole;
-import by.radzionau.imdb.domain.UserStatus;
+import by.radzionau.imdb.model.dao.UserDao;
+import by.radzionau.imdb.model.domain.User;
+import by.radzionau.imdb.model.domain.UserRole;
+import by.radzionau.imdb.model.domain.UserStatus;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
-import by.radzionau.imdb.pool.CustomConnectionPool;
+import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,7 +71,7 @@ public class UserDaoImpl implements UserDao {
         ) {
             statement.setString(1, user.getLogin());
             statement.setString(2, hashedPassword);
-            statement.setString(3, user.getMail());
+            statement.setString(3, user.getEmail());
             statement.setString(4, user.getName());
             statement.setString(5, user.getSurname());
             statement.setLong(6, user.getRole().getId());
@@ -91,7 +91,7 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER)
         ) {
             statement.setString(1, user.getLogin());
-            statement.setString(2, user.getMail());
+            statement.setString(2, user.getEmail());
             statement.setString(3, user.getName());
             statement.setString(4, user.getSurname());
             statement.setLong(5, user.getRole().getId());
@@ -185,14 +185,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     private User createUser(ResultSet resultSet) throws SQLException {
-        return new User(
-                resultSet.getLong(1),
-                resultSet.getString(2),
-                resultSet.getString(3),
-                resultSet.getString(4),
-                resultSet.getString(5),
-                UserRole.valueOf(resultSet.getString(6).toUpperCase()),
-                UserStatus.valueOf(resultSet.getString(7).toUpperCase())
-        );
+        return User.builder()
+                .setUserId(resultSet.getLong(1))
+                .setLogin(resultSet.getString(2))
+                .setEmail(resultSet.getString(3))
+                .setName(resultSet.getString(4))
+                .setSurname(resultSet.getString(5))
+                .setRole(UserRole.valueOf(resultSet.getString(6).toUpperCase()))
+                .setStatus(UserStatus.valueOf(resultSet.getString(7).toUpperCase()))
+                .build();
     }
 }

@@ -1,12 +1,12 @@
-package by.radzionau.imdb.dao.impl;
+package by.radzionau.imdb.model.dao.impl;
 
-import by.radzionau.imdb.dao.MovieDao;
-import by.radzionau.imdb.domain.Genre;
-import by.radzionau.imdb.domain.Movie;
-import by.radzionau.imdb.domain.MovieType;
+import by.radzionau.imdb.model.dao.MovieDao;
+import by.radzionau.imdb.model.domain.Genre;
+import by.radzionau.imdb.model.domain.Movie;
+import by.radzionau.imdb.model.domain.MovieType;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
-import by.radzionau.imdb.pool.CustomConnectionPool;
+import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -135,14 +135,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setLong(1, movieId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Movie movie = new Movie(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getInt(4),
-                        resultSet.getBlob(5).getBinaryStream(),
-                        MovieType.valueOf(resultSet.getString(6).toUpperCase())
-                );
+                Movie movie = createMovie(resultSet);
                 return Optional.of(movie);
             }
         } catch (SQLException | ConnectionPoolException e) {
@@ -164,14 +157,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setString(1, title);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                movies.add(new Movie(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getInt(4),
-                        resultSet.getBlob(5).getBinaryStream(),
-                        MovieType.valueOf(resultSet.getString(6).toUpperCase())
-                ));
+                movies.add(createMovie(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
@@ -192,14 +178,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setInt(1, year);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                movies.add(new Movie(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getInt(4),
-                        resultSet.getBlob(5).getBinaryStream(),
-                        MovieType.valueOf(resultSet.getString(6).toUpperCase())
-                ));
+                movies.add(createMovie(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
@@ -220,14 +199,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setLong(1, genre.getGenreId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                movies.add(new Movie(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getInt(4),
-                        resultSet.getBlob(5).getBinaryStream(),
-                        MovieType.valueOf(resultSet.getString(6).toUpperCase())
-                ));
+                movies.add(createMovie(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
@@ -249,14 +221,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setLong(1, movieType.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                movies.add(new Movie(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getInt(4),
-                        resultSet.getBlob(5).getBinaryStream(),
-                        MovieType.valueOf(resultSet.getString(6).toUpperCase())
-                ));
+                movies.add(createMovie(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
@@ -284,5 +249,16 @@ public class MovieDaoImpl implements MovieDao {
         }
 
         return Optional.empty();
+    }
+
+    private Movie createMovie(ResultSet resultSet) throws SQLException {
+        return Movie.builder()
+                .setMovieId(resultSet.getLong(1))
+                .setTitle(resultSet.getString(2))
+                .setLogline(resultSet.getString(3))
+                .setReleaseYear(resultSet.getInt(4))
+                .setCover(resultSet.getBlob(5).getBinaryStream())
+                .setMovieType(MovieType.valueOf(resultSet.getString(6).toUpperCase()))
+                .build();
     }
 }

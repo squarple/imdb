@@ -1,4 +1,4 @@
-package by.radzionau.imdb.pool;
+package by.radzionau.imdb.model.pool;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ import java.util.Properties;
 
 class ConnectionFactory {
     private static final Logger logger = LogManager.getLogger(ConnectionFactory.class);
-    private static final String FILE_PROPERTIES_NAME = "db.properties";
+    private static final String FILE_PROPERTIES_NAME = "database/db.properties";
     private static final String URL_ATTRIBUTE_NAME = "db.url";
     private static final String DRIVER_ATTRIBUTE_NAME = "db.driver";
 

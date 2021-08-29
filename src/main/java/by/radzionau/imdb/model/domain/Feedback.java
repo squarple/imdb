@@ -1,9 +1,9 @@
-package by.radzionau.imdb.domain;
+package by.radzionau.imdb.model.domain;
 
 import java.time.LocalDateTime;
 
 public class Feedback {
-    private Long feedbackId;
+    private Long feedbackId = -1L;
     private LocalDateTime feedbackDate;
     private int score;
     private String content;
@@ -26,7 +26,6 @@ public class Feedback {
     }
 
     public Feedback(LocalDateTime feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
-        this.feedbackId = -1L;
         this.feedbackDate = feedbackDate;
         this.score = score;
         this.content = content;
@@ -37,6 +36,10 @@ public class Feedback {
 
     public Long getFeedbackId() {
         return feedbackId;
+    }
+
+    public void setFeedbackId(Long feedbackId) {
+        this.feedbackId = feedbackId;
     }
 
     public LocalDateTime getFeedbackDate() {
@@ -130,5 +133,56 @@ public class Feedback {
                 .append(", feedbackStatus=").append(feedbackStatus)
                 .append('}');
         return sb.toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Feedback feedback;
+
+        public Builder() {
+            feedback = new Feedback();
+        }
+
+        public Builder setFeedbackId(Long feedbackId) {
+            feedback.setFeedbackId(feedbackId);
+            return this;
+        }
+
+        public Builder setFeedbackDate(LocalDateTime feedbackDate) {
+            feedback.setFeedbackDate(feedbackDate);
+            return this;
+        }
+
+        public Builder setScore(int score) {
+            feedback.setScore(score);
+            return this;
+        }
+
+        public Builder setContent(String content) {
+            feedback.setContent(content);
+            return this;
+        }
+
+        public Builder setMovieId(Long movieId) {
+            feedback.setMovieId(movieId);
+            return this;
+        }
+
+        public Builder setUserId(Long userId) {
+            feedback.setUserId(userId);
+            return this;
+        }
+
+        public Builder setFeedbackStatus(FeedbackStatus feedbackStatus) {
+            feedback.setFeedbackStatus(feedbackStatus);
+            return this;
+        }
+
+        public Feedback build() {
+            return feedback;
+        }
     }
 }

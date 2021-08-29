@@ -1,4 +1,4 @@
-package by.radzionau.imdb.domain;
+package by.radzionau.imdb.model.domain;
 
 public enum MovieType {
     FILM(1),
