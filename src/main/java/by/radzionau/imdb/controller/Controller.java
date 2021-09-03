@@ -1,6 +1,6 @@
 package by.radzionau.imdb.controller;
 
-import by.radzionau.imdb.command.*;
+import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
