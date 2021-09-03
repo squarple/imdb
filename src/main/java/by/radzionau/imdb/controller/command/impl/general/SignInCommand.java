@@ -25,8 +25,6 @@ public class SignInCommand implements Command {
             request.getSession().setAttribute(RequestAttribute.USER, user);
             request.getSession().setAttribute(RequestAttribute.ROLE, user.getRole());
 
-            //todo login and password -> cookie
-
             router = new Router(PagePath.MAIN_PAGE, Router.RouterType.REDIRECT);
         } catch (ServiceException e) {
             logger.error("Error at SignInCommand", e);
