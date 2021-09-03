@@ -1,9 +1,9 @@
-package by.radzionau.imdb.command;
+package by.radzionau.imdb.controller.command;
 
-import by.radzionau.imdb.command.impl.general.SignInCommand;
-import by.radzionau.imdb.command.impl.general.SignOutCommand;
-import by.radzionau.imdb.command.impl.general.SignUpCommand;
-import by.radzionau.imdb.command.impl.redirect.RedirectToPageCommand;
+import by.radzionau.imdb.controller.command.impl.general.SignInCommand;
+import by.radzionau.imdb.controller.command.impl.general.SignOutCommand;
+import by.radzionau.imdb.controller.command.impl.general.SignUpCommand;
+import by.radzionau.imdb.controller.command.impl.redirect.RedirectToPageCommand;
 
 import java.util.EnumMap;
 

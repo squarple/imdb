@@ -1,10 +1,8 @@
-package by.radzionau.imdb.command.impl.general;
+package by.radzionau.imdb.controller.command.impl.general;
 
-import by.radzionau.imdb.command.Command;
-import by.radzionau.imdb.command.PagePath;
-import by.radzionau.imdb.command.RequestAttribute;
-import by.radzionau.imdb.command.Router;
-import jakarta.servlet.http.Cookie;
+import by.radzionau.imdb.controller.command.Command;
+import by.radzionau.imdb.controller.command.PagePath;
+import by.radzionau.imdb.controller.command.Router;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

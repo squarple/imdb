@@ -1,4 +1,4 @@
-package by.radzionau.imdb.command;
+package by.radzionau.imdb.controller.command;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

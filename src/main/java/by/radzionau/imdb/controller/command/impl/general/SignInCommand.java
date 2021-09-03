@@ -1,6 +1,6 @@
-package by.radzionau.imdb.command.impl.general;
+package by.radzionau.imdb.controller.command.impl.general;
 
-import by.radzionau.imdb.command.*;
+import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.domain.User;
 import by.radzionau.imdb.service.UserService;

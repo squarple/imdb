@@ -1,4 +1,4 @@
-package by.radzionau.imdb.command;
+package by.radzionau.imdb.controller.command;
 
 public enum CommandType {
     //USER

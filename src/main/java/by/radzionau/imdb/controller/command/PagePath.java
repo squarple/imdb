@@ -1,4 +1,4 @@
-package by.radzionau.imdb.command;
+package by.radzionau.imdb.controller.command;
 
 public enum PagePath {
     MAIN_PAGE ("pages/main.jsp"),

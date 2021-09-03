@@ -1,4 +1,4 @@
-package by.radzionau.imdb.command;
+package by.radzionau.imdb.controller.command;
 
 public class RequestAttribute {
     public static final String USER = "user";

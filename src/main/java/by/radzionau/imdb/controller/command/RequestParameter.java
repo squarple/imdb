@@ -1,4 +1,4 @@
-package by.radzionau.imdb.command;
+package by.radzionau.imdb.controller.command;
 
 public class RequestParameter {
     public static final String COMMAND = "command";
@@ -8,7 +8,7 @@ public class RequestParameter {
     public static final String FIRST_NAME = "first_name";
     public static final String SURNAME = "surname";
 
-    public static final String TO_PAGE = "page_to";
+    public static final String PAGE_TO = "page_to";
 
     private RequestParameter() {
 
