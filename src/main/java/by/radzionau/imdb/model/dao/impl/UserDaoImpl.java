@@ -1,19 +1,16 @@
 package by.radzionau.imdb.model.dao.impl;
 
+import by.radzionau.imdb.exception.ConnectionPoolException;
+import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.dao.UserDao;
 import by.radzionau.imdb.model.domain.User;
 import by.radzionau.imdb.model.domain.UserRole;
 import by.radzionau.imdb.model.domain.UserStatus;
-import by.radzionau.imdb.exception.ConnectionPoolException;
-import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,10 +53,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     private static final class MySqlUserDaoInstanceHolder {
-        private static final UserDao INSTANCE = new UserDaoImpl();
+        private static final UserDaoImpl INSTANCE = new UserDaoImpl();
     }
 
-    public static UserDao getInstance() {
+    public static UserDaoImpl getInstance() {
         return MySqlUserDaoInstanceHolder.INSTANCE;
     }
 
@@ -67,7 +64,7 @@ public class UserDaoImpl implements UserDao {
     public int add(User user, String hashedPassword) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_USER)
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, user.getLogin());
             statement.setString(2, hashedPassword);
@@ -77,6 +74,12 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(6, user.getRole().getId());
             statement.setLong(7, user.getStatus().getId());
             int rowsUpdate = statement.executeUpdate();
+            try(ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    Long key = resultSet.getLong(1);
+                    user.setUserId(key);
+                }
+            }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a user={}", user);

@@ -59,10 +59,16 @@ public class FeedbackDaoImpl implements FeedbackDao {
     public int add(Feedback feedback) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_FEEDBACK)
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_FEEDBACK, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setLong(1, feedback.getFeedbackId());
             int rowsUpdate = statement.executeUpdate();
+            try(ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    Long key = resultSet.getLong(1);
+                    feedback.setFeedbackId(key);
+                }
+            }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a feedback={}", feedback);

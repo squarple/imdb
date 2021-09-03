@@ -77,7 +77,7 @@ public class MovieDaoImpl implements MovieDao {
     public int add(Movie movie) throws DaoException {  //todo convert InputStream to Blob
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_MOVIE)
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_MOVIE, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, movie.getTitle());
             statement.setString(2, movie.getLogline());
@@ -85,6 +85,12 @@ public class MovieDaoImpl implements MovieDao {
             statement.setBlob(4, movie.getCover());
             statement.setLong(5, movie.getMovieType().getId());
             int rowsUpdate = statement.executeUpdate();
+            try(ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    Long key = resultSet.getLong(1);
+                    movie.setMovieId(key);
+                }
+            }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a movie");

@@ -8,10 +8,7 @@ import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +41,16 @@ public class GenreDaoImpl implements GenreDao {
     public int add(Genre genre) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_GENRE)
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_GENRE, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, genre.getName());
             int rowsUpdate = statement.executeUpdate();
+            try(ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    Long key = resultSet.getLong(1);
+                    genre.setGenreId(key);
+                }
+            }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a genre={}", genre);
