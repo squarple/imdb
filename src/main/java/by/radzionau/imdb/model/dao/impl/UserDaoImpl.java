@@ -112,15 +112,15 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN)
         ) {
             statement.setString(1, login);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(createUser(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(createUser(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a user");
             throw new DaoException("Error while selecting a user", e);
         }
-
         return Optional.empty();
     }
 
@@ -131,16 +131,16 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_PASSWORD_BY_LOGIN)
         ) {
             statement.setString(1, login);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String password = resultSet.getString(1);
-                return Optional.of(password);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String password = resultSet.getString(1);
+                    return Optional.of(password);
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a password");
             throw new DaoException("Error while selecting a password", e);
         }
-
         return Optional.empty();
     }
 
@@ -152,15 +152,15 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USERS_BY_STATUS)
         ) {
             statement.setLong(1, userStatus.getId());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                users.add(createUser(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(createUser(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a users");
             throw new DaoException("Error while selecting a users", e);
         }
-
         return users;
     }
 
@@ -172,15 +172,15 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USERS_BY_ROLE)
         ) {
             statement.setLong(1, userRole.getId());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                users.add(createUser(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(createUser(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a users");
             throw new DaoException("Error while selecting a users", e);
         }
-
         return users;
     }
 

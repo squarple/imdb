@@ -60,9 +60,9 @@ public class GenreDaoImpl implements GenreDao {
         List<Genre> genres = new ArrayList<>();
         try (
                 Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_GENRES)
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_GENRES);
+                ResultSet resultSet = statement.executeQuery()
         ) {
-            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 genres.add(createGenre(resultSet));
             }
@@ -76,22 +76,20 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public List<Genre> findGenresOfMovieByMovieId(Long movieId) throws DaoException {
         List<Genre> movies = new ArrayList<>();
-
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_GENRES_OF_MOVIE_BY_MOVIE_ID)
         ) {
-
             statement.setLong(1, movieId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                movies.add(createGenre(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    movies.add(createGenre(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a genre");
             throw new DaoException("Error while selecting a genre", e);
         }
-
         return movies;
     }
 

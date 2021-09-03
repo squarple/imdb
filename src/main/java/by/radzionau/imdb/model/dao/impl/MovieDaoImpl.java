@@ -133,101 +133,96 @@ public class MovieDaoImpl implements MovieDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIE_BY_ID)
         ) {
             statement.setLong(1, movieId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Movie movie = createMovie(resultSet);
-                return Optional.of(movie);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Movie movie = createMovie(resultSet);
+                    return Optional.of(movie);
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
             throw new DaoException("Error while selecting a movie", e);
         }
-
         return Optional.empty();
     }
 
     @Override
     public List<Movie> findMoviesByTitle(String title) throws DaoException {
         List<Movie> movies = new ArrayList<>();
-
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_TITLE)
         ) {
             statement.setString(1, title);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                movies.add(createMovie(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    movies.add(createMovie(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
             throw new DaoException("Error while selecting a movie", e);
         }
-
         return movies;
     }
 
     @Override
     public List<Movie> findMoviesByYear(int year) throws DaoException {
         List<Movie> movies = new ArrayList<>();
-
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_YEAR)
         ) {
             statement.setInt(1, year);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                movies.add(createMovie(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    movies.add(createMovie(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
             throw new DaoException("Error while selecting a movie", e);
         }
-
         return movies;
     }
 
     @Override
     public List<Movie> findMoviesByGenre(Genre genre) throws DaoException {
         List<Movie> movies = new ArrayList<>();
-
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_GENRE)
         ) {
             statement.setLong(1, genre.getGenreId());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                movies.add(createMovie(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    movies.add(createMovie(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
             throw new DaoException("Error while selecting a movie", e);
         }
-
         return movies;
     }
 
     @Override
     public List<Movie> findMoviesByMovieType(MovieType movieType) throws DaoException {
         List<Movie> movies = new ArrayList<>();
-
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_MOVIE_TYPE)
         ) {
-
             statement.setLong(1, movieType.getId());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                movies.add(createMovie(resultSet));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    movies.add(createMovie(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movie");
             throw new DaoException("Error while selecting a movie", e);
         }
-
         return movies;
     }
 

@@ -109,57 +109,60 @@ public class FeedbackDaoImpl implements FeedbackDao {
 
     @Override
     public Optional<Feedback> findFeedbackById(Long feedbackId) throws DaoException {
-        try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_FEEDBACK_BY_ID)
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_FEEDBACK_BY_ID)
         ) {
             statement.setLong(1, feedbackId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(createFeedback(resultSet));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(createFeedback(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while adding a feedback");
             throw new DaoException("Error while adding a feedback", e);
         }
-
         return Optional.empty();
     }
 
     @Override
     public List<Feedback> findFeedbacksByMovieId(Long movieId) throws DaoException {
         List<Feedback> feedbacks = new ArrayList<>();
-        try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_FIND_FEEDBACKS_BY_MOVIE_ID)
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_FEEDBACKS_BY_MOVIE_ID)
         ) {
             statement.setLong(1, movieId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                feedbacks.add(createFeedback(resultSet));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    feedbacks.add(createFeedback(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movies");
             throw new DaoException("Error while selecting a movies", e);
         }
-
         return feedbacks;
     }
 
     @Override
     public List<Feedback> findFeedbacksByStatus(FeedbackStatus feedbackStatus) throws DaoException {
         List<Feedback> feedbacks = new ArrayList<>();
-        try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_FIND_FEEDBACKS_BY_STATUS)
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_FEEDBACKS_BY_STATUS)
         ) {
             statement.setLong(1, feedbackStatus.getId());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                feedbacks.add(createFeedback(resultSet));
+            try(ResultSet resultSet = statement.executeQuery();) {
+                while (resultSet.next()) {
+                    feedbacks.add(createFeedback(resultSet));
+                }
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a movies");
             throw new DaoException("Error while selecting a movies", e);
         }
-
         return feedbacks;
     }
 
