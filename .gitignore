@@ -10,3 +10,5 @@
 /.idea/sonarlint/
 # output directory
 /target/
+# idea package
+/.idea
