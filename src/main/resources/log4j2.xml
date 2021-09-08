@@ -8,7 +8,7 @@
             <Layout type="PatternLayout" pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
 
-        <RollingFile name="RollingFile" filename="logs/log4j2.log" filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
+        <RollingFile name="RollingFile" filename="${sys:catalina.home}/logs/imdb.log" filePattern="${sys:catalina.home}/logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
             </PatternLayout>
