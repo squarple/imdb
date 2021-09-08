@@ -78,25 +78,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersByStatus(UserStatus userStatus) throws ServiceException {
+    public User updateRole(User user, UserRole userRole) throws ServiceException {
+        User updatedUser = buildUser(user.getUserId(), user.getLogin(), user.getEmail(),
+                user.getName(), user.getSurname(), userRole, user.getStatus());
+        try {
+            userDao.update(updatedUser);
+        } catch (DaoException e) {
+            logger.error("Can't handle updateRole request at UserService", e);
+            throw new ServiceException("Can't handle updateRole request at UserService", e);
+        }
+        return updatedUser;
+    }
+
+    @Override
+    public List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException {
         List<User> users = new ArrayList<>();
         try {
             users = userDao.findUsersByStatus(userStatus);
         } catch (DaoException e) {
-            logger.error("Can't handle getUsersByStatus request at UserService", e);
-            throw new ServiceException("Can't handle getUsersByStatus request at UserService", e);
+            logger.error("Can't handle findUsersByStatus request at UserService", e);
+            throw new ServiceException("Can't handle findUsersByStatus request at UserService", e);
         }
         return users;
     }
 
     @Override
-    public List<User> getUsersByRole(UserRole userRole) throws ServiceException {
+    public List<User> findUsersByRole(UserRole userRole) throws ServiceException {
         List<User> users = new ArrayList<>();
         try {
             users = userDao.findUsersByRole(userRole);
         } catch (DaoException e) {
-            logger.error("Can't handle getUsersByRole request at UserService", e);
-            throw new ServiceException("Can't handle getUsersByRole request at UserService", e);
+            logger.error("Can't handle findUsersByRole request at UserService", e);
+            throw new ServiceException("Can't handle findUsersByRole request at UserService", e);
         }
         return users;
     }

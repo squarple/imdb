@@ -16,17 +16,17 @@ public interface MovieService {
 
     Movie getMovieById(Long movieId) throws ServiceException;
 
-    List<Movie> searchMoviesByTitle(String title) throws ServiceException;
+    List<Movie> findMoviesByTitle(String title) throws ServiceException;
 
-    List<Movie> searchMoviesByYear(int year) throws ServiceException;
+    List<Movie> findMoviesByYear(int year) throws ServiceException;
 
-    List<Movie> searchMoviesByGenre(Genre genre) throws ServiceException;
+    List<Movie> findMoviesByGenre(Genre genre) throws ServiceException;
 
-    List<Movie> searchMoviesByMovieType(MovieType movieType) throws ServiceException;
+    List<Movie> findMoviesByMovieType(MovieType movieType) throws ServiceException;
 
-    Double getMovieScoreByMovieId(Long movieId) throws ServiceException;
+    Double findMovieScoreByMovieId(Long movieId) throws ServiceException;
 
-    Double getMovieScore(Movie movie) throws ServiceException;
+    Double findMovieScore(Movie movie) throws ServiceException;
 
-    List<Genre> getGenresOfMovie(Movie movie) throws ServiceException;
+    List<Genre> findGenresOfMovie(Movie movie) throws ServiceException;
 }

@@ -14,7 +14,9 @@ public interface UserService {
 
     User updateStatus(User user, UserStatus userStatus) throws ServiceException;
 
-    List<User> getUsersByStatus(UserStatus userStatus) throws ServiceException;
+    User updateRole(User user, UserRole userRole) throws ServiceException;
 
-    List<User> getUsersByRole(UserRole userRole) throws ServiceException;
+    List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException;
+
+    List<User> findUsersByRole(UserRole userRole) throws ServiceException;
 }

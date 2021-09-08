@@ -8,7 +8,7 @@ import java.util.List;
 public interface GenreService {
     void addGenre(Genre genre) throws ServiceException;
 
-    List<Genre> getAll() throws ServiceException;
+    List<Genre> findAll() throws ServiceException;
 
-    List<Genre> getGenresOfMovieByMovieId(Long movieId) throws ServiceException;
+    List<Genre> findGenresOfMovieByMovieId(Long movieId) throws ServiceException;
 }

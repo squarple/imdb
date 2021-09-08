@@ -65,45 +65,45 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Feedback getFeedbackById(Long feedbackId) throws ServiceException {
+    public Feedback findFeedbackById(Long feedbackId) throws ServiceException {
         try {
             Optional<Feedback> optionalFeedback = feedbackDao.findFeedbackById(feedbackId);
             if (optionalFeedback.isPresent()) {
                 return optionalFeedback.get();
             } else {
-                throw new ServiceException("Can't handle getFeedbackById request at FeedbackService");
+                throw new ServiceException("Can't handle findFeedbackById request at FeedbackService");
             }
         } catch (DaoException e) {
-            logger.error("Can't handle getFeedbackById request at FeedbackService", e);
-            throw new ServiceException("Can't handle getFeedbackById request at FeedbackService", e);
+            logger.error("Can't handle findFeedbackById request at FeedbackService", e);
+            throw new ServiceException("Can't handle findFeedbackById request at FeedbackService", e);
         }
     }
 
     @Override
-    public List<Feedback> searchFeedbacksByMovieId(Long movieId) throws ServiceException {
+    public List<Feedback> findFeedbacksByMovieId(Long movieId) throws ServiceException {
         List<Feedback> feedbacks = new ArrayList<>();
         try {
             feedbacks = feedbackDao.findFeedbacksByMovieId(movieId);
         } catch (DaoException e) {
-            logger.error("Can't handle searchFeedbacksByMovieId request at FeedbackService", e);
-            throw new ServiceException("Can't handle searchFeedbacksByMovieId request at FeedbackService", e);
+            logger.error("Can't handle findFeedbacksByMovieId request at FeedbackService", e);
+            throw new ServiceException("Can't handle findFeedbacksByMovieId request at FeedbackService", e);
         }
         return feedbacks;
     }
 
     @Override
-    public List<Feedback> searchFeedbacksByMovie(Movie movie) throws ServiceException {
-        return searchFeedbacksByMovieId(movie.getMovieId());
+    public List<Feedback> findFeedbacksByMovie(Movie movie) throws ServiceException {
+        return findFeedbacksByMovieId(movie.getMovieId());
     }
 
     @Override
-    public List<Feedback> searchFeedbacksByStatus(FeedbackStatus feedbackStatus) throws ServiceException {
+    public List<Feedback> findFeedbacksByStatus(FeedbackStatus feedbackStatus) throws ServiceException {
         List<Feedback> feedbacks = new ArrayList<>();
         try {
             feedbacks = feedbackDao.findFeedbacksByStatus(feedbackStatus);
         } catch (DaoException e) {
-            logger.error("Can't handle searchFeedbacksByStatus request at FeedbackService", e);
-            throw new ServiceException("Can't handle searchFeedbacksByStatus request at FeedbackService", e);
+            logger.error("Can't handle findFeedbacksByStatus request at FeedbackService", e);
+            throw new ServiceException("Can't handle findFeedbacksByStatus request at FeedbackService", e);
         }
         return feedbacks;
     }

@@ -14,12 +14,11 @@ public interface FeedbackService {
 
     void deleteFeedback(Feedback feedback) throws ServiceException;
 
-    Feedback getFeedbackById(Long feedbackId) throws ServiceException;
+    Feedback findFeedbackById(Long feedbackId) throws ServiceException;
 
-    List<Feedback> searchFeedbacksByMovieId(Long movieId) throws ServiceException;
+    List<Feedback> findFeedbacksByMovieId(Long movieId) throws ServiceException;
 
-    List<Feedback> searchFeedbacksByMovie(Movie movie) throws ServiceException;
+    List<Feedback> findFeedbacksByMovie(Movie movie) throws ServiceException;
 
-    List<Feedback> searchFeedbacksByStatus(FeedbackStatus feedbackStatus) throws ServiceException;
-
+    List<Feedback> findFeedbacksByStatus(FeedbackStatus feedbackStatus) throws ServiceException;
 }

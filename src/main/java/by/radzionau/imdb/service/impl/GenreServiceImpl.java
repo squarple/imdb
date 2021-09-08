@@ -39,25 +39,25 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<Genre> getAll() throws ServiceException {
+    public List<Genre> findAll() throws ServiceException {
         List<Genre> genres = new ArrayList<>();
         try {
             genres = genreDao.findAll();
         } catch (DaoException e) {
-            logger.error("Can't handle getAll request at GenreService", e);
-            throw new ServiceException("Can't handle getAll request at GenreService", e);
+            logger.error("Can't handle findAll request at GenreService", e);
+            throw new ServiceException("Can't handle findAll request at GenreService", e);
         }
         return genres;
     }
 
     @Override
-    public List<Genre> getGenresOfMovieByMovieId(Long movieId) throws ServiceException {
+    public List<Genre> findGenresOfMovieByMovieId(Long movieId) throws ServiceException {
         List<Genre> genres = new ArrayList<>();
         try {
             genres = genreDao.findGenresOfMovieByMovieId(movieId);
         } catch (DaoException e) {
-            logger.error("Can't handle getGenresOfMovieByMovieId request at GenreService", e);
-            throw new ServiceException("Can't handle getGenresOfMovieByMovieId request at GenreService", e);
+            logger.error("Can't handle findGenresOfMovieByMovieId request at GenreService", e);
+            throw new ServiceException("Can't handle findGenresOfMovieByMovieId request at GenreService", e);
         }
         return genres;
     }

@@ -13,7 +13,6 @@ import by.radzionau.imdb.service.MovieService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,90 +73,90 @@ public class MovieServiceImpl implements MovieService {
             if (optionalMovie.isPresent()) {
                 return optionalMovie.get();
             } else {
-                throw new ServiceException("Can't handle deleteMovieById request at MovieService");
+                throw new ServiceException("Can't handle getMovieById request at MovieService");
             }
         } catch (DaoException e) {
-            logger.error("Can't handle deleteMovieById request at MovieService", e);
-            throw new ServiceException("Can't handle deleteMovieById request at MovieService", e);
+            logger.error("Can't handle getMovieById request at MovieService", e);
+            throw new ServiceException("Can't handle getMovieById request at MovieService", e);
         }
     }
 
     @Override
-    public List<Movie> searchMoviesByTitle(String title) throws ServiceException {
+    public List<Movie> findMoviesByTitle(String title) throws ServiceException {
         List<Movie> movies = new ArrayList<>();
         try {
             movies = movieDao.findMoviesByTitle(title);
         } catch (DaoException e) {
-            logger.error("Can't handle searchMoviesByTitle request at MovieService", e);
-            throw new ServiceException("Can't handle searchMoviesByTitle request at MovieService", e);
+            logger.error("Can't handle findMoviesByTitle request at MovieService", e);
+            throw new ServiceException("Can't handle findMoviesByTitle request at MovieService", e);
         }
         return movies;
     }
 
     @Override
-    public List<Movie> searchMoviesByYear(int year) throws ServiceException {
+    public List<Movie> findMoviesByYear(int year) throws ServiceException {
         List<Movie> movies = new ArrayList<>();
         try {
-            movieDao.findMoviesByYear(year);
+            movies = movieDao.findMoviesByYear(year);
         } catch (DaoException e) {
-            logger.error("Can't handle searchMoviesByYear request at MovieService", e);
-            throw new ServiceException("Can't handle searchMoviesByYear request at MovieService", e);
+            logger.error("Can't handle findMoviesByYear request at MovieService", e);
+            throw new ServiceException("Can't handle findMoviesByYear request at MovieService", e);
         }
         return movies;
     }
 
     @Override
-    public List<Movie> searchMoviesByGenre(Genre genre) throws ServiceException {
+    public List<Movie> findMoviesByGenre(Genre genre) throws ServiceException {
         List<Movie> movies = new ArrayList<>();
         try {
-            movieDao.findMoviesByGenre(genre);
+            movies = movieDao.findMoviesByGenre(genre);
         } catch (DaoException e) {
-            logger.error("Can't handle searchMoviesByGenre request at MovieService", e);
-            throw new ServiceException("Can't handle searchMoviesByGenre request at MovieService", e);
+            logger.error("Can't handle findMoviesByGenre request at MovieService", e);
+            throw new ServiceException("Can't handle findMoviesByGenre request at MovieService", e);
         }
         return movies;
     }
 
     @Override
-    public List<Movie> searchMoviesByMovieType(MovieType movieType) throws ServiceException {
+    public List<Movie> findMoviesByMovieType(MovieType movieType) throws ServiceException {
         List<Movie> movies = new ArrayList<>();
         try {
-            movieDao.findMoviesByMovieType(movieType);
+            movies = movieDao.findMoviesByMovieType(movieType);
         } catch (DaoException e) {
-            logger.error("Can't handle searchMoviesByMovieType request at MovieService", e);
-            throw new ServiceException("Can't handle searchMoviesByMovieType request at MovieService", e);
+            logger.error("Can't handle findMoviesByMovieType request at MovieService", e);
+            throw new ServiceException("Can't handle findMoviesByMovieType request at MovieService", e);
         }
         return movies;
     }
 
     @Override
-    public Double getMovieScoreByMovieId(Long movieId) throws ServiceException {
+    public Double findMovieScoreByMovieId(Long movieId) throws ServiceException {
         try {
             Optional<Double> optionalScore = movieDao.findMovieScoreByMovieId(movieId);
             if (optionalScore.isPresent()) {
                 return optionalScore.get();
             } else {
-                throw new ServiceException("Can't handle getMovieScoreByMovieId request at MovieService");
+                throw new ServiceException("Can't handle findMovieScoreByMovieId request at MovieService");
             }
         } catch (DaoException e) {
-            logger.error("Can't handle getMovieScoreByMovieId request at MovieService", e);
-            throw new ServiceException("Can't handle getMovieScoreByMovieId request at MovieService", e);
+            logger.error("Can't handle findMovieScoreByMovieId request at MovieService", e);
+            throw new ServiceException("Can't handle findMovieScoreByMovieId request at MovieService", e);
         }
     }
 
     @Override
-    public Double getMovieScore(Movie movie) throws ServiceException {
-        return getMovieScoreByMovieId(movie.getMovieId());
+    public Double findMovieScore(Movie movie) throws ServiceException {
+        return findMovieScoreByMovieId(movie.getMovieId());
     }
 
     @Override
-    public List<Genre> getGenresOfMovie(Movie movie) throws ServiceException {
+    public List<Genre> findGenresOfMovie(Movie movie) throws ServiceException {
         List<Genre> genres = new ArrayList<>();
         try {
             genres = genreDao.findGenresOfMovieByMovieId(movie.getMovieId());
         } catch (DaoException e) {
-            logger.error("Can't handle getGenresOfMovie request at MovieService", e);
-            throw new ServiceException("Can't handle getGenresOfMovie request at MovieService", e);
+            logger.error("Can't handle findGenresOfMovie request at MovieService", e);
+            throw new ServiceException("Can't handle findGenresOfMovie request at MovieService", e);
         }
         return genres;
     }
