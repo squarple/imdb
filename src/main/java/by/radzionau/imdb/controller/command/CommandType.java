@@ -2,7 +2,7 @@ package by.radzionau.imdb.controller.command;
 
 public enum CommandType {
     //USER
-    SIGN_IN, SIGN_OUT, SIGN_UP,
+    SIGN_IN, SIGN_OUT, SIGN_UP, EMAIL_VERIFICATION,
 
     //MOVIE
     //ADD_MOVIE, UPDATE_MOVIE, DELETE_MOVIE,
