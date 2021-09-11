@@ -3,8 +3,8 @@ package by.radzionau.imdb.controller.command.impl.general;
 import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.domain.User;
-import by.radzionau.imdb.service.UserService;
-import by.radzionau.imdb.service.impl.UserServiceImpl;
+import by.radzionau.imdb.model.service.impl.UserServiceImpl;
+import by.radzionau.imdb.model.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -12,24 +12,35 @@ import org.apache.logging.log4j.Logger;
 
 public class SignInCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final UserService service = UserServiceImpl.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String username = request.getParameter(RequestParameter.LOGIN);
+        String login = request.getParameter(RequestParameter.LOGIN);
         String password = request.getParameter(RequestParameter.PASSWORD);
-        UserService service = UserServiceImpl.getInstance();
+
+        setPageFromAttribute(request);
+
         try {
-            User user = service.signIn(username, password);
+            User user = service.signIn(login, password);
 
-            request.getSession().setAttribute(RequestAttribute.USER, user);
-            request.getSession().setAttribute(RequestAttribute.ROLE, user.getRole());
+            setSessionAttributes(request, user);
 
+            setPageToAttribute(request, PagePath.MAIN_PAGE);
             router = new Router(PagePath.MAIN_PAGE, Router.RouterType.REDIRECT);
         } catch (ServiceException e) {
             logger.error("Error at SignInCommand", e);
-            router = new Router(PagePath.LOGIN_PAGE, Router.RouterType.REDIRECT);
+
+            setPageToAttribute(request, PagePath.LOGIN_PAGE);
+            router = new Router(PagePath.LOGIN_PAGE, Router.RouterType.FORWARD);
         }
         return router;
+    }
+
+    private void setSessionAttributes(HttpServletRequest request, User user) {
+        request.getSession().setAttribute(RequestAttribute.USER, user);
+        request.getSession().setAttribute(RequestAttribute.LOGIN, user.getLogin());
+        request.getSession().setAttribute(RequestAttribute.ROLE, user.getRole());
     }
 }
