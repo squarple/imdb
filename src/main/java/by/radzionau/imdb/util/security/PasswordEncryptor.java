@@ -1,4 +1,4 @@
-package by.radzionau.imdb.util;
+package by.radzionau.imdb.util.security;
 
 import org.mindrot.jbcrypt.BCrypt;
 
