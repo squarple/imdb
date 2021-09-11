@@ -1,11 +1,11 @@
-package by.radzionau.imdb.service.impl;
+package by.radzionau.imdb.model.service.impl;
 
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.dao.GenreDao;
 import by.radzionau.imdb.model.dao.impl.GenreDaoImpl;
 import by.radzionau.imdb.model.domain.Genre;
-import by.radzionau.imdb.service.GenreService;
+import by.radzionau.imdb.model.service.GenreService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,4 +1,4 @@
-package by.radzionau.imdb.service.impl;
+package by.radzionau.imdb.model.service.impl;
 
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.exception.ServiceException;
@@ -7,7 +7,7 @@ import by.radzionau.imdb.model.dao.impl.FeedbackDaoImpl;
 import by.radzionau.imdb.model.domain.Feedback;
 import by.radzionau.imdb.model.domain.FeedbackStatus;
 import by.radzionau.imdb.model.domain.Movie;
-import by.radzionau.imdb.service.FeedbackService;
+import by.radzionau.imdb.model.service.FeedbackService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

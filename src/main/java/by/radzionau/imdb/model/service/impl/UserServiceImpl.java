@@ -1,4 +1,4 @@
-package by.radzionau.imdb.service.impl;
+package by.radzionau.imdb.model.service.impl;
 
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.exception.ServiceException;
@@ -7,8 +7,8 @@ import by.radzionau.imdb.model.dao.impl.UserDaoImpl;
 import by.radzionau.imdb.model.domain.User;
 import by.radzionau.imdb.model.domain.UserRole;
 import by.radzionau.imdb.model.domain.UserStatus;
-import by.radzionau.imdb.service.UserService;
-import by.radzionau.imdb.util.PasswordEncryptor;
+import by.radzionau.imdb.model.service.UserService;
+import by.radzionau.imdb.util.security.PasswordEncryptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

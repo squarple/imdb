@@ -1,4 +1,4 @@
-package by.radzionau.imdb.service;
+package by.radzionau.imdb.model.service;
 
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.domain.User;
