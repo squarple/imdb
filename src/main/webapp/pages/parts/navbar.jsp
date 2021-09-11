@@ -1,7 +1,15 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <form>
+            <input type="hidden" name="page_from" value="${page_to}">
+            <input type="hidden" name="page_to" value="main_page">
+            <input type="hidden" name="command" value="move_to">
+            <button type="submit" class="btn btn-link">
+                <img src="https://images-na.ssl-images-amazon.com/images/G/01/imdb/authportal/images/www_imdb_logo._CB667618033_.png">
+            </button>
+        </form>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" name="command" value="">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -31,12 +39,24 @@
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form> -->
+            <c:if test="${role != 'ADMIN' && role != 'USER'}">
             <div>
                 <form action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="page_from" value="${page_to}">
                     <input type="hidden" name="page_to" value="login_page">
-                    <button type="submit" name="command" value="redirect">LOGIN</button>
+                    <button type="submit" name="command" value="move_to">Sign in</button>
                 </form>
             </div>
+            </c:if>
+            <c:if test="${role == 'ADMIN' || role == 'USER'}">
+                <div>
+                    <form action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="page_from" value="${page_to}">
+                        <input type="hidden" name="page_to" value="main_page">
+                        <button type="submit" name="command" value="sign_out">Logout</button>
+                    </form>
+                </div>
+            </c:if>
         </div>
     </div>
 </nav>
