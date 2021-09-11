@@ -4,7 +4,7 @@ import by.radzionau.imdb.controller.command.impl.general.EmailVerificationComman
 import by.radzionau.imdb.controller.command.impl.general.SignInCommand;
 import by.radzionau.imdb.controller.command.impl.general.SignOutCommand;
 import by.radzionau.imdb.controller.command.impl.general.SignUpCommand;
-import by.radzionau.imdb.controller.command.impl.redirect.RedirectToPageCommand;
+import by.radzionau.imdb.controller.command.impl.moveto.MoveToPageCommand;
 
 import java.util.EnumMap;
 
@@ -16,7 +16,7 @@ public class CommandProvider {
         commands.put(CommandType.SIGN_IN, new SignInCommand());
         commands.put(CommandType.SIGN_UP, new SignUpCommand());
         commands.put(CommandType.SIGN_OUT, new SignOutCommand());
-        commands.put(CommandType.REDIRECT, new RedirectToPageCommand());
+        commands.put(CommandType.MOVE_TO, new MoveToPageCommand());
         commands.put(CommandType.EMAIL_VERIFICATION, new EmailVerificationCommand());
     }
 

@@ -13,7 +13,6 @@ public enum CommandType {
     //FEEDBACK
     //ADD_FEEDBACK, UPDATE_FEEDBACK, DELETE_FEEDBACK,
 
-    REDIRECT,
-
+    MOVE_TO,
     DEFAULT
 }
