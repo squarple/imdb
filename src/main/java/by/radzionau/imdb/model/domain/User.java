@@ -13,27 +13,6 @@ public class User {
 
     }
 
-    public User(Long userId, String login, String mail, String name, String surname, UserRole role, UserStatus status) {
-        this.userId = userId;
-        this.login = login;
-        this.email = mail;
-        this.name = name;
-        this.surname = surname;
-        this.role = role;
-        this.status = status;
-    }
-
-    public User(String login, String mail, String name, String surname, UserRole role, UserStatus status) {
-        this.login = login;
-        this.email = mail;
-        this.name = name;
-        this.surname = surname;
-        this.role = role;
-        this.status = status;
-    }
-
-    //todo inner builder!!!
-
     public Long getUserId() {
         return userId;
     }

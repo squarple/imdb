@@ -8,15 +8,6 @@ public class Genre {
 
     }
 
-    public Genre(Long genreId, String name) {
-        this.genreId = genreId;
-        this.name = name;
-    }
-
-    public Genre(String name) {
-        this.name = name;
-    }
-
     public Long getGenreId() {
         return genreId;
     }

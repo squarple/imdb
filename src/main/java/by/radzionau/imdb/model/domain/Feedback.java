@@ -15,25 +15,6 @@ public class Feedback {
 
     }
 
-    public Feedback(Long feedbackId, LocalDateTime feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
-        this.feedbackId = feedbackId;
-        this.feedbackDate = feedbackDate;
-        this.score = score;
-        this.content = content;
-        this.movieId = movieId;
-        this.userId = userId;
-        this.feedbackStatus = feedbackStatus;
-    }
-
-    public Feedback(LocalDateTime feedbackDate, int score, String content, Long movieId, Long userId, FeedbackStatus feedbackStatus) {
-        this.feedbackDate = feedbackDate;
-        this.score = score;
-        this.content = content;
-        this.movieId = movieId;
-        this.userId = userId;
-        this.feedbackStatus = feedbackStatus;
-    }
-
     public Long getFeedbackId() {
         return feedbackId;
     }

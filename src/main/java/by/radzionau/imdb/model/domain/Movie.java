@@ -14,23 +14,6 @@ public class Movie {
 
     }
 
-    public Movie(Long movieId, String title, String logline, int releaseYear, InputStream cover, MovieType movieType) {
-        this.movieId = movieId;
-        this.title = title;
-        this.logline = logline;
-        this.releaseYear = releaseYear;
-        this.cover = cover;
-        this.movieType = movieType;
-    }
-
-    public Movie(String title, String logline, int releaseYear, InputStream cover, MovieType movieType) {
-        this.title = title;
-        this.logline = logline;
-        this.releaseYear = releaseYear;
-        this.cover = cover;
-        this.movieType = movieType;
-    }
-
     public Long getMovieId() {
         return movieId;
     }
