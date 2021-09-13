@@ -53,7 +53,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signUp(String login, String password, String repeatedPassword, String mail, String firstName, String surname) throws ServiceException {
-        User user = new User(login, mail, firstName, surname, UserRole.USER, UserStatus.NON_ACTIVATED);
+        User user = User.builder()
+                .setLogin(login)
+                .setEmail(mail)
+                .setName(firstName)
+                .setSurname(surname)
+                .setRole(UserRole.USER)
+                .setStatus(UserStatus.NON_ACTIVATED)
+                .build();
+
         String hashedPassword = PasswordEncryptor.encryptPassword(password);
         try {
             userDao.add(user, hashedPassword);
@@ -110,6 +118,33 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException e) {
             logger.error("Can't handle findUsersByRole request at UserService", e);
             throw new ServiceException("Can't handle findUsersByRole request at UserService", e);
+        }
+        return users;
+    }
+
+    @Override
+    public User findUserByLogin(String login) throws ServiceException {
+        try {
+            Optional<User> optionalUser = userDao.findUserByLogin(login);
+            if (optionalUser.isPresent()) {
+                return optionalUser.get();
+            } else {
+                throw new ServiceException("User with login " + login + " doesn't exist");
+            }
+        } catch (DaoException e) {
+            logger.error("User  with login {} doesn't exist", login, e);
+            throw new ServiceException("User with login " + login + " doesn't exist");
+        }
+    }
+
+    @Override
+    public List<User> findAll() throws ServiceException {
+        List<User> users = new ArrayList<>();
+        try {
+            users = userDao.findAll();
+        } catch (DaoException e) {
+            logger.error("Can't handle findAll request at UserService", e);
+            throw new ServiceException("Can't handle findAll request at UserService", e);
         }
         return users;
     }

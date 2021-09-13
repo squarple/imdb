@@ -19,4 +19,8 @@ public interface UserService {
     List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException;
 
     List<User> findUsersByRole(UserRole userRole) throws ServiceException;
+
+    User findUserByLogin(String login) throws ServiceException;
+
+    List<User> findAll() throws ServiceException;
 }
