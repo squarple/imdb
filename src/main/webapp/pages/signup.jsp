@@ -10,7 +10,9 @@
     <body>
         <jsp:include page="parts/navbar.jsp"></jsp:include>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        
+
+        <div class="container">
+
         <form action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" name="command" value="sign_up">
             <input type="hidden" name="page_from" value="signup_page">
@@ -54,5 +56,8 @@
         <br>
         <hr>
         <h1>${page_to}</h1>
+        </div>
+
+        <jsp:include page="parts/footer.jsp"/>
     </body>
 </html>

@@ -11,6 +11,7 @@
 <jsp:include page="parts/navbar.jsp"/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+<div class="container">
 
 <b>Verify email address</b>
 <b>To verify your email, we've sent a One Time Password (6 знаков) (OTP) to radionoff.antony@gmail.com</b>
@@ -30,5 +31,7 @@
         <button class="btn btn-primary" type="submit">Create your IMDb account</button>
     </div>
 </form>
+</div>
+<jsp:include page="parts/footer.jsp"/>
 </body>
 </html>

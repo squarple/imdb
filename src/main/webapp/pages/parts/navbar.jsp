@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<div class="container">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <form>
@@ -32,8 +33,33 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <form id="films" action="${pageContext.request.contextPath}/controller" method="get">
+                        <input type="hidden" name="page_from" value="${page_to}">
+                        <input type="hidden" name="page_to" value="get_movies_page">
+                        <input type="hidden" name="movie_type" value="film">
+                        <input type="hidden" name="command" value="get_movies">
+                        <a class="nav-link active" href=# onclick="document.getElementById('films').submit()" tabindex="-1" aria-disabled="true">Films</a>
+                    </form>
                 </li>
+                <li class="nav-item">
+                    <form id="serials" action="${pageContext.request.contextPath}/controller" method="get">
+                        <input type="hidden" name="page_from" value="${page_to}">
+                        <input type="hidden" name="page_to" value="get_movies_page">
+                        <input type="hidden" name="movie_type" value="serial">
+                        <input type="hidden" name="command" value="get_movies">
+                        <a class="nav-link active" href=# onclick="document.getElementById('serials').submit()" tabindex="-1" aria-disabled="true">Serials</a>
+                    </form>
+                </li>
+                <c:if test="${role == 'ADMIN'}">
+                    <li class="nav-item">
+                        <form id="users_list" action="${pageContext.request.contextPath}/controller" method="get">
+                            <input type="hidden" name="page_from" value="main_page">
+                            <input type="hidden" name="page_to" value="get_users_page">
+                            <input type="hidden" name="command" value="get_users">
+                            <a class="nav-link active" href=# onclick="document.getElementById('users_list').submit()" tabindex="-1" aria-disabled="true">Users list</a>
+                        </form>
+                    </li>
+                </c:if>
             </ul>
             <!--<form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -60,3 +86,4 @@
         </div>
     </div>
 </nav>
+</div>
