@@ -47,6 +47,11 @@ public class UserDaoImpl implements UserDao {
                     "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
                     "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
                     "WHERE usr.usr_role_id=?";
+    private static final String SQL_SELECT_ALL_USERS =
+            "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
+                    "FROM usr " +
+                    "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
+                    "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id ";
 
     private UserDaoImpl() {
 
@@ -179,6 +184,24 @@ public class UserDaoImpl implements UserDao {
                 while (resultSet.next()) {
                     users.add(createUser(resultSet));
                 }
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            logger.error("Error while selecting a users");
+            throw new DaoException("Error while selecting a users", e);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findAll() throws DaoException {
+        List<User> users = new ArrayList<>();
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_USERS);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            while (resultSet.next()) {
+                users.add(createUser(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while selecting a users");
