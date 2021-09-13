@@ -9,6 +9,10 @@ public final class RequestAttribute {
     public static final String PAGE_TO = "page_to";
     public static final String PAGE_FROM = "page_from";
 
+    public static final String USERS_LIST = "users_list";
+    public static final String MOVIES_LIST = "movies_list";
+
+
     private RequestAttribute() {
 
     }

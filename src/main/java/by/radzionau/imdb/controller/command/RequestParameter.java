@@ -12,6 +12,8 @@ public class RequestParameter {
     public static final String PAGE_TO = "page_to";
     public static final String PAGE_FROM = "page_from";
 
+    public static final String MOVIE_TYPE = "movie_type";
+
     private RequestParameter() {
 
     }

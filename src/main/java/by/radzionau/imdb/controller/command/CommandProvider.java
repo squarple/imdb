@@ -1,9 +1,9 @@
 package by.radzionau.imdb.controller.command;
 
-import by.radzionau.imdb.controller.command.impl.general.EmailVerificationCommand;
-import by.radzionau.imdb.controller.command.impl.general.SignInCommand;
-import by.radzionau.imdb.controller.command.impl.general.SignOutCommand;
-import by.radzionau.imdb.controller.command.impl.general.SignUpCommand;
+import by.radzionau.imdb.controller.command.impl.admin.ChangeUserRoleCommand;
+import by.radzionau.imdb.controller.command.impl.admin.ChangeUserStatusCommand;
+import by.radzionau.imdb.controller.command.impl.admin.GetUsersCommand;
+import by.radzionau.imdb.controller.command.impl.general.*;
 import by.radzionau.imdb.controller.command.impl.moveto.MoveToPageCommand;
 
 import java.util.EnumMap;
@@ -13,11 +13,8 @@ public class CommandProvider {
     private final EnumMap<CommandType, Command> commands = new EnumMap(CommandType.class);
 
     private CommandProvider() {
-        commands.put(CommandType.SIGN_IN, new SignInCommand());
-        commands.put(CommandType.SIGN_UP, new SignUpCommand());
-        commands.put(CommandType.SIGN_OUT, new SignOutCommand());
-        commands.put(CommandType.MOVE_TO, new MoveToPageCommand());
-        commands.put(CommandType.EMAIL_VERIFICATION, new EmailVerificationCommand());
+        addGeneralCommands();
+        addAdminCommands();
     }
 
     public static CommandProvider getInstance() {
@@ -38,5 +35,21 @@ public class CommandProvider {
             commandType = CommandType.DEFAULT;
         }
         return commands.get(commandType);
+    }
+
+    private void addGeneralCommands() {
+        commands.put(CommandType.SIGN_IN, new SignInCommand());
+        commands.put(CommandType.SIGN_UP, new SignUpCommand());
+        commands.put(CommandType.SIGN_OUT, new SignOutCommand());
+        commands.put(CommandType.EMAIL_VERIFICATION, new EmailVerificationCommand());
+        commands.put(CommandType.GET_MOVIES, new GetMoviesCommand());
+
+        commands.put(CommandType.MOVE_TO, new MoveToPageCommand());
+    }
+
+    private void addAdminCommands() {
+        commands.put(CommandType.GET_USERS, new GetUsersCommand());
+        commands.put(CommandType.CHANGE_USER_ROLE, new ChangeUserRoleCommand());
+        commands.put(CommandType.CHANGE_USER_STATUS, new ChangeUserStatusCommand());
     }
 }
