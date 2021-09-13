@@ -5,7 +5,7 @@
 <head>
 
 </head>
-<body>
-    <jsp:forward page="pages/main.jsp"></jsp:forward>
-</body>
+    <body>
+        <jsp:forward page="pages/main.jsp"></jsp:forward>
+    </body>
 </html>
