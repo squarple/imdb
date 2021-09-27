@@ -10,13 +10,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CustomConnectionPool {
     private static final Logger logger = LogManager.getLogger(CustomConnectionPool.class);
     private static CustomConnectionPool instance;
-    private static final int DEFAULT_POOL_SIZE = 30;
+    private static final int DEFAULT_POOL_SIZE = 8;
     private static final AtomicBoolean isInitialized = new AtomicBoolean(false);
     private final BlockingDeque<Connection> freeConnections;
     private final BlockingDeque<Connection> busyConnections;

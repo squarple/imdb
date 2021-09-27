@@ -1,9 +1,9 @@
 package by.radzionau.imdb.model.service;
 
 import by.radzionau.imdb.exception.ServiceException;
-import by.radzionau.imdb.model.domain.Genre;
-import by.radzionau.imdb.model.domain.Movie;
-import by.radzionau.imdb.model.domain.MovieType;
+import by.radzionau.imdb.model.entity.Genre;
+import by.radzionau.imdb.model.entity.Movie;
+import by.radzionau.imdb.model.entity.MovieType;
 
 import java.util.List;
 

@@ -48,7 +48,7 @@ class ConnectionFactory {
 
     }
 
-    public static ProxyConnection createConnection() throws SQLException {
+    static ProxyConnection createConnection() throws SQLException {
         return new ProxyConnection(DriverManager.getConnection(DATABASE_URL, properties));
     }
 }

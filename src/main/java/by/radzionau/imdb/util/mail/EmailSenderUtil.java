@@ -1,6 +1,6 @@
 package by.radzionau.imdb.util.mail;
 
-import by.radzionau.imdb.model.domain.User;
+import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.util.PropertyLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

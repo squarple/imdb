@@ -1,9 +1,9 @@
 package by.radzionau.imdb.model.service;
 
 import by.radzionau.imdb.exception.ServiceException;
-import by.radzionau.imdb.model.domain.Feedback;
-import by.radzionau.imdb.model.domain.FeedbackStatus;
-import by.radzionau.imdb.model.domain.Movie;
+import by.radzionau.imdb.model.entity.Feedback;
+import by.radzionau.imdb.model.entity.FeedbackStatus;
+import by.radzionau.imdb.model.entity.Movie;
 
 import java.util.List;
 
