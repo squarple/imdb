@@ -1,8 +1,8 @@
 package by.radzionau.imdb.model.dao;
 
-import by.radzionau.imdb.model.domain.Genre;
-import by.radzionau.imdb.model.domain.Movie;
-import by.radzionau.imdb.model.domain.MovieType;
+import by.radzionau.imdb.model.entity.Genre;
+import by.radzionau.imdb.model.entity.Movie;
+import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.exception.DaoException;
 
 import java.util.List;

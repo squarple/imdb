@@ -1,9 +1,9 @@
 package by.radzionau.imdb.model.dao.impl;
 
 import by.radzionau.imdb.model.dao.MovieDao;
-import by.radzionau.imdb.model.domain.Genre;
-import by.radzionau.imdb.model.domain.Movie;
-import by.radzionau.imdb.model.domain.MovieType;
+import by.radzionau.imdb.model.entity.Genre;
+import by.radzionau.imdb.model.entity.Movie;
+import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
@@ -37,7 +37,7 @@ public class MovieDaoImpl implements MovieDao {
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS movie_type " +
                     "FROM movie " +
                     "JOIN movie_type ON movie.movie_type_id=movie_type.movie_type_id " +
-                    "WHERE title=?";
+                    "WHERE title LIKE ?";
     private static final String SQL_SELECT_MOVIES_BY_YEAR =
             "SELECT movie_id, title, logline, release_year, cover, movie_type.name AS movie_type " +
                     "FROM movie " +
@@ -93,7 +93,7 @@ public class MovieDaoImpl implements MovieDao {
             }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while adding a movie");
+            logger.error("Error while adding a movie", e);
             throw new DaoException("Error while adding a movie", e);
         }
     }
@@ -113,7 +113,7 @@ public class MovieDaoImpl implements MovieDao {
             int rowsUpdate = statement.executeUpdate();
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while updating a movie");
+            logger.error("Error while updating a movie", e);
             throw new DaoException("Error while updating a movie", e);
         }
     }
@@ -127,7 +127,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setLong(1, movie.getMovieId());
             statement.executeUpdate();
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while updating a movie");
+            logger.error("Error while updating a movie", e);
             throw new DaoException("Error while updating a movie", e);
         }
     }
@@ -146,7 +146,7 @@ public class MovieDaoImpl implements MovieDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie");
+            logger.error("Error while selecting a movie", e);
             throw new DaoException("Error while selecting a movie", e);
         }
         return Optional.empty();
@@ -155,6 +155,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public List<Movie> findMoviesByTitle(String title) throws DaoException {
         List<Movie> movies = new ArrayList<>();
+        title = "%" + title + "%";
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_TITLE)
@@ -166,7 +167,7 @@ public class MovieDaoImpl implements MovieDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie");
+            logger.error("Error while selecting a movie", e);
             throw new DaoException("Error while selecting a movie", e);
         }
         return movies;
@@ -186,7 +187,7 @@ public class MovieDaoImpl implements MovieDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie");
+            logger.error("Error while selecting a movie", e);
             throw new DaoException("Error while selecting a movie", e);
         }
         return movies;
@@ -206,7 +207,7 @@ public class MovieDaoImpl implements MovieDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie");
+            logger.error("Error while selecting a movie", e);
             throw new DaoException("Error while selecting a movie", e);
         }
         return movies;
@@ -226,7 +227,7 @@ public class MovieDaoImpl implements MovieDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie");
+            logger.error("Error while selecting a movie", e);
             throw new DaoException("Error while selecting a movie", e);
         }
         return movies;
@@ -245,7 +246,7 @@ public class MovieDaoImpl implements MovieDao {
                 return Optional.of(score);
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie");
+            logger.error("Error while selecting a movie", e);
             throw new DaoException("Error while selecting a movie", e);
         }
 

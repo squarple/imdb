@@ -1,8 +1,8 @@
 package by.radzionau.imdb.model.dao.impl;
 
 import by.radzionau.imdb.model.dao.FeedbackDao;
-import by.radzionau.imdb.model.domain.Feedback;
-import by.radzionau.imdb.model.domain.FeedbackStatus;
+import by.radzionau.imdb.model.entity.Feedback;
+import by.radzionau.imdb.model.entity.FeedbackStatus;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
@@ -71,7 +71,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
             }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while adding a feedback={}", feedback);
+            logger.error("Error while adding a feedback={}", feedback, e);
             throw new DaoException("Error while adding a feedback=" + feedback, e);
         }
     }
@@ -108,7 +108,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
             int rowsUpdate = statement.executeUpdate();
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while deleting a feedback={}", feedback);
+            logger.error("Error while deleting a feedback={}", feedback, e);
             throw new DaoException("Error while deleting a feedback=" + feedback, e);
         }
     }
@@ -126,7 +126,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while adding a feedback");
+            logger.error("Error while adding a feedback", e);
             throw new DaoException("Error while adding a feedback", e);
         }
         return Optional.empty();
@@ -146,7 +146,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movies");
+            logger.error("Error while selecting a movies", e);
             throw new DaoException("Error while selecting a movies", e);
         }
         return feedbacks;
@@ -166,7 +166,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movies");
+            logger.error("Error while selecting a movies", e);
             throw new DaoException("Error while selecting a movies", e);
         }
         return feedbacks;

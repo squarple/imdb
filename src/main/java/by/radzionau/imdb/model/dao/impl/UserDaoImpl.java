@@ -3,9 +3,9 @@ package by.radzionau.imdb.model.dao.impl;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.dao.UserDao;
-import by.radzionau.imdb.model.domain.User;
-import by.radzionau.imdb.model.domain.UserRole;
-import by.radzionau.imdb.model.domain.UserStatus;
+import by.radzionau.imdb.model.entity.User;
+import by.radzionau.imdb.model.entity.UserRole;
+import by.radzionau.imdb.model.entity.UserStatus;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,7 +87,7 @@ public class UserDaoImpl implements UserDao {
             }
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while adding a user={}", user);
+            logger.error("Error while adding a user={}", user, e);
             throw new DaoException("Error while adding a user=" + user, e);
         }
     }
@@ -108,7 +108,7 @@ public class UserDaoImpl implements UserDao {
             int rowsUpdate = statement.executeUpdate();
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while updating a user={}", user);
+            logger.error("Error while updating a user={}", user, e);
             throw new DaoException("Error while updating a user=" + user, e);
         }
     }
@@ -126,7 +126,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a user");
+            logger.error("Error while selecting a user", e);
             throw new DaoException("Error while selecting a user", e);
         }
         return Optional.empty();
@@ -146,7 +146,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a password");
+            logger.error("Error while selecting a password", e);
             throw new DaoException("Error while selecting a password", e);
         }
         return Optional.empty();
@@ -166,7 +166,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a users");
+            logger.error("Error while selecting a users", e);
             throw new DaoException("Error while selecting a users", e);
         }
         return users;
@@ -186,7 +186,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a users");
+            logger.error("Error while selecting a users", e);
             throw new DaoException("Error while selecting a users", e);
         }
         return users;
@@ -204,7 +204,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(createUser(resultSet));
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a users");
+            logger.error("Error while selecting a users", e);
             throw new DaoException("Error while selecting a users", e);
         }
         return users;
