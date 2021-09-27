@@ -35,18 +35,18 @@
                     <li class="nav-item">
                         <form id="films" action="${pageContext.request.contextPath}/controller" method="get">
                             <input type="hidden" name="page_from" value="${page_to}">
-                            <input type="hidden" name="page_to" value="get_movies_page">
+                            <input type="hidden" name="page_to" value="get_movie_list_page">
                             <input type="hidden" name="movie_type" value="film">
-                            <input type="hidden" name="command" value="get_movies">
+                            <input type="hidden" name="command" value="get_movie_list">
                             <a class="nav-link active" href=# onclick="document.getElementById('films').submit()" tabindex="-1" aria-disabled="true">Films</a>
                         </form>
                     </li>
                     <li class="nav-item">
                         <form id="serials" action="${pageContext.request.contextPath}/controller" method="get">
                             <input type="hidden" name="page_from" value="${page_to}">
-                            <input type="hidden" name="page_to" value="get_movies_page">
+                            <input type="hidden" name="page_to" value="get_movie_list_page">
                             <input type="hidden" name="movie_type" value="serial">
-                            <input type="hidden" name="command" value="get_movies">
+                            <input type="hidden" name="command" value="get_movie_list">
                             <a class="nav-link active" href=# onclick="document.getElementById('serials').submit()" tabindex="-1" aria-disabled="true">Serials</a>
                         </form>
                     </li>
@@ -61,16 +61,22 @@
                         </li>
                     </c:if>
                 </ul>
-                <!--<form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
+                <div>
+                    <form class="d-flex" action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="page_from" value="${page_to}">
+                        <input type="hidden" name="page_to" value="search_movies_page">
+                        <input type="hidden" name="command" value="search_movies">
+                        <input class="form-control me-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+
                 <c:if test="${role != 'ADMIN' && role != 'USER'}">
                     <div>
                         <form action="${pageContext.request.contextPath}/controller">
                             <input type="hidden" name="page_from" value="${page_to}">
                             <input type="hidden" name="page_to" value="login_page">
-                            <button type="submit" name="command" value="move_to">Sign in</button>
+                            <button class="btn btn-primary ms-1" type="submit" name="command" value="move_to">Sign in</button>
                         </form>
                     </div>
                 </c:if>
@@ -79,7 +85,7 @@
                         <form action="${pageContext.request.contextPath}/controller">
                             <input type="hidden" name="page_from" value="${page_to}">
                             <input type="hidden" name="page_to" value="main_page">
-                            <button type="submit" name="command" value="sign_out">Logout</button>
+                            <button class="btn btn-primary ms-1" type="submit" name="command" value="sign_out">Logout</button>
                         </form>
                     </div>
                 </c:if>

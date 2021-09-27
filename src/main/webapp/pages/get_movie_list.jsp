@@ -15,7 +15,15 @@
                         <div class="card h-100">
                             <img src="..." class="card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title">${movie.title}</h5>
+                                <h5 class="card-title">
+                                    <form id="${movie.movieId}" action="${pageContext.request.contextPath}/controller" method="get">
+                                        <input type="hidden" name="page_from" value="${page_to}">
+                                        <input type="hidden" name="page_to" value="get_movie_page">
+                                        <input type="hidden" name="movie_id" value="${movie.movieId}">
+                                        <input type="hidden" name="command" value="get_movie">
+                                        <a class="nav-link active" href=# onclick="document.getElementById('${movie.movieId}').submit()" tabindex="-1" aria-disabled="true">${movie.title}</a>
+                                    </form>
+                                </h5>
                                 <p class="card-text">${movie.logline}</p>
                             </div>
                             <div class="card-footer">
