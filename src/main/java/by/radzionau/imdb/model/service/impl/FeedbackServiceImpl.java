@@ -4,10 +4,11 @@ import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.dao.FeedbackDao;
 import by.radzionau.imdb.model.dao.impl.FeedbackDaoImpl;
-import by.radzionau.imdb.model.domain.Feedback;
-import by.radzionau.imdb.model.domain.FeedbackStatus;
-import by.radzionau.imdb.model.domain.Movie;
+import by.radzionau.imdb.model.entity.Feedback;
+import by.radzionau.imdb.model.entity.FeedbackStatus;
+import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.FeedbackService;
+import by.radzionau.imdb.model.validator.FeedbackValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class FeedbackServiceImpl implements FeedbackService {
     private static final Logger logger = LogManager.getLogger();
     private final FeedbackDao feedbackDao = FeedbackDaoImpl.getInstance();
+    private static final FeedbackValidator feedbackValidator = FeedbackValidator.getInstance();
 
     private FeedbackServiceImpl() {
 
@@ -34,6 +36,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void addFeedback(Feedback feedback) throws ServiceException {
+        if (feedbackValidator.isNull(feedback)) {
+            logger.error("Feedback doesn't present");
+            throw new ServiceException("Feedback doesn't present");
+        }
         try {
             feedbackDao.add(feedback);
         } catch (DaoException e) {
@@ -44,6 +50,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback updateFeedbackStatus(Feedback feedback, FeedbackStatus feedbackStatus) throws ServiceException {
+        if (feedbackValidator.isNull(feedback)) {
+            logger.error("Feedback doesn't present");
+            throw new ServiceException("Feedback doesn't present");
+        }
+        if (feedbackValidator.isNull(feedbackStatus)) {
+            logger.error("Feedback status doesn't present");
+            throw new ServiceException("Feedback status doesn't present");
+        }
         Feedback updatedFeedback = buildFeedback(feedback.getFeedbackId(), feedback.getFeedbackDate(), feedback.getScore(), feedback.getContent(), feedback.getMovieId(), feedback.getUserId(), feedbackStatus);
         try {
             feedbackDao.updateFeedbackStatus(updatedFeedback.getFeedbackId(), feedbackStatus);
@@ -56,6 +70,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void deleteFeedback(Feedback feedback) throws ServiceException {
+        if (feedbackValidator.isNull(feedback)) {
+            logger.error("Feedback doesn't present");
+            throw new ServiceException("Feedback doesn't present");
+        }
         try {
             feedbackDao.delete(feedback);
         } catch (DaoException e) {
@@ -66,6 +84,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback findFeedbackById(Long feedbackId) throws ServiceException {
+        if (feedbackValidator.isNull(feedbackId)) {
+            logger.error("Feedback id doesn't present");
+            throw new ServiceException("Feedback id doesn't present");
+        }
         try {
             Optional<Feedback> optionalFeedback = feedbackDao.findFeedbackById(feedbackId);
             if (optionalFeedback.isPresent()) {
@@ -81,7 +103,11 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> findFeedbacksByMovieId(Long movieId) throws ServiceException {
-        List<Feedback> feedbacks = new ArrayList<>();
+        if (feedbackValidator.isNull(movieId)) {
+            logger.error("Movie id doesn't present");
+            throw new ServiceException("Movie id doesn't present");
+        }
+        List<Feedback> feedbacks;
         try {
             feedbacks = feedbackDao.findFeedbacksByMovieId(movieId);
         } catch (DaoException e) {
@@ -98,7 +124,11 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> findFeedbacksByStatus(FeedbackStatus feedbackStatus) throws ServiceException {
-        List<Feedback> feedbacks = new ArrayList<>();
+        if (feedbackValidator.isNull(feedbackStatus)) {
+            logger.error("Feedback status doesn't present");
+            throw new ServiceException("Feedback status doesn't present");
+        }
+        List<Feedback> feedbacks;
         try {
             feedbacks = feedbackDao.findFeedbacksByStatus(feedbackStatus);
         } catch (DaoException e) {

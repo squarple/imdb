@@ -6,10 +6,12 @@ import by.radzionau.imdb.model.dao.GenreDao;
 import by.radzionau.imdb.model.dao.MovieDao;
 import by.radzionau.imdb.model.dao.impl.GenreDaoImpl;
 import by.radzionau.imdb.model.dao.impl.MovieDaoImpl;
-import by.radzionau.imdb.model.domain.Genre;
-import by.radzionau.imdb.model.domain.Movie;
-import by.radzionau.imdb.model.domain.MovieType;
+import by.radzionau.imdb.model.entity.Genre;
+import by.radzionau.imdb.model.entity.Movie;
+import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.model.service.MovieService;
+import by.radzionau.imdb.model.validator.MovieValidator;
+import by.radzionau.imdb.model.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,12 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//todo MovieServiceImpl validation
-
 public class MovieServiceImpl implements MovieService {
     private static final Logger logger = LogManager.getLogger();
     private final MovieDao movieDao = MovieDaoImpl.getInstance();
     private final GenreDao genreDao = GenreDaoImpl.getInstance();
+    private final MovieValidator movieValidator = MovieValidator.getInstance();
 
     private MovieServiceImpl() {
 
@@ -38,6 +39,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void addMovie(Movie movie) throws ServiceException {
+        if (movieValidator.isNull(movie)) {
+            logger.error("Movie doesn't present");
+            throw new ServiceException("Movie doesn't present");
+        }
         try {
             movieDao.add(movie);
         } catch (DaoException e) {
@@ -48,6 +53,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void update(Movie movie) throws ServiceException {
+        if (movieValidator.isNull(movie)) {
+            logger.error("Movie doesn't present");
+            throw new ServiceException("Movie doesn't present");
+        }
         try {
             movieDao.update(movie);
         } catch (DaoException e) {
@@ -58,6 +67,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(Movie movie) throws ServiceException {
+        if (movieValidator.isNull(movie)) {
+            logger.error("Movie doesn't present");
+            throw new ServiceException("Movie doesn't present");
+        }
         try {
             movieDao.delete(movie);
         } catch (DaoException e) {
@@ -68,6 +81,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieById(Long movieId) throws ServiceException {
+        if (movieValidator.isNull(movieId)) {
+            logger.error("MovieId doesn't present");
+            throw new ServiceException("MovieId doesn't present");
+        }
         try {
             Optional<Movie> optionalMovie = movieDao.findMovieById(movieId);
             if (optionalMovie.isPresent()) {
@@ -83,7 +100,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByTitle(String title) throws ServiceException {
-        List<Movie> movies = new ArrayList<>();
+        if (movieValidator.isNull(title) || movieValidator.isEmpty(title)) {
+            logger.error("Title doesn't present");
+            throw new ServiceException("Title doesn't present");
+        }
+        List<Movie> movies;
         try {
             movies = movieDao.findMoviesByTitle(title);
         } catch (DaoException e) {
@@ -95,7 +116,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByYear(int year) throws ServiceException {
-        List<Movie> movies = new ArrayList<>();
+        if (movieValidator.isNull(year)) {
+            logger.error("Year doesn't present");
+            throw new ServiceException("Year doesn't present");
+        }
+        List<Movie> movies;
         try {
             movies = movieDao.findMoviesByYear(year);
         } catch (DaoException e) {
@@ -107,7 +132,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByGenre(Genre genre) throws ServiceException {
-        List<Movie> movies = new ArrayList<>();
+        if (movieValidator.isNull(genre)) {
+            logger.error("Genre doesn't present");
+            throw new ServiceException("Genre doesn't present");
+        }
+        List<Movie> movies;
         try {
             movies = movieDao.findMoviesByGenre(genre);
         } catch (DaoException e) {
@@ -119,7 +148,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByMovieType(MovieType movieType) throws ServiceException {
-        List<Movie> movies = new ArrayList<>();
+        if (movieValidator.isNull(movieType)) {
+            logger.error("MovieType doesn't present");
+            throw new ServiceException("MovieType doesn't present");
+        }
+        List<Movie> movies;
         try {
             movies = movieDao.findMoviesByMovieType(movieType);
         } catch (DaoException e) {
@@ -131,6 +164,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Double findMovieScoreByMovieId(Long movieId) throws ServiceException {
+        if (movieValidator.isNull(movieId)) {
+            logger.error("MovieId doesn't present");
+            throw new ServiceException("MovieId doesn't present");
+        }
         try {
             Optional<Double> optionalScore = movieDao.findMovieScoreByMovieId(movieId);
             if (optionalScore.isPresent()) {
@@ -151,7 +188,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Genre> findGenresOfMovie(Movie movie) throws ServiceException {
-        List<Genre> genres = new ArrayList<>();
+        if (movieValidator.isNull(movie)) {
+            logger.error("Movie doesn't present");
+            throw new ServiceException("Movie doesn't present");
+        }
+        List<Genre> genres;
         try {
             genres = genreDao.findGenresOfMovieByMovieId(movie.getMovieId());
         } catch (DaoException e) {

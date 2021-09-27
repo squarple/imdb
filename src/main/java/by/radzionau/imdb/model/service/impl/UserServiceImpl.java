@@ -4,22 +4,22 @@ import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.dao.UserDao;
 import by.radzionau.imdb.model.dao.impl.UserDaoImpl;
-import by.radzionau.imdb.model.domain.User;
-import by.radzionau.imdb.model.domain.UserRole;
-import by.radzionau.imdb.model.domain.UserStatus;
+import by.radzionau.imdb.model.entity.User;
+import by.radzionau.imdb.model.entity.UserRole;
+import by.radzionau.imdb.model.entity.UserStatus;
 import by.radzionau.imdb.model.service.UserService;
+import by.radzionau.imdb.model.validator.UserValidator;
 import by.radzionau.imdb.util.security.PasswordEncryptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//todo UserServiceImpl validation
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
-    private UserDao userDao = UserDaoImpl.getInstance();
+    private final UserDao userDao = UserDaoImpl.getInstance();
+    private final UserValidator userValidator = UserValidator.getInstance();
 
     private UserServiceImpl() {
 
@@ -35,18 +35,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signIn(String login, String password) throws ServiceException {
-        Optional<User> user;
-        try {
-            Optional<String> hashedPassword = userDao.findUserPasswordByLogin(login);
-            if (hashedPassword.isPresent()) {
-                user = userDao.findUserByLogin(login);
-                if (user.isPresent() && PasswordEncryptor.checkPassword(password, hashedPassword.get())) {
-                    return user.get();
+        if (isParameterValid(login) && isParameterValid(password)) {
+            Optional<User> user;
+            try {
+                Optional<String> hashedPassword = userDao.findUserPasswordByLogin(login);
+                if (hashedPassword.isPresent()) {
+                    user = userDao.findUserByLogin(login);
+                    if (user.isPresent() && PasswordEncryptor.getInstance().checkPassword(password, hashedPassword.get())) {
+                        return user.get();
+                    }
                 }
+            } catch (DaoException e) {
+                logger.error("Can't handle signIn request at UserService", e);
+                throw new ServiceException("Can't handle signIn request at UserService", e);
             }
-        } catch (DaoException e) {
-            logger.error("Can't handle signIn request at UserService", e);
-            throw new ServiceException("Can't handle signIn request at UserService", e);
         }
         throw new ServiceException("Invalid login or password");
     }
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 .setStatus(UserStatus.NON_ACTIVATED)
                 .build();
 
-        String hashedPassword = PasswordEncryptor.encryptPassword(password);
+        String hashedPassword = PasswordEncryptor.getInstance().encryptPassword(password);
         try {
             userDao.add(user, hashedPassword);
             return user;
@@ -74,6 +76,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateStatus(User user, UserStatus userStatus) throws ServiceException {
+        if (userValidator.isNull(user)) {
+            logger.error("User doesn't present");
+            throw new ServiceException("User doesn't present");
+        }
+        if (userValidator.isNull(userStatus)) {
+            logger.error("User status doesn't present");
+            throw new ServiceException("User status doesn't present");
+        }
+
         User updatedUser = buildUser(user.getUserId(), user.getLogin(), user.getEmail(),
                 user.getName(), user.getSurname(), user.getRole(), userStatus);
         try {
@@ -87,6 +98,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateRole(User user, UserRole userRole) throws ServiceException {
+        if (userValidator.isNull(user)) {
+            logger.error("User doesn't present");
+            throw new ServiceException("User doesn't present");
+        }
+        if (userValidator.isNull(userRole)) {
+            logger.error("User role doesn't present");
+            throw new ServiceException("User role doesn't present");
+        }
+
         User updatedUser = buildUser(user.getUserId(), user.getLogin(), user.getEmail(),
                 user.getName(), user.getSurname(), userRole, user.getStatus());
         try {
@@ -100,7 +120,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException {
-        List<User> users = new ArrayList<>();
+        if (userValidator.isNull(userStatus)) {
+            logger.error("User status doesn't present");
+            throw new ServiceException("User status doesn't present");
+        }
+        List<User> users;
         try {
             users = userDao.findUsersByStatus(userStatus);
         } catch (DaoException e) {
@@ -112,7 +136,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsersByRole(UserRole userRole) throws ServiceException {
-        List<User> users = new ArrayList<>();
+        if (userValidator.isNull(userRole)) {
+            logger.error("User role doesn't present");
+            throw new ServiceException("User role doesn't present");
+        }
+        List<User> users;
         try {
             users = userDao.findUsersByRole(userRole);
         } catch (DaoException e) {
@@ -124,6 +152,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByLogin(String login) throws ServiceException {
+        if (!isParameterValid(login)) {
+            logger.error("Login doesn't present");
+            throw new ServiceException("Login doesn't present");
+        }
         try {
             Optional<User> optionalUser = userDao.findUserByLogin(login);
             if (optionalUser.isPresent()) {
@@ -139,7 +171,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() throws ServiceException {
-        List<User> users = new ArrayList<>();
+        List<User> users;
         try {
             users = userDao.findAll();
         } catch (DaoException e) {
@@ -159,5 +191,9 @@ public class UserServiceImpl implements UserService {
                 .setRole(role)
                 .setStatus(userStatus)
                 .build();
+    }
+
+    private boolean isParameterValid(String parameter) {
+        return !userValidator.isNull(parameter) && !userValidator.isEmpty(parameter);
     }
 }
