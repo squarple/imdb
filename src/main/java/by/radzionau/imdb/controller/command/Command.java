@@ -1,10 +1,9 @@
 package by.radzionau.imdb.controller.command;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public interface Command {
-    Router execute(HttpServletRequest request, HttpServletResponse response);
+    Router execute(HttpServletRequest request);
 
     default void setPageFromAttribute(HttpServletRequest request) {
         String pageFrom = request.getParameter(RequestParameter.PAGE_FROM);
