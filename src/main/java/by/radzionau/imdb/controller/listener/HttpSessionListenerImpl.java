@@ -11,6 +11,5 @@ public class HttpSessionListenerImpl implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         se.getSession().setAttribute(RequestAttribute.LOCALE, "ru_RU");
-        HttpSessionListener.super.sessionCreated(se);
     }
 }

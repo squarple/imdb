@@ -2,14 +2,13 @@ package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public class ChangeLocaleCommand implements Command {
     private static final String EN_LOCALE = "en_EN";
     private static final String RU_LOCALE = "ru_RU";
 
     @Override
-    public Router execute(HttpServletRequest request, HttpServletResponse response) {
+    public Router execute(HttpServletRequest request) {
         setPageFromAttribute(request);
         String currentLocale = (String) request.getSession().getAttribute(RequestAttribute.LOCALE);
 

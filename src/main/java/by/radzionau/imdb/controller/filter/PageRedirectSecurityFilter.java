@@ -1,8 +1,8 @@
 package by.radzionau.imdb.controller.filter;
 
-import by.radzionau.imdb.controller.command.RequestAttribute;
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
 public class PageRedirectSecurityFilter implements Filter {
     private String indexPath;
 
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         indexPath = config.getInitParameter("INDEX_PATH");
     }
 
@@ -22,9 +22,11 @@ public class PageRedirectSecurityFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (httpRequest.getSession().getAttribute(RequestAttribute.ROLE) == null) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
-        }
+        httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
+
+//        if (httpRequest.getSession().getAttribute(RequestAttribute.ROLE) == null) {
+//            httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
+//        }
 
         chain.doFilter(request, response);
     }

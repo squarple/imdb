@@ -2,23 +2,21 @@ package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
-import by.radzionau.imdb.model.domain.User;
+import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.service.UserService;
 import by.radzionau.imdb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GetUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
 
     @Override
-    public Router execute(HttpServletRequest request, HttpServletResponse response) {
+    public Router execute(HttpServletRequest request) {
         Router router;
         setPageFromAttribute(request);
         try {

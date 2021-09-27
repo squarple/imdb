@@ -1,7 +1,6 @@
 package by.radzionau.imdb.controller;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,9 +24,15 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String commandName = request.getParameter(RequestParameter.COMMAND);
+        Command command;
 
-        Command command = COMMAND_PROVIDER.getCommand(commandName);
-        Router router = command.execute(request, response);
+        try {
+            command = COMMAND_PROVIDER.getCommand(commandName);
+        } catch (NullPointerException e) {
+            response.sendError(404);
+            return;
+        }
+        Router router = command.execute(request);
 
         switch (router.getRouterType()) {
             case REDIRECT:
@@ -38,7 +43,7 @@ public class Controller extends HttpServlet {
                 dispatcher.forward(request, response);
                 break;
             default:
-                response.sendRedirect(PagePath.ERROR_404_PAGE.getAddress());
+                response.sendError(500);
         }
     }
 }

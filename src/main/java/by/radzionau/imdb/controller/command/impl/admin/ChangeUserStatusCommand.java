@@ -2,13 +2,11 @@ package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
-import by.radzionau.imdb.model.domain.User;
-import by.radzionau.imdb.model.domain.UserRole;
-import by.radzionau.imdb.model.domain.UserStatus;
+import by.radzionau.imdb.model.entity.User;
+import by.radzionau.imdb.model.entity.UserStatus;
 import by.radzionau.imdb.model.service.UserService;
 import by.radzionau.imdb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +17,7 @@ public class ChangeUserStatusCommand implements Command {
     private static final UserService userService = UserServiceImpl.getInstance();
 
     @Override
-    public Router execute(HttpServletRequest request, HttpServletResponse response) {
+    public Router execute(HttpServletRequest request) {
         Router router;
         setPageFromAttribute(request);
 

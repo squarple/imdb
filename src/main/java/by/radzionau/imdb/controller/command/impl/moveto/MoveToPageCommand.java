@@ -2,7 +2,6 @@ package by.radzionau.imdb.controller.command.impl.moveto;
 
 import by.radzionau.imdb.controller.command.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +9,7 @@ public class MoveToPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public Router execute(HttpServletRequest request, HttpServletResponse response) {
+    public Router execute(HttpServletRequest request) {
         setPageFromAttribute(request);
 
         PagePath pageTo;

@@ -2,11 +2,10 @@ package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
-import by.radzionau.imdb.model.domain.User;
+import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.service.impl.UserServiceImpl;
 import by.radzionau.imdb.model.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +14,7 @@ public class SignInCommand implements Command {
     private static final UserService service = UserServiceImpl.getInstance();
 
     @Override
-    public Router execute(HttpServletRequest request, HttpServletResponse response) {
+    public Router execute(HttpServletRequest request) {
         Router router;
         String login = request.getParameter(RequestParameter.LOGIN);
         String password = request.getParameter(RequestParameter.PASSWORD);
@@ -24,7 +23,7 @@ public class SignInCommand implements Command {
 
         try {
             User user = service.signIn(login, password);
-
+            //todo is activated???
             setSessionAttributes(request, user);
 
             setPageToAttribute(request, PagePath.MAIN_PAGE);

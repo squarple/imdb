@@ -13,6 +13,11 @@ public class RequestParameter {
     public static final String PAGE_FROM = "page_from";
 
     public static final String MOVIE_TYPE = "movie_type";
+    public static final String MOVIE_ID = "movie_id";
+    public static final String MOVIE_TITLE = "movie_title";
+    public static final String MOVIE_LOGLINE = "movie_logline";
+    public static final String MOVIE_RELEASE_YEAR = "movie_release_year";
+    public static final String SEARCH_QUERY = "search_query";
 
     private RequestParameter() {
 
