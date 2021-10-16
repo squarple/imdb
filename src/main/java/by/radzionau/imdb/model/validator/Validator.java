@@ -1,11 +1,14 @@
 package by.radzionau.imdb.model.validator;
 
+/**
+ * The interface Validator.
+ */
 public interface Validator {
-    default boolean isNull(Object value) {
-        return value == null;
-    }
-
-    default boolean isEmpty(String value) {
-        return value.isEmpty();
-    }
+    /**
+     * Is object valid.
+     *
+     * @param object the object
+     * @return the true if object is valid and false if not
+     */
+    boolean isValid(Object object);
 }
