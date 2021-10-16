@@ -9,28 +9,31 @@
     </head>
     <body>
         <jsp:include page="parts/navbar.jsp"/>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
+        
         <div class="container">
-            <b>Verify email address</b>
-            <b>To verify your email, we've sent a One Time Password (6 знаков) (OTP) to radionoff.antony@gmail.com</b>
+            <b><fmt:message key="verify_email.label.verify.email.address"/></b>
+            <b><fmt:message key="verify_email.label.verify.email.address.definition"/> ${email_address}</b>
         
             <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type="hidden" name="command" value="email_verification">
-                <input type="hidden" name="page_from" value="verify_email_page">
-                <input type="hidden" name="page_to" value="main_page">
-            
-                <div><b>Enter OTP</b></div>
+                <div>
+                    <b><fmt:message key="verify_email.label.enter.password.from.email"/></b>
+                </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingPassword" placeholder="password" name="password">
-                    <label for="floatingPassword">OTP Password</label>
+                    <label for="floatingPassword">
+                        <fmt:message key="verify_email.label.password"/>
+                    </label>
                 </div>
-            
                 <div>
-                    <button class="btn btn-primary" type="submit">Create your IMDb account</button>
+                    <button class="btn btn-primary" type="submit">
+                        <fmt:message key="verify_email.label.create.account"/>
+                    </button>
                 </div>
             </form>
-            <jsp:include page="parts/footer.jsp"/>
         </div>
+
+        <jsp:include page="parts/footer.jsp"/>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
 </html>

@@ -1,11 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-
 </head>
-    <body>
-        <jsp:forward page="pages/main.jsp"></jsp:forward>
-    </body>
+<body>
+    <jsp:forward page="/pages/main.jsp"/>
+</body>
 </html>

@@ -1,9 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="container">
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${locale}" scope="session"/>
+<fmt:setBundle basename="prop.pagecontent"/>
+<div class="container mb-3">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <form>
-                <input type="hidden" name="page_from" value="${page_to}">
                 <input type="hidden" name="page_to" value="main_page">
                 <input type="hidden" name="command" value="move_to">
                 <button type="submit" class="btn btn-link">
@@ -16,76 +18,74 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
                         <form id="films" action="${pageContext.request.contextPath}/controller" method="get">
-                            <input type="hidden" name="page_from" value="${page_to}">
-                            <input type="hidden" name="page_to" value="get_movie_list_page">
                             <input type="hidden" name="movie_type" value="film">
                             <input type="hidden" name="command" value="get_movie_list">
-                            <a class="nav-link active" href=# onclick="document.getElementById('films').submit()" tabindex="-1" aria-disabled="true">Films</a>
+                            <a class="nav-link active" href=# onclick="document.getElementById('films').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.common.films"/></a>
                         </form>
                     </li>
                     <li class="nav-item">
                         <form id="serials" action="${pageContext.request.contextPath}/controller" method="get">
-                            <input type="hidden" name="page_from" value="${page_to}">
-                            <input type="hidden" name="page_to" value="get_movie_list_page">
                             <input type="hidden" name="movie_type" value="serial">
                             <input type="hidden" name="command" value="get_movie_list">
-                            <a class="nav-link active" href=# onclick="document.getElementById('serials').submit()" tabindex="-1" aria-disabled="true">Serials</a>
+                            <a class="nav-link active" href=# onclick="document.getElementById('serials').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.common.serials"/></a>
                         </form>
                     </li>
                     <c:if test="${role == 'ADMIN'}">
                         <li class="nav-item">
                             <form id="users_list" action="${pageContext.request.contextPath}/controller" method="get">
-                                <input type="hidden" name="page_from" value="main_page">
-                                <input type="hidden" name="page_to" value="get_users_page">
                                 <input type="hidden" name="command" value="get_users">
-                                <a class="nav-link active" href=# onclick="document.getElementById('users_list').submit()" tabindex="-1" aria-disabled="true">Users list</a>
+                                <a class="nav-link active" href=# onclick="document.getElementById('users_list').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.admin.users.list"/></a>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form id="feedback_list" action="${pageContext.request.contextPath}/controller" method="get">
+                                <input type="hidden" name="command" value="get_feedbacks">
+                                <a class="nav-link active" href=# onclick="document.getElementById('feedback_list').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.admin.feedbacks.list"/></a>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form id="new_movie" action="${pageContext.request.contextPath}/controller" method="get">
+                                <input type="hidden" name="command" value="move_to_add_movie_page">
+                                <a class="nav-link active" href=# onclick="document.getElementById('new_movie').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.admin.add.movie"/></a>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form id="new_genre" action="${pageContext.request.contextPath}/controller" method="get">
+                                <input type="hidden" name="command" value="move_to_add_genre_page">
+                                <a class="nav-link active" href=# onclick="document.getElementById('new_genre').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.admin.add.genre"/></a>
                             </form>
                         </li>
                     </c:if>
                 </ul>
                 <div>
-                    <form class="d-flex" action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="page_from" value="${page_to}">
-                        <input type="hidden" name="page_to" value="search_movies_page">
+                    <form class="d-flex" action="${pageContext.request.contextPath}/controller" method="get">
                         <input type="hidden" name="command" value="search_movies">
-                        <input class="form-control me-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <input class="form-control me-2" type="search" name="search_query" placeholder="<fmt:message key="navbar.common.search"/>" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">
+                            <fmt:message key="navbar.common.search"/>
+                        </button>
                     </form>
                 </div>
 
                 <c:if test="${role != 'ADMIN' && role != 'USER'}">
                     <div>
-                        <form action="${pageContext.request.contextPath}/controller">
-                            <input type="hidden" name="page_from" value="${page_to}">
+                        <form action="${pageContext.request.contextPath}/controller" method="get">
+                            <input type="hidden" name="command" value="move_to">
                             <input type="hidden" name="page_to" value="login_page">
-                            <button class="btn btn-primary ms-1" type="submit" name="command" value="move_to">Sign in</button>
+                            <button class="btn btn-primary ms-1" type="submit">
+                                <fmt:message key="navbar.common.sign.in"/>
+                            </button>
                         </form>
                     </div>
                 </c:if>
                 <c:if test="${role == 'ADMIN' || role == 'USER'}">
                     <div>
-                        <form action="${pageContext.request.contextPath}/controller">
-                            <input type="hidden" name="page_from" value="${page_to}">
-                            <input type="hidden" name="page_to" value="main_page">
-                            <button class="btn btn-primary ms-1" type="submit" name="command" value="sign_out">Logout</button>
+                        <form action="${pageContext.request.contextPath}/controller" method="get">
+                            <input type="hidden" name="command" value="sign_out">
+                            <button class="btn btn-primary ms-1" type="submit">
+                                <fmt:message key="navbar.common.logout"/>
+                            </button>
                         </form>
                     </div>
                 </c:if>
