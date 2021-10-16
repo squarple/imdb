@@ -89,4 +89,14 @@ public interface UserService {
      * @throws ServiceException if reading of data source throws exception
      */
     List<User> findAll() throws ServiceException;
+
+
+    /**
+     * Find user by user id. Throws ServiceException if user does not exist or if reading of data source throws exception.
+     *
+     * @param userId the user id
+     * @return the user
+     * @throws ServiceException if user does not exist or if reading of data source throws exception
+     */
+    User findUserById(Long userId) throws ServiceException;
 }

@@ -164,6 +164,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserById(Long userId) throws ServiceException {
+        if (userId == null) {
+            logger.error("Id doesn't present");
+            throw new ServiceException("Id doesn't present");
+        }
+        try {
+            Optional<User> optionalUser = userDao.findUserById(userId);
+            if (optionalUser.isPresent()) {
+                return optionalUser.get();
+            } else {
+                logger.error("User with id {} does not exist", userId);
+                throw new ServiceException("User with id " + userId + " does not exist");
+            }
+        } catch (DaoException e) {
+            logger.error("User  with id {} does not exist", userId, e);
+            throw new ServiceException("User with id " + userId + " does not exist");
+        }
+    }
+
+    @Override
     public User findUserByLogin(String login) throws ServiceException {
         if (!isStringValid(login)) {
             logger.error("Login doesn't present");
@@ -209,8 +229,8 @@ public class UserServiceImpl implements UserService {
     private boolean isStringValid(String... params) {
         for (String param : params) {
             if (param != null && !param.isEmpty())
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 }

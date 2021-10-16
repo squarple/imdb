@@ -76,4 +76,14 @@ public interface UserDao {
      * @throws DaoException if reading of data source throws exception
      */
     List<User> findAll() throws DaoException;
+
+
+    /**
+     * Find user by id. Throws DaoException if reading of data source throws exception.
+     *
+     * @param userId the user id
+     * @return the optional of user
+     * @throws DaoException if reading of data source throws exception
+     */
+    Optional<User> findUserById(Long userId) throws DaoException;
 }
