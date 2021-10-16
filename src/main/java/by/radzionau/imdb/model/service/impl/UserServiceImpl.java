@@ -16,6 +16,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of UserService interface.
+ */
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
     private final UserDao userDao = UserDaoImpl.getInstance();
@@ -29,13 +32,18 @@ public class UserServiceImpl implements UserService {
         private static final UserServiceImpl INSTANCE = new UserServiceImpl();
     }
 
+    /**
+     * Gets instance of user service.
+     *
+     * @return the instance of user service
+     */
     public static UserService getInstance() {
         return UserServiceInstanceHolder.INSTANCE;
     }
 
     @Override
     public User signIn(String login, String password) throws ServiceException {
-        if (isParameterValid(login) && isParameterValid(password)) {
+        if (isStringValid(login) && isStringValid(password)) {
             Optional<User> user;
             try {
                 Optional<String> hashedPassword = userDao.findUserPasswordByLogin(login);
@@ -55,6 +63,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signUp(String login, String password, String repeatedPassword, String mail, String firstName, String surname) throws ServiceException {
+        if (!isStringValid(login, password, repeatedPassword, mail, firstName, surname)) {
+            logger.error("Invalid parameters");
+            throw new ServiceException("Invalid parameters");
+        }
+
         User user = User.builder()
                 .setLogin(login)
                 .setEmail(mail)
@@ -76,11 +89,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateStatus(User user, UserStatus userStatus) throws ServiceException {
-        if (userValidator.isNull(user)) {
-            logger.error("User doesn't present");
-            throw new ServiceException("User doesn't present");
+        if (!UserValidator.getInstance().isValid(user)) {
+            logger.error("Invalid user");
+            throw new ServiceException("Invalid user");
         }
-        if (userValidator.isNull(userStatus)) {
+        if (userStatus == null) {
             logger.error("User status doesn't present");
             throw new ServiceException("User status doesn't present");
         }
@@ -98,11 +111,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateRole(User user, UserRole userRole) throws ServiceException {
-        if (userValidator.isNull(user)) {
-            logger.error("User doesn't present");
-            throw new ServiceException("User doesn't present");
+        if (!UserValidator.getInstance().isValid(user)) {
+            logger.error("Invalid user");
+            throw new ServiceException("Invalid user");
         }
-        if (userValidator.isNull(userRole)) {
+        if (userRole == null) {
             logger.error("User role doesn't present");
             throw new ServiceException("User role doesn't present");
         }
@@ -120,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException {
-        if (userValidator.isNull(userStatus)) {
+        if (userStatus == null) {
             logger.error("User status doesn't present");
             throw new ServiceException("User status doesn't present");
         }
@@ -136,7 +149,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsersByRole(UserRole userRole) throws ServiceException {
-        if (userValidator.isNull(userRole)) {
+        if (userRole == null) {
             logger.error("User role doesn't present");
             throw new ServiceException("User role doesn't present");
         }
@@ -152,7 +165,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByLogin(String login) throws ServiceException {
-        if (!isParameterValid(login)) {
+        if (!isStringValid(login)) {
             logger.error("Login doesn't present");
             throw new ServiceException("Login doesn't present");
         }
@@ -193,7 +206,11 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private boolean isParameterValid(String parameter) {
-        return !userValidator.isNull(parameter) && !userValidator.isEmpty(parameter);
+    private boolean isStringValid(String... params) {
+        for (String param : params) {
+            if (param != null && !param.isEmpty())
+                return false;
+        }
+        return true;
     }
 }

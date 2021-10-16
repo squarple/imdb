@@ -5,6 +5,9 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
+/**
+ * The Servlet context listener. It initializes the connection pool when the application starts and destroys the connection pool when the application shuts down.
+ */
 @WebListener
 public class ServletContextListenerImpl implements ServletContextListener {
 

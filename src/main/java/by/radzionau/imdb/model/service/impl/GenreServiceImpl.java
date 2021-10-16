@@ -13,30 +13,33 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of GenreService interface.
+ */
 public class GenreServiceImpl implements GenreService {
     private static final Logger logger = LogManager.getLogger();
     private final GenreDao genreDao = GenreDaoImpl.getInstance();
-    private static final GenreValidator genreValidator = GenreValidator.getInstance();
-
-    private GenreServiceImpl() {
-
-    }
 
     private static final class GenreServiceInstanceHolder {
         private static final GenreServiceImpl INSTANCE = new GenreServiceImpl();
     }
 
+    /**
+     * Gets instance of genre service.
+     *
+     * @return the instance of genre service
+     */
     public static GenreService getInstance() {
         return GenreServiceImpl.GenreServiceInstanceHolder.INSTANCE;
     }
 
     @Override
     public void addGenre(Genre genre) throws ServiceException {
-        if (genreValidator.isNull(genre)) {
-            logger.error("Genre doesn't present");
-            throw new ServiceException("Genre doesn't present");
+        if (!GenreValidator.getInstance().isValid(genre)) {
+            logger.error("Invalid genre");
+            throw new ServiceException("Invalid genre");
         }
-        if (genreValidator.isGenrePresence(genre.getName())) {
+        if (GenreValidator.getInstance().isGenrePresence(genre.getName())) {
             logger.error("Genre already presence");
             throw new ServiceException("Genre already presence");
         }
@@ -62,7 +65,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<Genre> findGenresOfMovieByMovieId(Long movieId) throws ServiceException {
-        if (genreValidator.isNull(movieId)) {
+        if (movieId == null) {
             logger.error("MovieId doesn't present");
             throw new ServiceException("MovieId doesn't present");
         }
@@ -78,7 +81,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre findGenreByName(String name) throws ServiceException {
-        if (genreValidator.isNull(name) || genreValidator.isEmpty(name)) {
+        if (name == null || name.isEmpty()) {
             logger.error("Name doesn't present");
             throw new ServiceException("Name doesn't present");
         }
@@ -93,6 +96,24 @@ public class GenreServiceImpl implements GenreService {
         } catch (DaoException e) {
             logger.error("Can't handle findGenreByName request at GenreService", e);
             throw new ServiceException("Can't handle findGenreByName request at GenreService", e);
+        }
+    }
+
+    @Override
+    public void addGenreForMovieByMovieId(Long movieId, Genre genre) throws ServiceException {
+        if (!GenreValidator.getInstance().isValid(genre)) {
+            logger.error("Invalid genre");
+            throw new ServiceException("Invalid genre");
+        }
+        if (movieId == null) {
+            logger.error("MovieId doesn't present");
+            throw new ServiceException("MovieId doesn't present");
+        }
+        try {
+            genreDao.addGenreForMovieByMovieId(movieId, genre);
+        } catch (DaoException e) {
+            logger.error("Can't handle addGenreForMovieByMovieId request at GenreService", e);
+            throw new ServiceException("Can't handle addGenreForMovieByMovieId request at GenreService", e);
         }
     }
 }

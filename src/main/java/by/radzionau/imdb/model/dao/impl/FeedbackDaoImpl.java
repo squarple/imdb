@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of FeedbackDao interface.
+ */
 public class FeedbackDaoImpl implements FeedbackDao {
     private static final Logger logger = LogManager.getLogger(FeedbackDaoImpl.class);
     private final CustomConnectionPool pool = CustomConnectionPool.getInstance();
@@ -28,17 +31,17 @@ public class FeedbackDaoImpl implements FeedbackDao {
             "DELETE FROM feedback " +
                     "WHERE feedback_status_id=?";
     private static final String SQL_SELECT_FEEDBACK_BY_ID =
-            "SELECT feedback_id, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
+            "SELECT feedback_id, feedback_date, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
                     "FROM feedback " +
                     "JOIN feedback_status on feedback.feedback_status_id = feedback_status.feedback_status_id " +
                     "WHERE feedback_id=?";
     private static final String SQL_FIND_FEEDBACKS_BY_MOVIE_ID =
-            "SELECT feedback_id, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
+            "SELECT feedback_id, feedback_date, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
                     "FROM feedback " +
                     "JOIN feedback_status on feedback.feedback_status_id = feedback_status.feedback_status_id " +
                     "WHERE movie_id=?";
     private static final String SQL_FIND_FEEDBACKS_BY_STATUS =
-            "SELECT feedback_id, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
+            "SELECT feedback_id, feedback_date, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
                     "FROM feedback " +
                     "JOIN feedback_status on feedback.feedback_status_id = feedback_status.feedback_status_id " +
                     "WHERE feedback.feedback_status_id=?";
@@ -51,17 +54,27 @@ public class FeedbackDaoImpl implements FeedbackDao {
         private static final FeedbackDao INSTANCE = new FeedbackDaoImpl();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance of FeedbackDao
+     */
     public static FeedbackDao getInstance() {
         return FeedbackDaoImpl.MySqlFeedbackDaoInstanceHolder.INSTANCE;
     }
 
     @Override
-    public int add(Feedback feedback) throws DaoException {
+    public int  add(Feedback feedback) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT_FEEDBACK, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setLong(1, feedback.getFeedbackId());
+            statement.setTimestamp(1, Timestamp.valueOf(feedback.getFeedbackDate()));
+            statement.setInt(2, feedback.getScore());
+            statement.setString(3, feedback.getContent());
+            statement.setLong(4, feedback.getMovieId());
+            statement.setLong(5, feedback.getUserId());
+            statement.setLong(6, feedback.getFeedbackStatus().getId());
             int rowsUpdate = statement.executeUpdate();
             try(ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {

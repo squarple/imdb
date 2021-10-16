@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of UserDao interface.
+ */
 public class UserDaoImpl implements UserDao {
     private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
     private final CustomConnectionPool pool = CustomConnectionPool.getInstance();
@@ -61,6 +64,11 @@ public class UserDaoImpl implements UserDao {
         private static final UserDaoImpl INSTANCE = new UserDaoImpl();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance of user dao
+     */
     public static UserDaoImpl getInstance() {
         return MySqlUserDaoInstanceHolder.INSTANCE;
     }

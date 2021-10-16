@@ -1,6 +1,9 @@
 package by.radzionau.imdb.controller;
 
-import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.Command;
+import by.radzionau.imdb.controller.command.CommandProvider;
+import by.radzionau.imdb.controller.command.RequestParameter;
+import by.radzionau.imdb.controller.command.Router;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * The class Controller extends {@link HttpServlet}. Handle requests from website.
+ */
 @WebServlet(name = "controller", value = "/controller")
 public class Controller extends HttpServlet {
     private final CommandProvider COMMAND_PROVIDER = CommandProvider.getInstance();
@@ -36,14 +42,15 @@ public class Controller extends HttpServlet {
 
         switch (router.getRouterType()) {
             case REDIRECT:
-                response.sendRedirect(router.getPagePath().getAddress());
+                response.sendRedirect(router.getPagePath());
                 break;
             case FORWARD:
-                RequestDispatcher dispatcher = request.getRequestDispatcher(router.getPagePath().getAddress());
+                RequestDispatcher dispatcher = request.getRequestDispatcher(router.getPagePath());
                 dispatcher.forward(request, response);
                 break;
             default:
                 response.sendError(500);
+                break;
         }
     }
 }

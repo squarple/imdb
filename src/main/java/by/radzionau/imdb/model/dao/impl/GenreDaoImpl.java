@@ -1,9 +1,9 @@
 package by.radzionau.imdb.model.dao.impl;
 
-import by.radzionau.imdb.model.dao.GenreDao;
-import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
+import by.radzionau.imdb.model.dao.GenreDao;
+import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of GenreDao interface.
+ */
 public class GenreDaoImpl implements GenreDao {
     private static final Logger logger = LogManager.getLogger(GenreDaoImpl.class);
     private final CustomConnectionPool pool = CustomConnectionPool.getInstance();
@@ -20,6 +23,9 @@ public class GenreDaoImpl implements GenreDao {
     private static final String SQL_INSERT_GENRE =
             "INSERT INTO genre (name) " +
                     "VALUES (?)";
+    private static final String SQL_INSERT_GENRE_FOR_MOVIE =
+            "INSERT INTO movie_genres (movie_id, genre_id) " +
+                    "VALUES (?,?)";
     private static final String SQL_SELECT_ALL_GENRES =
             "SELECT genre_id, name " +
                     "FROM genre";
@@ -43,6 +49,11 @@ public class GenreDaoImpl implements GenreDao {
         private static final GenreDao INSTANCE = new GenreDaoImpl();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance of genre dao
+     */
     public static GenreDao getInstance() {
         return GenreDaoImpl.MySqlGenreDaoInstanceHolder.INSTANCE;
     }
@@ -119,9 +130,26 @@ public class GenreDaoImpl implements GenreDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            e.printStackTrace();
+            logger.error("Error while finding a genre by name", e);
+            throw new DaoException("Error while finding a genre by name", e);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public int addGenreForMovieByMovieId(Long movieId, Genre genre) throws DaoException {
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_GENRE_FOR_MOVIE);
+        ) {
+            statement.setLong(1, movieId);
+            statement.setLong(2, genre.getGenreId());
+            int rowsUpdate = statement.executeUpdate();
+            return rowsUpdate;
+        } catch (ConnectionPoolException | SQLException e) {
+            logger.error("Error while adding a genre", e);
+            throw new DaoException("Error while adding a genre", e);
+        }
     }
 
     private Genre createGenre(ResultSet resultSet) throws SQLException {

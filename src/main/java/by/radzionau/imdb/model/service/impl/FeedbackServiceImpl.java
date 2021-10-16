@@ -9,34 +9,37 @@ import by.radzionau.imdb.model.entity.FeedbackStatus;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.FeedbackService;
 import by.radzionau.imdb.model.validator.FeedbackValidator;
+import by.radzionau.imdb.model.validator.MovieValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of FeedbackService interface.
+ */
 public class FeedbackServiceImpl implements FeedbackService {
     private static final Logger logger = LogManager.getLogger();
     private final FeedbackDao feedbackDao = FeedbackDaoImpl.getInstance();
-    private static final FeedbackValidator feedbackValidator = FeedbackValidator.getInstance();
-
-    private FeedbackServiceImpl() {
-
-    }
 
     private static final class FeedbackServiceInstanceHolder {
         private static final FeedbackServiceImpl INSTANCE = new FeedbackServiceImpl();
     }
 
+    /**
+     * Gets instance of feedback service.
+     *
+     * @return the instance of feedback service
+     */
     public static FeedbackService getInstance() {
         return FeedbackServiceImpl.FeedbackServiceInstanceHolder.INSTANCE;
     }
 
     @Override
     public void addFeedback(Feedback feedback) throws ServiceException {
-        if (feedbackValidator.isNull(feedback)) {
+        if (!FeedbackValidator.getInstance().isValid(feedback)) {
             logger.error("Feedback doesn't present");
             throw new ServiceException("Feedback doesn't present");
         }
@@ -50,11 +53,11 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback updateFeedbackStatus(Feedback feedback, FeedbackStatus feedbackStatus) throws ServiceException {
-        if (feedbackValidator.isNull(feedback)) {
+        if (!FeedbackValidator.getInstance().isValid(feedback)) {
             logger.error("Feedback doesn't present");
             throw new ServiceException("Feedback doesn't present");
         }
-        if (feedbackValidator.isNull(feedbackStatus)) {
+        if (feedbackStatus == null) {
             logger.error("Feedback status doesn't present");
             throw new ServiceException("Feedback status doesn't present");
         }
@@ -70,9 +73,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void deleteFeedback(Feedback feedback) throws ServiceException {
-        if (feedbackValidator.isNull(feedback)) {
-            logger.error("Feedback doesn't present");
-            throw new ServiceException("Feedback doesn't present");
+        if (!FeedbackValidator.getInstance().isValid(feedback)) {
+            logger.error("Invalid feedback");
+            throw new ServiceException("Invalid feedback");
         }
         try {
             feedbackDao.delete(feedback);
@@ -84,7 +87,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback findFeedbackById(Long feedbackId) throws ServiceException {
-        if (feedbackValidator.isNull(feedbackId)) {
+        if (feedbackId == null) {
             logger.error("Feedback id doesn't present");
             throw new ServiceException("Feedback id doesn't present");
         }
@@ -103,7 +106,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> findFeedbacksByMovieId(Long movieId) throws ServiceException {
-        if (feedbackValidator.isNull(movieId)) {
+        if (movieId == null) {
             logger.error("Movie id doesn't present");
             throw new ServiceException("Movie id doesn't present");
         }
@@ -119,12 +122,16 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> findFeedbacksByMovie(Movie movie) throws ServiceException {
+        if (!MovieValidator.getInstance().isValid(movie)) {
+            logger.error("Invalid movie");
+            throw new ServiceException("Invalid movie");
+        }
         return findFeedbacksByMovieId(movie.getMovieId());
     }
 
     @Override
     public List<Feedback> findFeedbacksByStatus(FeedbackStatus feedbackStatus) throws ServiceException {
-        if (feedbackValidator.isNull(feedbackStatus)) {
+        if (feedbackStatus == null) {
             logger.error("Feedback status doesn't present");
             throw new ServiceException("Feedback status doesn't present");
         }

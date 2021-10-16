@@ -10,38 +10,40 @@ import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.model.service.MovieService;
+import by.radzionau.imdb.model.validator.GenreValidator;
 import by.radzionau.imdb.model.validator.MovieValidator;
-import by.radzionau.imdb.model.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The implementation of MovieService interface.
+ */
 public class MovieServiceImpl implements MovieService {
     private static final Logger logger = LogManager.getLogger();
     private final MovieDao movieDao = MovieDaoImpl.getInstance();
     private final GenreDao genreDao = GenreDaoImpl.getInstance();
-    private final MovieValidator movieValidator = MovieValidator.getInstance();
-
-    private MovieServiceImpl() {
-
-    }
 
     private static final class MovieServiceInstanceHolder {
         private static final MovieServiceImpl INSTANCE = new MovieServiceImpl();
     }
 
+    /**
+     * Gets instance of movie service.
+     *
+     * @return the instance of movie service
+     */
     public static MovieService getInstance() {
         return MovieServiceImpl.MovieServiceInstanceHolder.INSTANCE;
     }
 
     @Override
     public void addMovie(Movie movie) throws ServiceException {
-        if (movieValidator.isNull(movie)) {
-            logger.error("Movie doesn't present");
-            throw new ServiceException("Movie doesn't present");
+        if (!MovieValidator.getInstance().isValid(movie)) {
+            logger.error("Invalid movie");
+            throw new ServiceException("Invalid movie");
         }
         try {
             movieDao.add(movie);
@@ -53,9 +55,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void update(Movie movie) throws ServiceException {
-        if (movieValidator.isNull(movie)) {
-            logger.error("Movie doesn't present");
-            throw new ServiceException("Movie doesn't present");
+        if (!MovieValidator.getInstance().isValid(movie)) {
+            logger.error("Invalid movie");
+            throw new ServiceException("Invalid movie");
         }
         try {
             movieDao.update(movie);
@@ -67,9 +69,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(Movie movie) throws ServiceException {
-        if (movieValidator.isNull(movie)) {
-            logger.error("Movie doesn't present");
-            throw new ServiceException("Movie doesn't present");
+        if (!MovieValidator.getInstance().isValid(movie)) {
+            logger.error("Invalid movie");
+            throw new ServiceException("Invalid movie");
         }
         try {
             movieDao.delete(movie);
@@ -80,8 +82,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie getMovieById(Long movieId) throws ServiceException {
-        if (movieValidator.isNull(movieId)) {
+    public Movie findMovieById(Long movieId) throws ServiceException {
+        if (movieId == null) {
             logger.error("MovieId doesn't present");
             throw new ServiceException("MovieId doesn't present");
         }
@@ -100,7 +102,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByTitle(String title) throws ServiceException {
-        if (movieValidator.isNull(title) || movieValidator.isEmpty(title)) {
+        if (title == null || title.isEmpty()) {
             logger.error("Title doesn't present");
             throw new ServiceException("Title doesn't present");
         }
@@ -116,10 +118,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByYear(int year) throws ServiceException {
-        if (movieValidator.isNull(year)) {
-            logger.error("Year doesn't present");
-            throw new ServiceException("Year doesn't present");
-        }
         List<Movie> movies;
         try {
             movies = movieDao.findMoviesByYear(year);
@@ -132,9 +130,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByGenre(Genre genre) throws ServiceException {
-        if (movieValidator.isNull(genre)) {
-            logger.error("Genre doesn't present");
-            throw new ServiceException("Genre doesn't present");
+        if (!GenreValidator.getInstance().isValid(genre)) {
+            logger.error("Invalid genre");
+            throw new ServiceException("Invalid genre");
         }
         List<Movie> movies;
         try {
@@ -148,7 +146,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMoviesByMovieType(MovieType movieType) throws ServiceException {
-        if (movieValidator.isNull(movieType)) {
+        if (movieType == null) {
             logger.error("MovieType doesn't present");
             throw new ServiceException("MovieType doesn't present");
         }
@@ -164,7 +162,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Double findMovieScoreByMovieId(Long movieId) throws ServiceException {
-        if (movieValidator.isNull(movieId)) {
+        if (movieId == null) {
             logger.error("MovieId doesn't present");
             throw new ServiceException("MovieId doesn't present");
         }
@@ -183,14 +181,18 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Double findMovieScore(Movie movie) throws ServiceException {
+        if (!MovieValidator.getInstance().isValid(movie)) {
+            logger.error("Invalid movie");
+            throw new ServiceException("Invalid movie");
+        }
         return findMovieScoreByMovieId(movie.getMovieId());
     }
 
     @Override
     public List<Genre> findGenresOfMovie(Movie movie) throws ServiceException {
-        if (movieValidator.isNull(movie)) {
-            logger.error("Movie doesn't present");
-            throw new ServiceException("Movie doesn't present");
+        if (!MovieValidator.getInstance().isValid(movie)) {
+            logger.error("Invalid movie");
+            throw new ServiceException("Invalid movie");
         }
         List<Genre> genres;
         try {

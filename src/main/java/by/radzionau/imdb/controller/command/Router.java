@@ -1,22 +1,51 @@
 package by.radzionau.imdb.controller.command;
 
+/**
+ * The class Router.
+ */
 public class Router {
+    /**
+     * The enum RouterType. Types of route.
+     */
     public enum RouterType {
-        REDIRECT, FORWARD
+        /**
+         * Redirect router type.
+         */
+        REDIRECT,
+        /**
+         * Forward router type.
+         */
+        FORWARD
     }
 
-    private final PagePath pagePath;
+    private final String pagePath;
     private final RouterType routerType;
 
-    public Router(PagePath pagePath, RouterType routerType) {
+    /**
+     * Instantiates a new Router.
+     *
+     * @param pagePath   the page path
+     * @param routerType the router type
+     */
+    public Router(String pagePath, RouterType routerType) {
         this.pagePath = pagePath;
         this.routerType = routerType;
     }
 
-    public PagePath getPagePath() {
+    /**
+     * Gets page path.
+     *
+     * @return the page path
+     */
+    public String getPagePath() {
         return pagePath;
     }
 
+    /**
+     * Gets router type.
+     *
+     * @return the router type
+     */
     public RouterType getRouterType() {
         return routerType;
     }
