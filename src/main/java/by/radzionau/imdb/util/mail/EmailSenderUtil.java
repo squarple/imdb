@@ -11,14 +11,21 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * The class EmailSenderUtil.
+ */
 public class EmailSenderUtil {
-    private static final Logger logger = LogManager.getLogger();
     private Properties properties;
 
     private static final class EmailSenderUtilInstanceHolder {
         private static final EmailSenderUtil INSTANCE = new EmailSenderUtil();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance of email sender
+     */
     public static EmailSenderUtil getInstance() {
         return EmailSenderUtil.EmailSenderUtilInstanceHolder.INSTANCE;
     }
@@ -27,6 +34,13 @@ public class EmailSenderUtil {
 
     }
 
+    /**
+     * Send authentication message to user. Throws {@link MessagingException} if sending of email failed. Throws {@link IOException} if an error occurred when reading from the input stream.
+     *
+     * @param user the user
+     * @throws MessagingException if sending of email failed
+     * @throws IOException        if an error occurred when reading from the input stream
+     */
     public void sendAuthenticationMessage(User user) throws MessagingException, IOException {
         if (properties == null) {
             setProperties();
