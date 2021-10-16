@@ -6,13 +6,16 @@ import by.radzionau.imdb.model.entity.*;
 import by.radzionau.imdb.model.service.FeedbackService;
 import by.radzionau.imdb.model.service.GenreService;
 import by.radzionau.imdb.model.service.MovieService;
+import by.radzionau.imdb.model.service.UserService;
 import by.radzionau.imdb.model.service.impl.FeedbackServiceImpl;
 import by.radzionau.imdb.model.service.impl.GenreServiceImpl;
 import by.radzionau.imdb.model.service.impl.MovieServiceImpl;
+import by.radzionau.imdb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
  */
 public class GetMovieCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final UserService userService = UserServiceImpl.getInstance();
     private static final MovieService movieService = MovieServiceImpl.getInstance();
     private static final GenreService genreService = GenreServiceImpl.getInstance();
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
@@ -42,7 +46,7 @@ public class GetMovieCommand implements Command {
 
             //todo
             User currentUser = (User) request.getSession().getAttribute(SessionAttribute.USER);
-            if (currentUser != null && currentUser.getRole() == UserRole.USER && currentUser.getRole() == UserRole.ADMIN) {
+            if (currentUser != null && currentUser.getRole() == UserRole.USER) {
                 List<Feedback> feedbackList = feedbackService.findFeedbacksByMovieId(movieId)
                         .stream()
                         .filter(feedback -> feedback.getFeedbackStatus().equals(FeedbackStatus.APPROVED))

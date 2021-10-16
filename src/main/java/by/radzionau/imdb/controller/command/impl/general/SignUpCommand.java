@@ -82,7 +82,7 @@ public class SignUpCommand implements Command {
             }
         }
 
-        if (!UserValidator.getInstance().isLoginPresence(signupParameters.get(RequestParameter.LOGIN))) {
+        if (UserValidator.getInstance().isLoginPresence(signupParameters.get(RequestParameter.LOGIN))) {
             signupParameters.put(RequestParameter.LOGIN, "");
             flag = false;
         }

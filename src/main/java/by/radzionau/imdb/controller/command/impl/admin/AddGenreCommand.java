@@ -1,13 +1,11 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
-import by.radzionau.imdb.controller.command.Command;
-import by.radzionau.imdb.controller.command.PagePath;
-import by.radzionau.imdb.controller.command.RequestParameter;
-import by.radzionau.imdb.controller.command.Router;
+import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.service.GenreService;
 import by.radzionau.imdb.model.service.impl.GenreServiceImpl;
+import by.radzionau.imdb.model.validator.GenreValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,8 +30,7 @@ public class AddGenreCommand implements Command {
             router = new Router(PagePath.MAIN_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at AddGenreCommand", e);
-            String pageTo = getPageFrom(request);
-            router = new Router(pageTo, Router.RouterType.FORWARD);
+            router = new Router(PagePath.ADD_GENRE_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
         return router;
     }

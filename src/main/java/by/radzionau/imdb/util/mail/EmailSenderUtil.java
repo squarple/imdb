@@ -2,8 +2,6 @@ package by.radzionau.imdb.util.mail;
 
 import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.util.PropertyLoader;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -30,10 +28,6 @@ public class EmailSenderUtil {
         return EmailSenderUtil.EmailSenderUtilInstanceHolder.INSTANCE;
     }
 
-    private EmailSenderUtil() {
-
-    }
-
     /**
      * Send authentication message to user. Throws {@link MessagingException} if sending of email failed. Throws {@link IOException} if an error occurred when reading from the input stream.
      *
@@ -55,7 +49,6 @@ public class EmailSenderUtil {
 
         Message message = buildMessage(session, user, from, to);
         Transport.send(message);
-
     }
 
     private void setProperties() throws IOException {

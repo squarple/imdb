@@ -1,13 +1,14 @@
 package by.radzionau.imdb.controller.command;
 
-import by.radzionau.imdb.controller.command.impl.general.DefaultCommand;
 import by.radzionau.imdb.controller.command.impl.admin.*;
 import by.radzionau.imdb.controller.command.impl.general.*;
 import by.radzionau.imdb.controller.command.impl.moveto.admin.MoveToAddGenrePageCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.admin.MoveToAddMovieCoverPageCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.admin.MoveToAddMoviePageCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.admin.MoveToEditMoviePageCommand;
-import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToCommand;
+import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToLoginPageCommand;
+import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToMainPageCommand;
+import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToSignupPageCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.user.MoveToAddFeedbackPageCommand;
 import by.radzionau.imdb.controller.command.impl.user.AddFeedbackCommand;
 
@@ -58,7 +59,7 @@ public class CommandProvider {
     }
 
     private void addGeneralCommands() {
-        commands.put(CommandType.MOVE_TO, new MoveToCommand());
+        commands.put(CommandType.MOVE_TO_SIGNUP_PAGE, new MoveToSignupPageCommand());
         commands.put(CommandType.SIGN_IN, new SignInCommand());
         commands.put(CommandType.SIGN_UP, new SignUpCommand());
         commands.put(CommandType.DEFAULT, new DefaultCommand());
@@ -66,6 +67,8 @@ public class CommandProvider {
         commands.put(CommandType.CHANGE_LOCALE, new ChangeLocaleCommand());
         commands.put(CommandType.SEARCH_MOVIES, new SearchMoviesCommand());
         commands.put(CommandType.GET_MOVIE_LIST, new GetMovieListCommand());
+        commands.put(CommandType.MOVE_TO_MAIN_PAGE, new MoveToMainPageCommand());
+        commands.put(CommandType.MOVE_TO_LOGIN_PAGE, new MoveToLoginPageCommand());
         commands.put(CommandType.EMAIL_VERIFICATION, new EmailVerificationCommand());
     }
 

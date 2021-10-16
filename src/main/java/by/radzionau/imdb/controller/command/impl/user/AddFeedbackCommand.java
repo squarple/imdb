@@ -52,6 +52,7 @@ public class AddFeedbackCommand implements Command {
             Double movieScore = movieService.findMovieScore(movie);
             request.setAttribute(RequestAttribute.MOVIE_SCORE, movieScore);
             request.setAttribute(RequestAttribute.MOVIE, movie);
+            request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
             request.setAttribute(RequestAttribute.GENRES_LIST, genresList);
 
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
@@ -63,5 +64,9 @@ public class AddFeedbackCommand implements Command {
             router = new Router(pageTo, Router.RouterType.FORWARD);
         }
         return router;
+    }
+
+    private String addDescriptionToCoverImage(String cover) {
+        return "data:image/jpeg;base64," + cover;
     }
 }

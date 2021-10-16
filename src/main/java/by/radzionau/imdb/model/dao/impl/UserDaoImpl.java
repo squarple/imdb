@@ -28,6 +28,12 @@ public class UserDaoImpl implements UserDao {
     private static final String SQL_UPDATE_USER =
             "UPDATE usr SET login=?, mail=?, first_name=?, surname=?, usr_role_id=?, usr_status_id=? " +
                     "WHERE usr_id=?";
+    private static final String SQL_SELECT_USER_BY_ID =
+            "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
+                    "FROM usr " +
+                    "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
+                    "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
+                    "WHERE usr_id=?";
     private static final String SQL_SELECT_USER_BY_LOGIN =
             "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
                     "FROM usr " +
@@ -55,10 +61,6 @@ public class UserDaoImpl implements UserDao {
                     "FROM usr " +
                     "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
                     "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id ";
-
-    private UserDaoImpl() {
-
-    }
 
     private static final class MySqlUserDaoInstanceHolder {
         private static final UserDaoImpl INSTANCE = new UserDaoImpl();
@@ -129,6 +131,25 @@ public class UserDaoImpl implements UserDao {
         ) {
             statement.setString(1, login);
             try(ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(createUser(resultSet));
+                }
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            logger.error("Error while selecting a user", e);
+            throw new DaoException("Error while selecting a user", e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findUserById(Long userId) throws DaoException {
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_BY_ID)
+        ) {
+            statement.setLong(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(createUser(resultSet));
                 }
