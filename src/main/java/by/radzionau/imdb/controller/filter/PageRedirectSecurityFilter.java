@@ -8,11 +8,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * The Page redirect security filter. It prevents access to pages.
+ */
 @WebFilter(urlPatterns = { "/pages/*" },
         initParams = { @WebInitParam(name = "INDEX_PATH", value = "/index.jsp") })
 public class PageRedirectSecurityFilter implements Filter {
     private String indexPath;
 
+    @Override
     public void init(FilterConfig config) {
         indexPath = config.getInitParameter("INDEX_PATH");
     }
@@ -23,10 +27,6 @@ public class PageRedirectSecurityFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
-
-//        if (httpRequest.getSession().getAttribute(RequestAttribute.ROLE) == null) {
-//            httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
-//        }
 
         chain.doFilter(request, response);
     }
