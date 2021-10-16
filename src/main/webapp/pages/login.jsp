@@ -40,8 +40,7 @@
 
             <div class="mt-3">
                 <form action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="move_to">
-                    <input type="hidden" name="page_to" value="signup_page">
+                    <input type="hidden" name="command" value="move_to_signup_page">
                     <button class="btn btn-primary" type="submit">
                         <fmt:message key="login.button.sign.up"/>
                     </button>

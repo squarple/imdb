@@ -6,8 +6,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <form>
-                <input type="hidden" name="page_to" value="main_page">
-                <input type="hidden" name="command" value="move_to">
+                <input type="hidden" name="command" value="move_to_main_page">
                 <button type="submit" class="btn btn-link">
                     <img src="https://images-na.ssl-images-amazon.com/images/G/01/imdb/authportal/images/www_imdb_logo._CB667618033_.png">
                 </button>
@@ -71,8 +70,7 @@
                 <c:if test="${role != 'ADMIN' && role != 'USER'}">
                     <div>
                         <form action="${pageContext.request.contextPath}/controller" method="get">
-                            <input type="hidden" name="command" value="move_to">
-                            <input type="hidden" name="page_to" value="login_page">
+                            <input type="hidden" name="command" value="move_to_login_page">
                             <button class="btn btn-primary ms-1" type="submit">
                                 <fmt:message key="navbar.common.sign.in"/>
                             </button>

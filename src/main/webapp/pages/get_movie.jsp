@@ -43,7 +43,6 @@
         </c:if>
         <br>
 
-        <h5>movie.cover</h5>
         <img src="${movie_cover}" width="220" height="330" alt="..."/>
         <br>
         <h5>${movie.title}</h5>
@@ -86,7 +85,7 @@
                 <div>
                     <hr>
                     <c:forEach items="${feedback_list}" var="feedback">
-                        <h5>${feedback.userId}</h5>
+                        <h5>score: ${feedback.score}</h5> <!--todo-->
                         <h5>${feedback.content}</h5>
                         <hr>
                     </c:forEach>

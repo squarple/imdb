@@ -17,8 +17,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"><fmt:message key="get_feedbacks.table.number"/></th>
-                        <th scope="col"><fmt:message key="get_feedbacks.table.login"/></th>
                         <th scope="col"><fmt:message key="get_feedbacks.table.content"/></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -27,8 +25,6 @@
                 <tbody>
                     <c:forEach var="feedback" items="${feedback_list}">
                         <tr>
-                            <th scope="row">1</th>
-                            <td>${feedback.userId}</td>
                             <td>${feedback.content}</td>
                             <td>
                                 <form action="${pageContext.request.contextPath}/controller" method="post">

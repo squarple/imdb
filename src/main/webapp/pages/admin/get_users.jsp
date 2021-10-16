@@ -15,7 +15,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col"><fmt:message key="get_users.table.number"/></th>
                     <th scope="col"><fmt:message key="get_users.table.login"/></th>
                     <th scope="col"><fmt:message key="get_users.table.role"/></th>
                     <th scope="col"></th>
@@ -26,7 +25,6 @@
                 <tbody>
                     <c:forEach var="user" items="${users_list}">
                         <tr>
-                            <th scope="row">1</th> <!-- todo numeration?? -->
                             <td>${user.login}</td>
                             <td>${user.role}</td>
                             <td>

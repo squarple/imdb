@@ -34,8 +34,7 @@
 
                     <li class="nav-item">
                         <form id="footer_home" action="${pageContext.request.contextPath}/controller" method="get">
-                            <input type="hidden" name="page_to" value="main_page">
-                            <input type="hidden" name="command" value="move_to">
+                            <input type="hidden" name="command" value="move_to_main_page">
                             <a class="nav-link active px-2" href=# onclick="document.getElementById('footer_home').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="footer.common.home"/></a>
                         </form>
                     </li>
