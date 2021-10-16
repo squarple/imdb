@@ -10,10 +10,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The class CustomConnectionPool provides connections to database.
+ */
 public class CustomConnectionPool {
     private static final Logger logger = LogManager.getLogger(CustomConnectionPool.class);
     private static CustomConnectionPool instance;
@@ -39,9 +41,13 @@ public class CustomConnectionPool {
             logger.fatal("Connections pool can't be created. Database access error");
             throw new RuntimeException("Connections pool can't be created. Database access error");
         }
-        //todo добавить восполнение упущенных коннекшенов?
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance of connection pool
+     */
     public static CustomConnectionPool getInstance() {
         while (instance == null) {
             if (isInitialized.compareAndSet(false, true)) {
@@ -51,6 +57,12 @@ public class CustomConnectionPool {
         return instance;
     }
 
+    /**
+     * Gets connection. Throws ConnectionPoolException if it cannot take connection from pool or if time out for getting connection.
+     *
+     * @return the connection
+     * @throws ConnectionPoolException if it cannot take connection from pool or if time out for getting connection
+     */
     public Connection getConnection() throws ConnectionPoolException {
         try {
             Connection connection = freeConnections.take();
@@ -63,6 +75,12 @@ public class CustomConnectionPool {
         throw new ConnectionPoolException("Time out for getting connection");
     }
 
+    /**
+     * Release connection.
+     *
+     * @param connection the connection
+     * @return the true if connection released successfully and false if not.
+     */
     public boolean releaseConnection(Connection connection) {
         if (connection instanceof ProxyConnection) {
             ProxyConnection proxyConnection = (ProxyConnection) connection;
@@ -84,6 +102,9 @@ public class CustomConnectionPool {
         }
     }
 
+    /**
+     * Destroy pull, release all connections.
+     */
     public void destroyPull() {
         int countOfBusyConnections = busyConnections.size();
         for (int i = 0; i < countOfBusyConnections; i++) {

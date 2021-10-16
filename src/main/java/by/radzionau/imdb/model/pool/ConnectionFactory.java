@@ -10,6 +10,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * The class ConnectionFactory creates connections.
+ */
 class ConnectionFactory {
     private static final Logger logger = LogManager.getLogger(ConnectionFactory.class);
     private static final String FILE_PROPERTIES_NAME = "database/db.properties";
@@ -48,6 +51,12 @@ class ConnectionFactory {
 
     }
 
+    /**
+     * Create connection ProxyConnection. Throws SQLException if a database access error occurs.
+     *
+     * @return the proxy connection
+     * @throws SQLException if a database access error occurs
+     */
     static ProxyConnection createConnection() throws SQLException {
         return new ProxyConnection(DriverManager.getConnection(DATABASE_URL, properties));
     }
