@@ -29,7 +29,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                     "WHERE feedback_id=?";
     private static final String SQL_DELETE_FEEDBACK =
             "DELETE FROM feedback " +
-                    "WHERE feedback_status_id=?";
+                    "WHERE feedback_id=?";
     private static final String SQL_SELECT_FEEDBACK_BY_ID =
             "SELECT feedback_id, feedback_date, score, content, movie_id, usr_id, feedback_status.name AS feedback_status " +
                     "FROM feedback " +
@@ -97,8 +97,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
         ) {
             statement.setLong(1, feedbackStatus.getId());
             statement.setLong(2, feedbackId);
-            int rowsUpdate = statement.executeUpdate();
-            return rowsUpdate;
+            return statement.executeUpdate();
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a feedback", e);
             throw new DaoException("Error while updating a feedback", e);
@@ -111,13 +110,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_DELETE_FEEDBACK)
         ) {
-            statement.setTimestamp(1, Timestamp.valueOf(feedback.getFeedbackDate()));
-            statement.setInt(2, feedback.getScore());
-            statement.setString(3, feedback.getContent());
-            statement.setLong(4, feedback.getMovieId());
-            statement.setLong(5, feedback.getUserId());
-            statement.setLong(6, feedback.getFeedbackStatus().getId());
-
+            statement.setLong(1, feedback.getFeedbackId());
             int rowsUpdate = statement.executeUpdate();
             return rowsUpdate;
         } catch (SQLException | ConnectionPoolException e) {
@@ -173,7 +166,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_FIND_FEEDBACKS_BY_STATUS)
         ) {
             statement.setLong(1, feedbackStatus.getId());
-            try(ResultSet resultSet = statement.executeQuery();) {
+            try(ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     feedbacks.add(createFeedback(resultSet));
                 }
