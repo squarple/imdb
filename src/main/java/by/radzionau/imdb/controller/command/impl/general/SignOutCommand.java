@@ -1,18 +1,20 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
-import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.Command;
+import by.radzionau.imdb.controller.command.PagePath;
+import by.radzionau.imdb.controller.command.Router;
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ * The class SignOutCommand.
+ */
 public class SignOutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         deleteSession(request);
         createNewSession(request);
 
-        setPageFromAttribute(request);
-        setPageToAttribute(request, PagePath.MAIN_PAGE);
-
-        return new Router(PagePath.MAIN_PAGE, Router.RouterType.REDIRECT);
+        return new Router(PagePath.MAIN_PAGE.getAddress(), Router.RouterType.REDIRECT);
     }
 
     private void deleteSession(HttpServletRequest request) {

@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The class ChangeUserStatusCommand.
+ */
 public class ChangeUserStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
@@ -19,7 +22,6 @@ public class ChangeUserStatusCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
-        setPageFromAttribute(request);
 
         try {
             String userLogin = request.getParameter(RequestParameter.LOGIN);
@@ -32,16 +34,16 @@ public class ChangeUserStatusCommand implements Command {
             request.setAttribute(RequestAttribute.USERS_LIST, users);
         } catch (ServiceException e) {
             logger.error("Error at ChangeUserStatusCommand", e);
+            //todo
         }
 
-        setPageToAttribute(request, PagePath.GET_USERS_PAGE);
-        router = new Router(PagePath.GET_USERS_PAGE, Router.RouterType.FORWARD);
+        router = new Router(PagePath.GET_USERS_PAGE.getAddress(), Router.RouterType.FORWARD);
 
         return router;
     }
 
     private void removeCurrentUserFromList(HttpServletRequest request, List<User> users) {
-        User currentUser = (User) request.getSession().getAttribute(RequestAttribute.USER);
+        User currentUser = (User) request.getSession().getAttribute(SessionAttribute.USER);
         users.remove(currentUser);
     }
 }

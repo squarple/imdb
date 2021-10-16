@@ -1,16 +1,20 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
-import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.Command;
+import by.radzionau.imdb.controller.command.Router;
+import by.radzionau.imdb.controller.command.SessionAttribute;
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ * The class ChangeLocaleCommand.
+ */
 public class ChangeLocaleCommand implements Command {
     private static final String EN_LOCALE = "en_EN";
     private static final String RU_LOCALE = "ru_RU";
 
     @Override
     public Router execute(HttpServletRequest request) {
-        setPageFromAttribute(request);
-        String currentLocale = (String) request.getSession().getAttribute(RequestAttribute.LOCALE);
+        String currentLocale = (String) request.getSession().getAttribute(SessionAttribute.LOCALE);
 
         if (currentLocale.equals(RU_LOCALE)) {
             setNewLocale(request, EN_LOCALE);
@@ -18,19 +22,13 @@ public class ChangeLocaleCommand implements Command {
             setNewLocale(request, RU_LOCALE);
         }
 
-        PagePath pageTo;
-        try {
-            pageTo = PagePath.valueOf(request.getParameter(RequestParameter.PAGE_TO).toUpperCase());
-        } catch (IllegalArgumentException e) {
-            pageTo = PagePath.MAIN_PAGE;
-        }
-        setPageToAttribute(request, pageTo);
+        String pageTo = getPageFrom(request);
 
-        return new Router(pageTo, Router.RouterType.FORWARD);
+        return new Router(pageTo, Router.RouterType.REDIRECT);
     }
 
     private void setNewLocale(HttpServletRequest request, String newLocale) {
-        request.getSession().removeAttribute(RequestAttribute.LOCALE);
-        request.getSession().setAttribute(RequestAttribute.LOCALE, newLocale);
+        request.getSession().removeAttribute(SessionAttribute.LOCALE);
+        request.getSession().setAttribute(SessionAttribute.LOCALE, newLocale);
     }
 }

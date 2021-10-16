@@ -5,6 +5,7 @@ import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.service.UserService;
 import by.radzionau.imdb.model.service.impl.UserServiceImpl;
+import by.radzionau.imdb.model.validator.UserValidator;
 import by.radzionau.imdb.util.mail.EmailSenderUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +16,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class SignUpCommand.
+ */
 public class SignUpCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
@@ -23,29 +27,26 @@ public class SignUpCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
-        setPageFromAttribute(request);
 
-        //Map<String, String> signupParameters = getSignupParameters(request);
+        Map<String, String> signupParameters = getSignupParameters(request);
+        if (!isParametersValid(signupParameters)) {
+            setSignupParameters(request, signupParameters);
+            request.setAttribute(RequestAttribute.ERROR_MESSAGE, "wrong data");
+            return new Router(PagePath.SIGNUP_PAGE.getAddress(), Router.RouterType.FORWARD);
+        }
 
         try {
             User user = signUpUser(request);
 
             emailSenderUtil.sendAuthenticationMessage(user);
+            request.setAttribute(RequestAttribute.EMAIL_ADDRESS, user.getEmail());
+            request.getSession().setAttribute(SessionAttribute.USER, user);
 
-            request.getSession().setAttribute(RequestAttribute.USER, user);
-
-            setPageToAttribute(request, PagePath.VERIFY_EMAIL_PAGE);
-            router = new Router(PagePath.VERIFY_EMAIL_PAGE, Router.RouterType.FORWARD);
-        } catch (ServiceException e) {
+            router = new Router(PagePath.VERIFY_EMAIL_PAGE.getAddress(), Router.RouterType.FORWARD);
+        } catch (ServiceException | MessagingException | IOException e) {
             logger.error("Error at SignUpCommand", e);
 
-            setPageToAttribute(request, PagePath.SIGNUP_PAGE);
-            router = new Router(PagePath.SIGNUP_PAGE, Router.RouterType.FORWARD);
-        } catch (MessagingException | IOException e) {
-            logger.error("Error at SignUpCommand", e);
-
-            setPageToAttribute(request, PagePath.SIGNUP_PAGE);
-            router = new Router(PagePath.SIGNUP_PAGE, Router.RouterType.FORWARD);
+            router = new Router(PagePath.SIGNUP_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
         return router;
     }
@@ -72,12 +73,29 @@ public class SignUpCommand implements Command {
         return signUpParameters;
     }
 
-    private void setSignupParameters(HttpServletRequest request, Map<String, String> signupParameters) {
-        //signupParameters.forEach(request::setAttribute);
-
+    private boolean isParametersValid(Map<String, String> signupParameters) {
+        boolean flag = true;
         for (Map.Entry<String, String> entry : signupParameters.entrySet()) {
-            request.setAttribute(entry.getKey(), entry.getValue());
+            if (entry.getValue() == null || entry.getValue().isEmpty()) {
+                signupParameters.put(entry.getKey(), "");
+                flag = false;
+            }
         }
+
+        if (!UserValidator.getInstance().isLoginPresence(signupParameters.get(RequestParameter.LOGIN))) {
+            signupParameters.put(RequestParameter.LOGIN, "");
+            flag = false;
+        }
+        if (!signupParameters.get(RequestParameter.PASSWORD).equals(signupParameters.get(RequestParameter.REPEATED_PASSWORD))) {
+            signupParameters.put(RequestParameter.PASSWORD, "");
+            signupParameters.put(RequestParameter.REPEATED_PASSWORD, "");
+            flag = false;
+        }
+
+        return flag;
     }
 
+    private void setSignupParameters(HttpServletRequest request, Map<String, String> signupParameters) {
+        signupParameters.forEach(request::setAttribute);
+    }
 }
