@@ -23,7 +23,7 @@ public interface Command {
     default String getPageFrom(HttpServletRequest request) {
         String pageTo = (String) request.getAttribute(RequestAttribute.PAGE_FROM);
         if (pageTo == null || pageTo.isEmpty()) {
-            pageTo = PagePath.MAIN_PAGE.getAddress();
+            pageTo = PagePath.INDEX_PAGE.getAddress();
         }
         return pageTo;
     }

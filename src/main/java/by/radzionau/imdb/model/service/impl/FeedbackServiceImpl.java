@@ -21,8 +21,12 @@ import java.util.Optional;
  * The implementation of FeedbackService interface.
  */
 public class FeedbackServiceImpl implements FeedbackService {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(FeedbackServiceImpl.class);
     private final FeedbackDao feedbackDao = FeedbackDaoImpl.getInstance();
+
+    private FeedbackServiceImpl() {
+
+    }
 
     private static final class FeedbackServiceInstanceHolder {
         private static final FeedbackServiceImpl INSTANCE = new FeedbackServiceImpl();
@@ -40,8 +44,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public void addFeedback(Feedback feedback) throws ServiceException {
         if (!FeedbackValidator.getInstance().isValid(feedback)) {
-            logger.error("Feedback doesn't present");
-            throw new ServiceException("Feedback doesn't present");
+            logger.error("Invalid feedback");
+            throw new ServiceException("Invalid feedback");
         }
         try {
             feedbackDao.add(feedback);
@@ -54,8 +58,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public Feedback updateFeedbackStatus(Feedback feedback, FeedbackStatus feedbackStatus) throws ServiceException {
         if (!FeedbackValidator.getInstance().isValid(feedback)) {
-            logger.error("Feedback doesn't present");
-            throw new ServiceException("Feedback doesn't present");
+            logger.error("Invalid feedback");
+            throw new ServiceException("Invalid feedback");
         }
         if (feedbackStatus == null) {
             logger.error("Feedback status doesn't present");
@@ -96,7 +100,8 @@ public class FeedbackServiceImpl implements FeedbackService {
             if (optionalFeedback.isPresent()) {
                 return optionalFeedback.get();
             } else {
-                throw new ServiceException("Can't handle findFeedbackById request at FeedbackService");
+                logger.error("Feedback with id={} not found", feedbackId);
+                throw new ServiceException("Feedback with id=" + feedbackId + " not found");
             }
         } catch (DaoException e) {
             logger.error("Can't handle findFeedbackById request at FeedbackService", e);

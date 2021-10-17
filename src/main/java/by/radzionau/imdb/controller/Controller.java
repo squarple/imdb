@@ -10,6 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -18,7 +20,8 @@ import java.io.IOException;
  */
 @WebServlet(name = "controller", value = "/controller")
 public class Controller extends HttpServlet {
-    private final CommandProvider COMMAND_PROVIDER = CommandProvider.getInstance();
+    private static final Logger logger = LogManager.getLogger(Controller.class);
+    private final CommandProvider commandProvider = CommandProvider.getInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         processRequest(request, response);
@@ -33,8 +36,9 @@ public class Controller extends HttpServlet {
         Command command;
 
         try {
-            command = COMMAND_PROVIDER.getCommand(commandName);
+            command = commandProvider.getCommand(commandName);
         } catch (NullPointerException e) {
+            logger.error("Wild command name={}", commandName);
             response.sendError(404);
             return;
         }

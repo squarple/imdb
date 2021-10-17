@@ -8,6 +8,10 @@ import by.radzionau.imdb.model.entity.Feedback;
 public class FeedbackValidator implements Validator {
     private static final FeedbackValidator INSTANCE = new FeedbackValidator();
 
+    private FeedbackValidator() {
+
+    }
+
     /**
      * Gets instance.
      *
@@ -19,21 +23,12 @@ public class FeedbackValidator implements Validator {
 
     @Override
     public boolean isValid(Object object) {
-        if (object == null)
+        if (object == null || object.getClass() != Feedback.class)
             return false;
-        if (object instanceof Feedback) {
-            Feedback feedback = (Feedback) object;
-            if (feedback.getFeedbackDate() == null)
-                return false;
-            if (feedback.getMovieId() == null)
-                return false;
-            if (feedback.getUserId() == null)
-                return false;
-            if (feedback.getFeedbackStatus() == null)
-                return false;
-        } else {
-            return false;
-        }
-        return true;
+        Feedback feedback = (Feedback) object;
+        return feedback.getFeedbackDate() != null
+                && feedback.getMovieId() != null
+                && feedback.getUserId() != null
+                && feedback.getFeedbackStatus() != null;
     }
 }

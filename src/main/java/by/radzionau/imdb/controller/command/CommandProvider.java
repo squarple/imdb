@@ -59,7 +59,6 @@ public class CommandProvider {
     }
 
     private void addGeneralCommands() {
-        commands.put(CommandType.MOVE_TO_SIGNUP_PAGE, new MoveToSignupPageCommand());
         commands.put(CommandType.SIGN_IN, new SignInCommand());
         commands.put(CommandType.SIGN_UP, new SignUpCommand());
         commands.put(CommandType.DEFAULT, new DefaultCommand());
@@ -69,6 +68,7 @@ public class CommandProvider {
         commands.put(CommandType.GET_MOVIE_LIST, new GetMovieListCommand());
         commands.put(CommandType.MOVE_TO_MAIN_PAGE, new MoveToMainPageCommand());
         commands.put(CommandType.MOVE_TO_LOGIN_PAGE, new MoveToLoginPageCommand());
+        commands.put(CommandType.MOVE_TO_SIGNUP_PAGE, new MoveToSignupPageCommand());
         commands.put(CommandType.EMAIL_VERIFICATION, new EmailVerificationCommand());
     }
 

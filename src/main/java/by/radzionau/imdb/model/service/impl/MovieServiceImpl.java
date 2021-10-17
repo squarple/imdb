@@ -22,9 +22,13 @@ import java.util.Optional;
  * The implementation of MovieService interface.
  */
 public class MovieServiceImpl implements MovieService {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(MovieServiceImpl.class);
     private final MovieDao movieDao = MovieDaoImpl.getInstance();
     private final GenreDao genreDao = GenreDaoImpl.getInstance();
+
+    private MovieServiceImpl() {
+
+    }
 
     private static final class MovieServiceInstanceHolder {
         private static final MovieServiceImpl INSTANCE = new MovieServiceImpl();
@@ -92,7 +96,8 @@ public class MovieServiceImpl implements MovieService {
             if (optionalMovie.isPresent()) {
                 return optionalMovie.get();
             } else {
-                throw new ServiceException("Can't handle getMovieById request at MovieService");
+                logger.error("Movie with id={} not found", movieId);
+                throw new ServiceException("Movie with id=" + movieId + " not found");
             }
         } catch (DaoException e) {
             logger.error("Can't handle getMovieById request at MovieService", e);
@@ -171,7 +176,8 @@ public class MovieServiceImpl implements MovieService {
             if (optionalScore.isPresent()) {
                 return optionalScore.get();
             } else {
-                throw new ServiceException("Can't handle findMovieScoreByMovieId request at MovieService");
+                logger.error("Movie with id={} not found", movieId);
+                throw new ServiceException("Movie with id=" + movieId + " not found");
             }
         } catch (DaoException e) {
             logger.error("Can't handle findMovieScoreByMovieId request at MovieService", e);

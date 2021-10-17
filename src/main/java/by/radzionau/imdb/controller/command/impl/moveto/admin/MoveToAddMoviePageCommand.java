@@ -19,7 +19,7 @@ import java.util.List;
  * The class MoveToAddMoviePageCommand.
  */
 public class MoveToAddMoviePageCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(MoveToAddMoviePageCommand.class);
     private static final GenreService genreService = GenreServiceImpl.getInstance();
 
     @Override
@@ -35,7 +35,6 @@ public class MoveToAddMoviePageCommand implements Command {
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.FORWARD);
         }
-
         return router;
     }
 }

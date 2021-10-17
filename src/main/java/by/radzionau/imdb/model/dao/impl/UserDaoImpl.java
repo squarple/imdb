@@ -115,8 +115,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(5, user.getRole().getId());
             statement.setLong(6, user.getStatus().getId());
             statement.setLong(7, user.getUserId());
-            int rowsUpdate = statement.executeUpdate();
-            return rowsUpdate;
+            return statement.executeUpdate();
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a user={}", user, e);
             throw new DaoException("Error while updating a user=" + user, e);

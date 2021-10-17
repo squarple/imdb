@@ -14,7 +14,7 @@ public class SignOutCommand implements Command {
         deleteSession(request);
         createNewSession(request);
 
-        return new Router(PagePath.MAIN_PAGE.getAddress(), Router.RouterType.REDIRECT);
+        return new Router(PagePath.INDEX_PAGE.getAddress(), Router.RouterType.REDIRECT);
     }
 
     private void deleteSession(HttpServletRequest request) {

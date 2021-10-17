@@ -1,6 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.moveto.admin;
 
 import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.util.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
@@ -13,14 +14,15 @@ import org.apache.logging.log4j.Logger;
  * The class MoveToAddMovieCoverPageCommand.
  */
 public class MoveToAddMovieCoverPageCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(MoveToAddMovieCoverPageCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
+    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
         try {
-            Long movieId = Long.valueOf(request.getParameter(RequestParameter.MOVIE_ID));
+            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
             request.setAttribute(RequestAttribute.MOVIE, movie);
             router = new Router(PagePath.ADD_MOVIE_COVER_PAGE.getAddress(), Router.RouterType.FORWARD);
@@ -29,7 +31,6 @@ public class MoveToAddMovieCoverPageCommand implements Command {
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.FORWARD);
         }
-
         return router;
     }
 }

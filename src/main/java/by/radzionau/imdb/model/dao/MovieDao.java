@@ -37,8 +37,9 @@ public interface MovieDao {
      *
      * @param movie the movie to delete
      * @throws DaoException if updating of data source throws exception
+     * @return
      */
-    void delete(Movie movie) throws DaoException;
+    int delete(Movie movie) throws DaoException;
 
     /**
      * Find movie by id. Throws DaoException if reading of data source throws exception.

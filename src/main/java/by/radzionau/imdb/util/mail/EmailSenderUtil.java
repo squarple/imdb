@@ -14,9 +14,16 @@ import java.util.Properties;
  */
 public class EmailSenderUtil {
     private Properties properties;
+    private static final String MESSAGE_SUBJECT = "IMDb verification";
+    private static final String MESSAGE_CONTENT = "To verify your account, please use the following password: \n";
+    private static final String MESSAGE_CONTENT_TYPE = "text/html";
 
     private static final class EmailSenderUtilInstanceHolder {
         private static final EmailSenderUtil INSTANCE = new EmailSenderUtil();
+    }
+
+    private EmailSenderUtil() {
+
     }
 
     /**
@@ -68,12 +75,12 @@ public class EmailSenderUtil {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-        message.setSubject("IMDb verification");
-        message.setContent("To verify your email address, please use the following Password:\n" + getPassword(user), "text/html");
+        message.setSubject(MESSAGE_SUBJECT);
+        message.setContent(MESSAGE_CONTENT + getAuthenticationPassword(user), MESSAGE_CONTENT_TYPE);
         return message;
     }
 
-    private int getPassword(User user) {
+    private int getAuthenticationPassword(User user) {
         return Math.abs(user.hashCode());
     }
 }

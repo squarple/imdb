@@ -17,7 +17,7 @@ public enum UserStatus {
      */
     BANNED(3);
 
-    private int id;
+    private final int id;
 
     UserStatus(int id) {
         this.id = id;

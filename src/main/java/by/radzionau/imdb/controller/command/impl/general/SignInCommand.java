@@ -1,6 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.util.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.entity.UserStatus;
@@ -14,25 +15,23 @@ import org.apache.logging.log4j.Logger;
  * The class SignInCommand.
  */
 public class SignInCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(SignInCommand.class);
     private static final UserService service = UserServiceImpl.getInstance();
+    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
-        String login = request.getParameter(RequestParameter.LOGIN);
-        String password = request.getParameter(RequestParameter.PASSWORD);
-
         try {
+            String login = requestUtil.getString(request, RequestParameter.LOGIN);
+            String password = requestUtil.getString(request, RequestParameter.PASSWORD);
             User user = service.signIn(login, password);
             if (user.getStatus() == UserStatus.NON_ACTIVATED || user.getStatus() == UserStatus.BANNED) {
                 request.setAttribute(RequestAttribute.ERROR_MESSAGE, "your account non activated or banned");
                 return new Router(PagePath.LOGIN_PAGE.getAddress(), Router.RouterType.FORWARD);
             }
-            //todo is activated???
             setSessionAttributes(request, user);
-
-            router = new Router(PagePath.MAIN_PAGE.getAddress(), Router.RouterType.REDIRECT);
+            router = new Router(PagePath.INDEX_PAGE.getAddress(), Router.RouterType.REDIRECT);
         } catch (ServiceException e) {
             logger.error("Error at SignInCommand", e);
             request.setAttribute(RequestAttribute.ERROR_MESSAGE, "wrong login or password");

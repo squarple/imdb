@@ -20,45 +20,42 @@ import java.util.Map;
  * The class SignUpCommand.
  */
 public class SignUpCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(SignUpCommand.class);
     private static final UserService userService = UserServiceImpl.getInstance();
     private static final EmailSenderUtil emailSenderUtil = EmailSenderUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
-
         Map<String, String> signupParameters = getSignupParameters(request);
         if (!isParametersValid(signupParameters)) {
             setSignupParameters(request, signupParameters);
             request.setAttribute(RequestAttribute.ERROR_MESSAGE, "wrong data");
             return new Router(PagePath.SIGNUP_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
-
         try {
-            User user = signUpUser(request);
-
+            User user = signUpUser(signupParameters);
             emailSenderUtil.sendAuthenticationMessage(user);
             request.setAttribute(RequestAttribute.EMAIL_ADDRESS, user.getEmail());
             request.getSession().setAttribute(SessionAttribute.USER, user);
-
             router = new Router(PagePath.VERIFY_EMAIL_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException | MessagingException | IOException e) {
             logger.error("Error at SignUpCommand", e);
-
+            request.setAttribute(RequestAttribute.ERROR_MESSAGE, "wrong data");
+            setSignupParameters(request, signupParameters);
             router = new Router(PagePath.SIGNUP_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
         return router;
     }
 
-    private User signUpUser(HttpServletRequest request) throws ServiceException {
+    private User signUpUser(Map<String, String> signupParameters) throws ServiceException {
         return userService.signUp(
-                request.getParameter(RequestParameter.LOGIN),
-                request.getParameter(RequestParameter.PASSWORD),
-                request.getParameter(RequestParameter.REPEATED_PASSWORD),
-                request.getParameter(RequestParameter.EMAIL),
-                request.getParameter(RequestParameter.FIRST_NAME),
-                request.getParameter(RequestParameter.SURNAME)
+                signupParameters.get(RequestParameter.LOGIN),
+                signupParameters.get(RequestParameter.PASSWORD),
+                signupParameters.get(RequestParameter.REPEATED_PASSWORD),
+                signupParameters.get(RequestParameter.EMAIL),
+                signupParameters.get(RequestParameter.FIRST_NAME),
+                signupParameters.get(RequestParameter.SURNAME)
         );
     }
 
@@ -89,6 +86,10 @@ public class SignUpCommand implements Command {
         if (!signupParameters.get(RequestParameter.PASSWORD).equals(signupParameters.get(RequestParameter.REPEATED_PASSWORD))) {
             signupParameters.put(RequestParameter.PASSWORD, "");
             signupParameters.put(RequestParameter.REPEATED_PASSWORD, "");
+            flag = false;
+        }
+        if (!UserValidator.getInstance().isEmailValid(signupParameters.get(RequestParameter.EMAIL))) {
+            signupParameters.put(RequestParameter.EMAIL, "");
             flag = false;
         }
 

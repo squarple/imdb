@@ -27,5 +27,4 @@ public enum MovieType {
     public int getId() {
         return id;
     }
-
 }

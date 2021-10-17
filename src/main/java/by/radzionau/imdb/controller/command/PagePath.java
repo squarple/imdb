@@ -4,6 +4,7 @@ package by.radzionau.imdb.controller.command;
  * The enum PagePath.
  */
 public enum PagePath {
+        INDEX_PAGE("index.jsp"),
         MAIN_PAGE("pages/main.jsp"),
         LOGIN_PAGE("pages/login.jsp"),
         SIGNUP_PAGE("pages/signup.jsp"),

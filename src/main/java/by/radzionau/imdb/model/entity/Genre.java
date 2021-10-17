@@ -86,7 +86,7 @@ public class Genre {
      * The Builder for Genre.
      */
     public static class Builder {
-        private Genre genre;
+        private final Genre genre;
 
         /**
          * Instantiates a new Builder.

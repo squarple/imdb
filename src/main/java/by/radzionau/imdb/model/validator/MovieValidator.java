@@ -8,6 +8,10 @@ import by.radzionau.imdb.model.entity.Movie;
 public class MovieValidator implements Validator {
     private static final MovieValidator INSTANCE = new MovieValidator();
 
+    private MovieValidator() {
+
+    }
+
     /**
      * Gets instance.
      *
@@ -19,19 +23,13 @@ public class MovieValidator implements Validator {
 
     @Override
     public boolean isValid(Object object) {
-        if (object == null)
+        if (object == null || object.getClass() != Movie.class)
             return false;
-        if (object instanceof Movie) {
-            Movie movie = (Movie) object;
-            if (movie.getTitle() == null || movie.getTitle().isEmpty())
-                return false;
-            if (movie.getLogline() == null || movie.getLogline().isEmpty())
-                return false;
-            if (movie.getMovieType() == null)
-                return false;
-        } else {
-            return false;
-        }
-        return true;
+        Movie movie = (Movie) object;
+        return movie.getTitle() != null
+                && !movie.getTitle().isEmpty()
+                && movie.getLogline() != null
+                && !movie.getLogline().isEmpty()
+                && movie.getMovieType() != null;
     }
 }

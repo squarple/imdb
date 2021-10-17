@@ -174,7 +174,7 @@ public class Movie {
      * The Builder for Movie.
      */
     public static class Builder {
-        private Movie movie;
+        private final Movie movie;
 
         /**
          * Instantiates a new Builder.

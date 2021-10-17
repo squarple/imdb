@@ -15,7 +15,7 @@ import java.util.List;
  * The class GetUsersCommand.
  */
 public class GetUsersCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(GetUsersCommand.class);
     private static final UserService userService = UserServiceImpl.getInstance();
 
     @Override
@@ -25,15 +25,12 @@ public class GetUsersCommand implements Command {
             List<User> users = userService.findAll();
             removeCurrentUserFromList(request, users);
             request.setAttribute(RequestAttribute.USERS_LIST, users);
-
             router = new Router(PagePath.GET_USERS_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at GetUsersCommand", e);
-
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.REDIRECT);
         }
-
         return router;
     }
 

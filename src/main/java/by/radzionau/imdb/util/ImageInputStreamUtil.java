@@ -14,10 +14,14 @@ import java.io.InputStream;
  * The class ImageInputStreamUtil.
  */
 public final class ImageInputStreamUtil {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(ImageInputStreamUtil.class);
 
-    private static final class InputStringUtilHolder {
+    private static final class ImageInputStringUtilHolder {
         private static final ImageInputStreamUtil INSTANCE = new ImageInputStreamUtil();
+    }
+
+    private ImageInputStreamUtil() {
+
     }
 
     /**
@@ -26,11 +30,7 @@ public final class ImageInputStreamUtil {
      * @return the instance of image input stream util
      */
     public static ImageInputStreamUtil getInstance() {
-        return InputStringUtilHolder.INSTANCE;
-    }
-
-    private ImageInputStreamUtil() {
-
+        return ImageInputStringUtilHolder.INSTANCE;
     }
 
     /**

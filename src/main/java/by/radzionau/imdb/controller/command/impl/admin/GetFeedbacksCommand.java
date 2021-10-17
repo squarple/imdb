@@ -19,7 +19,7 @@ import java.util.List;
  * The class GetFeedbacksCommand.
  */
 public class GetFeedbacksCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(GetFeedbacksCommand.class);
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
 
     @Override
@@ -31,7 +31,6 @@ public class GetFeedbacksCommand implements Command {
             router = new Router(PagePath.GET_FEEDBACKS_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at GetFeedbacksCommand", e);
-
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.REDIRECT);
         }

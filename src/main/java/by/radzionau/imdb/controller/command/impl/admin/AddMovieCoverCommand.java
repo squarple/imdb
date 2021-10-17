@@ -1,6 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.util.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
@@ -19,31 +20,26 @@ import java.util.Optional;
  * The class AddMovieCoverCommand.
  */
 public class AddMovieCoverCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
-    private static final ImageInputStreamUtil inputStreamUtil = ImageInputStreamUtil.getInstance();
+    private static final Logger logger = LogManager.getLogger(AddMovieCoverCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
+    private static final RequestUtil requestUtil = RequestUtil.getInstance();
+    private static final ImageInputStreamUtil inputStreamUtil = ImageInputStreamUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
-        String cover = null;
-        try {
-            cover = getMovieCover(request);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-            //todo
-        }
 
         try {
-            Long movieId = Long.valueOf(request.getParameter(RequestParameter.MOVIE_ID));
+            String cover = getMovieCover(request);
+            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
-            movie.setCover(cover/*Stream*/);
+            movie.setCover(cover);
             movieService.update(movie);
 
             request.setAttribute(RequestAttribute.MOVIE, movie);
             request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | ServletException | IOException e) {
             logger.error("Error at AddMovieCoverCommand", e);
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.FORWARD);

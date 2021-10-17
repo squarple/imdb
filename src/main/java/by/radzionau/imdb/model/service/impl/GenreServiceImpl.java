@@ -17,8 +17,12 @@ import java.util.Optional;
  * The implementation of GenreService interface.
  */
 public class GenreServiceImpl implements GenreService {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(GenreServiceImpl.class);
     private final GenreDao genreDao = GenreDaoImpl.getInstance();
+
+    private GenreServiceImpl() {
+
+    }
 
     private static final class GenreServiceInstanceHolder {
         private static final GenreServiceImpl INSTANCE = new GenreServiceImpl();
@@ -90,8 +94,8 @@ public class GenreServiceImpl implements GenreService {
             if (optionalGenre.isPresent()) {
                 return optionalGenre.get();
             } else {
-                logger.error("Genre with name {} doesn't exist", name);
-                throw new ServiceException("Genre with name" + name + " doesn't exist");
+                logger.error("Genre with name={} not found", name);
+                throw new ServiceException("Genre with name=" + name + " not found");
             }
         } catch (DaoException e) {
             logger.error("Can't handle findGenreByName request at GenreService", e);

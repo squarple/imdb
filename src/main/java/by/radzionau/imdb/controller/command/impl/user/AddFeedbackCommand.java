@@ -1,6 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.user;
 
 import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.util.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.*;
 import by.radzionau.imdb.model.service.FeedbackService;
@@ -15,36 +16,27 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The class AddFeedbackCommand.
  */
 public class AddFeedbackCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(AddFeedbackCommand.class);
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
     private static final MovieService movieService = MovieServiceImpl.getInstance();
     private static final GenreService genreService = GenreServiceImpl.getInstance();
+    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
-
         try {
-            Long movieId = Long.valueOf(request.getParameter(RequestParameter.MOVIE_ID));
-            int score = Integer.parseInt(request.getParameter(RequestParameter.FEEDBACK_SCORE));
-            String content = request.getParameter(RequestParameter.FEEDBACK_CONTENT);
-
+            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
+            int score = requestUtil.getInt(request, RequestParameter.FEEDBACK_SCORE);
+            String content = requestUtil.getString(request, RequestParameter.FEEDBACK_CONTENT);
             User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
-
-            Feedback feedback = Feedback.builder()
-                    .setFeedbackDate(LocalDateTime.now())
-                    .setScore(score)
-                    .setContent(content)
-                    .setMovieId(movieId)
-                    .setUserId(user.getUserId())
-                    .setFeedbackStatus(content.isEmpty() ? FeedbackStatus.APPROVED : FeedbackStatus.UNDER_CONSIDERATION)
-                    .build();
-
+            Feedback feedback = buildFeedback(score, content, movieId, user);
             feedbackService.addFeedback(feedback);
 
             Movie movie = movieService.findMovieById(movieId);
@@ -58,12 +50,21 @@ public class AddFeedbackCommand implements Command {
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at AddFeedbackCommand", e);
-
             String pageTo = getPageFrom(request);
-
             router = new Router(pageTo, Router.RouterType.FORWARD);
         }
         return router;
+    }
+
+    private Feedback buildFeedback(int score, String content, Long movieId, User user) {
+        return Feedback.builder()
+                .setFeedbackDate(LocalDateTime.now())
+                .setScore(score)
+                .setContent(content)
+                .setMovieId(movieId)
+                .setUserId(user.getUserId())
+                .setFeedbackStatus(content.isEmpty() ? FeedbackStatus.APPROVED : FeedbackStatus.UNDER_CONSIDERATION)
+                .build();
     }
 
     private String addDescriptionToCoverImage(String cover) {

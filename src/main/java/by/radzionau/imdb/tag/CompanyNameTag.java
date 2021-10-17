@@ -12,7 +12,7 @@ import java.io.IOException;
  * The class CompanyNameTag.
  */
 public class CompanyNameTag extends TagSupport {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(CompanyNameTag.class);
     private static final String COMPANY_NAME = "&copy 2021 IMDb, Inc";
 
     @Override

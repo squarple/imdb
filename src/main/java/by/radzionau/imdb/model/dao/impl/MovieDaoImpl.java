@@ -64,7 +64,7 @@ public class MovieDaoImpl implements MovieDao {
     private static final String SQL_CALCULATE_MOVIE_SCORE_BY_MOVIE_ID =
             "SELECT AVG(score) AS avg_score " +
                     "FROM feedback " +
-                    "WHERE movie_id=?";
+                    "WHERE movie_id=? AND feedback_status_id=2";
 
     private MovieDaoImpl() {
 
@@ -84,7 +84,7 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public int add(Movie movie) throws DaoException {  //todo convert InputStream to Blob
+    public int add(Movie movie) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT_MOVIE, Statement.RETURN_GENERATED_KEYS)
@@ -119,8 +119,7 @@ public class MovieDaoImpl implements MovieDao {
             statement.setBlob(4, inputStreamUtil.getStringAsImageInputStream(movie.getCover()));
             statement.setLong(5, movie.getMovieType().getId());
             statement.setLong(6, movie.getMovieId());
-            int rowsUpdate = statement.executeUpdate();
-            return rowsUpdate;
+            return statement.executeUpdate();
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a movie", e);
             throw new DaoException("Error while updating a movie", e);
@@ -128,13 +127,13 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public void delete(Movie movie) throws DaoException {
+    public int delete(Movie movie) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_DELETE_MOVIE)
         ) {
             statement.setLong(1, movie.getMovieId());
-            statement.executeUpdate();
+            return statement.executeUpdate();
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a movie", e);
             throw new DaoException("Error while updating a movie", e);

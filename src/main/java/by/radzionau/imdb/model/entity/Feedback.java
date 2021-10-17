@@ -198,7 +198,7 @@ public class Feedback {
      * The Builder for Feedback.
      */
     public static class Builder {
-        private Feedback feedback;
+        private final Feedback feedback;
 
         /**
          * Instantiates a new Builder.

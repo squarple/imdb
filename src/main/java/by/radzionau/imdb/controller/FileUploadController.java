@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -22,7 +24,8 @@ import java.io.IOException;
         maxFileSize = 5 * 1024 * 1024,
         maxRequestSize = 25 * 1024 * 1024)
 public class FileUploadController extends HttpServlet {
-    private final CommandProvider COMMAND_PROVIDER = CommandProvider.getInstance();
+    private static final Logger logger = LogManager.getLogger(FileUploadController.class);
+    private final CommandProvider commandProvider = CommandProvider.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse resp) throws IOException, ServletException {
@@ -35,8 +38,9 @@ public class FileUploadController extends HttpServlet {
         Command command;
 
         try {
-            command = COMMAND_PROVIDER.getCommand(commandName);
+            command = commandProvider.getCommand(commandName);
         } catch (NullPointerException e) {
+            logger.error("Wild command name ={}", commandName);
             response.sendError(404);
             return;
         }

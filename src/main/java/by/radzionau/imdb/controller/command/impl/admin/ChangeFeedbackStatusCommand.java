@@ -1,6 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
+import by.radzionau.imdb.controller.command.util.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Feedback;
 import by.radzionau.imdb.model.entity.FeedbackStatus;
@@ -16,25 +17,23 @@ import java.util.List;
  * The class ChangeFeedbackStatusCommand.
  */
 public class ChangeFeedbackStatusCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(ChangeFeedbackStatusCommand.class);
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
+    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
         try {
-            Long feedbackId = Long.valueOf(request.getParameter(RequestParameter.FEEDBACK_ID));
+            Long feedbackId = requestUtil.getLong(request, RequestParameter.FEEDBACK_ID);
             Feedback feedback = feedbackService.findFeedbackById(feedbackId);
-            //fixme validation
-            FeedbackStatus newFeedbackStatus = FeedbackStatus.valueOf(request.getParameter(RequestParameter.FEEDBACK_STATUS).toUpperCase());
+            FeedbackStatus newFeedbackStatus = requestUtil.getFeedbackStatus(request);
             feedbackService.updateFeedbackStatus(feedback, newFeedbackStatus);
-
             List<Feedback> feedbackList = feedbackService.findFeedbacksByStatus(FeedbackStatus.UNDER_CONSIDERATION);
             request.setAttribute(RequestAttribute.FEEDBACK_LIST, feedbackList);
             router = new Router(PagePath.GET_FEEDBACKS_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at ChangeFeedbackStatusCommand", e);
-
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.FORWARD);
         }

@@ -64,7 +64,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
     }
 
     @Override
-    public int  add(Feedback feedback) throws DaoException {
+    public int add(Feedback feedback) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT_FEEDBACK, Statement.RETURN_GENERATED_KEYS)
@@ -111,8 +111,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_DELETE_FEEDBACK)
         ) {
             statement.setLong(1, feedback.getFeedbackId());
-            int rowsUpdate = statement.executeUpdate();
-            return rowsUpdate;
+            return statement.executeUpdate();
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while deleting a feedback={}", feedback, e);
             throw new DaoException("Error while deleting a feedback=" + feedback, e);
@@ -152,8 +151,8 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movies", e);
-            throw new DaoException("Error while selecting a movies", e);
+            logger.error("Error while selecting a feedbacks", e);
+            throw new DaoException("Error while selecting a feedbacks", e);
         }
         return feedbacks;
     }
@@ -172,8 +171,8 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 }
             }
         } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movies", e);
-            throw new DaoException("Error while selecting a movies", e);
+            logger.error("Error while selecting a feedbacks", e);
+            throw new DaoException("Error while selecting a feedbacks", e);
         }
         return feedbacks;
     }

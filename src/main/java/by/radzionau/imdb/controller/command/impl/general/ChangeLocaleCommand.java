@@ -15,15 +15,12 @@ public class ChangeLocaleCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         String currentLocale = (String) request.getSession().getAttribute(SessionAttribute.LOCALE);
-
         if (currentLocale.equals(RU_LOCALE)) {
             setNewLocale(request, EN_LOCALE);
         } else {
             setNewLocale(request, RU_LOCALE);
         }
-
         String pageTo = getPageFrom(request);
-
         return new Router(pageTo, Router.RouterType.REDIRECT);
     }
 

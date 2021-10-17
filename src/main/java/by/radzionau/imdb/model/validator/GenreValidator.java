@@ -11,6 +11,10 @@ import by.radzionau.imdb.model.service.impl.GenreServiceImpl;
 public class GenreValidator implements Validator{
     private static final GenreValidator INSTANCE = new GenreValidator();
 
+    private GenreValidator() {
+
+    }
+
     /**
      * Gets instance.
      *
@@ -38,16 +42,10 @@ public class GenreValidator implements Validator{
 
     @Override
     public boolean isValid(Object object) {
-        if (object == null)
+        if (object == null || object.getClass() != Genre.class)
             return false;
-        if (object instanceof Genre) {
-            Genre genre = (Genre) object;
-            if (genre.getName() == null || genre.getName().isEmpty()) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-        return true;
+        Genre genre = (Genre) object;
+        return genre.getName() != null
+                && !genre.getName().isEmpty();
     }
 }

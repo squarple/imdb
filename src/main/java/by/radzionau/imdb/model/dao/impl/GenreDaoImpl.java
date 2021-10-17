@@ -144,8 +144,7 @@ public class GenreDaoImpl implements GenreDao {
         ) {
             statement.setLong(1, movieId);
             statement.setLong(2, genre.getGenreId());
-            int rowsUpdate = statement.executeUpdate();
-            return rowsUpdate;
+            return statement.executeUpdate();
         } catch (ConnectionPoolException | SQLException e) {
             logger.error("Error while adding a genre", e);
             throw new DaoException("Error while adding a genre", e);

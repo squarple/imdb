@@ -20,9 +20,8 @@ import java.util.Optional;
  * The implementation of UserService interface.
  */
 public class UserServiceImpl implements UserService {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private final UserDao userDao = UserDaoImpl.getInstance();
-    private final UserValidator userValidator = UserValidator.getInstance();
 
     private UserServiceImpl() {
 
@@ -58,6 +57,7 @@ public class UserServiceImpl implements UserService {
                 throw new ServiceException("Can't handle signIn request at UserService", e);
             }
         }
+        logger.error("Invalid login or password");
         throw new ServiceException("Invalid login or password");
     }
 
@@ -194,7 +194,8 @@ public class UserServiceImpl implements UserService {
             if (optionalUser.isPresent()) {
                 return optionalUser.get();
             } else {
-                throw new ServiceException("User with login " + login + " doesn't exist");
+                logger.error("User with login={} doesn't exist", login);
+                throw new ServiceException("User with login=" + login + " doesn't exist");
             }
         } catch (DaoException e) {
             logger.error("User  with login {} doesn't exist", login, e);

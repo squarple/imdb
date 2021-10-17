@@ -196,7 +196,7 @@ public class User {
      * The Builder for User.
      */
     public static class Builder {
-        private User user;
+        private final User user;
 
         /**
          * Instantiates a new Builder.
