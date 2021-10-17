@@ -8,7 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <title><fmt:message key="title.get_movie_list"/></title>
     </head>
-    <body>
+    <body onload="changeHashOnLoad(); ">
         <jsp:include page="parts/navbar.jsp"/>
 
         <div class="container">
@@ -28,10 +28,10 @@
                                 <p class="card-text">
                                     <c:choose>
                                         <c:when test="${role == 'ADMIN' || role == 'USER'}">
-                                            rating ${movie_rating_list[status.index]}
+                                            <fmt:message key="get_movie_list.text.rating"/> ${movie_rating_list[status.index]}
                                         </c:when>
                                         <c:otherwise>
-                                            Войдите чтобы увидеть рейтинг
+                                            <fmt:message key="get_movie_list.sign.in.to.see.rating"/>
                                         </c:otherwise>
                                     </c:choose>
                                 </p>
@@ -47,5 +47,14 @@
         
         <jsp:include page="parts/footer.jsp"/>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            var storedHash = window.location.hash;
+            function changeHashOnLoad() {
+                window.location.hash = "1";
+            }
+            window.onhashchange = function () {
+                window.location.hash = storedHash;
+            }
+        </script>
     </body>
 </html>

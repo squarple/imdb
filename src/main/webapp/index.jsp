@@ -2,9 +2,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
-<head>
-</head>
-<body>
-    <jsp:forward page="/pages/main.jsp"/>
-</body>
+    <head>
+        <meta http-equiv="refresh" content="0; url=http://localhost:8080/imdb_war_exploded/controller?command=move_to_main_page">
+    </head>
+    <body>
+    
+    </body>
 </html>
