@@ -46,14 +46,11 @@ public class EmailSenderUtil {
         if (properties == null) {
             setProperties();
         }
-
         String username = properties.getProperty("mail.username");
         String password = properties.getProperty("mail.password");
         String from = properties.getProperty("mail.username");
         String to = user.getEmail();
-
         Session session = getSession(properties, username, password);
-
         Message message = buildMessage(session, user, from, to);
         Transport.send(message);
     }

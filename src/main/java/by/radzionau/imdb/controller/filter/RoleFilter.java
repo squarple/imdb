@@ -29,7 +29,6 @@ public class RoleFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
         String commandName = httpRequest.getParameter(RequestParameter.COMMAND);
         UserRole userRole = (UserRole) httpRequest.getSession().getAttribute(SessionAttribute.ROLE);
         if (commandName == null) {
@@ -52,7 +51,6 @@ public class RoleFilter implements Filter {
             ((HttpServletResponse) response).sendError(404);
             return;
         }
-
         chain.doFilter(request, response);
     }
 }

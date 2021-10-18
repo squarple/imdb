@@ -18,7 +18,6 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String[] getParameterValues(String parameter) {
-
         String[] values = super.getParameterValues(parameter);
         if (values == null) {
             return null;

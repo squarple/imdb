@@ -36,7 +36,6 @@ public class FileUploadController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String commandName = request.getParameter(RequestParameter.COMMAND);
         Command command;
-
         try {
             command = commandProvider.getCommand(commandName);
         } catch (NullPointerException e) {
@@ -45,7 +44,6 @@ public class FileUploadController extends HttpServlet {
             return;
         }
         Router router = command.execute(request);
-
         switch (router.getRouterType()) {
             case REDIRECT:
                 response.sendRedirect(router.getPagePath());

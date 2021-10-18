@@ -27,7 +27,6 @@ public class CustomConnectionPool {
     private CustomConnectionPool() {
         freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
         busyConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
-
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
             ProxyConnection connection;
             try {
