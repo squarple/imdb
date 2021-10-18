@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
@@ -25,7 +25,7 @@ public class SearchMoviesCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            String searchQuery = requestUtil.getString(request, RequestParameter.SEARCH_QUERY);
+            String searchQuery = requestUtil.getParameterAsString(request, RequestParameter.SEARCH_QUERY);
             if (searchQuery.isEmpty()) {
                 String pageTo = getPageFrom(request);
                 return new Router(pageTo, Router.RouterType.REDIRECT);

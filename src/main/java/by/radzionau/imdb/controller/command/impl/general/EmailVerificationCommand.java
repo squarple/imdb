@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.entity.UserStatus;
@@ -24,7 +24,7 @@ public class EmailVerificationCommand implements Command {
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
-            int password = requestUtil.getInt(request, RequestParameter.PASSWORD);
+            int password = requestUtil.getParameterAsInt(request, RequestParameter.PASSWORD);
             if (user != null && isPasswordCorrect(user, password)) {
                 user = userService.updateStatus(user, UserStatus.ACTIVATED);
                 setSessionAttributes(request, user);

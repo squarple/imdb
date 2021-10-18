@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.entity.MovieType;
@@ -26,7 +26,7 @@ public class GetMovieListCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            MovieType movieType = requestUtil.getMovieType(request);
+            MovieType movieType = requestUtil.getParameterAsMovieType(request);
             List<Movie> movies = movieService.findMoviesByMovieType(movieType);
             List<String> movieCoversList = new ArrayList<>();
             List<Double> movieRatingList = new ArrayList<>();

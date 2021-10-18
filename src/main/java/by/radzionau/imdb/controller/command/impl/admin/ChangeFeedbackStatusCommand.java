@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Feedback;
 import by.radzionau.imdb.model.entity.FeedbackStatus;
@@ -25,9 +25,9 @@ public class ChangeFeedbackStatusCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            Long feedbackId = requestUtil.getLong(request, RequestParameter.FEEDBACK_ID);
+            Long feedbackId = requestUtil.getParameterAsLong(request, RequestParameter.FEEDBACK_ID);
             Feedback feedback = feedbackService.findFeedbackById(feedbackId);
-            FeedbackStatus newFeedbackStatus = requestUtil.getFeedbackStatus(request);
+            FeedbackStatus newFeedbackStatus = requestUtil.getParameterAsFeedbackStatus(request);
             feedbackService.updateFeedbackStatus(feedback, newFeedbackStatus);
             List<Feedback> feedbackList = feedbackService.findFeedbacksByStatus(FeedbackStatus.UNDER_CONSIDERATION);
             request.setAttribute(RequestAttribute.FEEDBACK_LIST, feedbackList);

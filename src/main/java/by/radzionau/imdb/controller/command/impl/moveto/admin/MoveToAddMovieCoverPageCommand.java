@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.moveto.admin;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
@@ -22,7 +22,7 @@ public class MoveToAddMovieCoverPageCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
+            Long movieId = requestUtil.getParameterAsLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
             request.setAttribute(RequestAttribute.MOVIE, movie);
             router = new Router(PagePath.ADD_MOVIE_COVER_PAGE.getAddress(), Router.RouterType.FORWARD);

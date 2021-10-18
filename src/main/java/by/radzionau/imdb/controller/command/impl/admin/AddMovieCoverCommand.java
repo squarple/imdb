@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
@@ -29,7 +29,7 @@ public class AddMovieCoverCommand implements Command {
         Router router;
         try {
             String cover = getMovieCover(request);
-            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
+            Long movieId = requestUtil.getParameterAsLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
             movie.setCover(cover);
             movieService.update(movie);

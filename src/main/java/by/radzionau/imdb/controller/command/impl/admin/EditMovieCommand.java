@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
@@ -22,11 +22,11 @@ public class EditMovieCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
+            Long movieId = requestUtil.getParameterAsLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
-            String newTitle = requestUtil.getString(request, RequestParameter.MOVIE_TITLE);
-            String newLogline = requestUtil.getString(request, RequestParameter.MOVIE_LOGLINE);
-            int newReleaseYear = requestUtil.getInt(request, RequestParameter.MOVIE_RELEASE_YEAR);
+            String newTitle = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_TITLE);
+            String newLogline = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_LOGLINE);
+            int newReleaseYear = requestUtil.getParameterAsInt(request, RequestParameter.MOVIE_RELEASE_YEAR);
             movie.setTitle(newTitle);
             movie.setLogline(newLogline);
             movie.setReleaseYear(newReleaseYear);

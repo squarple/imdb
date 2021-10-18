@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.user;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.*;
 import by.radzionau.imdb.model.service.FeedbackService;
@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The class AddFeedbackCommand.
@@ -32,9 +31,9 @@ public class AddFeedbackCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
-            int score = requestUtil.getInt(request, RequestParameter.FEEDBACK_SCORE);
-            String content = requestUtil.getString(request, RequestParameter.FEEDBACK_CONTENT);
+            Long movieId = requestUtil.getParameterAsLong(request, RequestParameter.MOVIE_ID);
+            int score = requestUtil.getParameterAsInt(request, RequestParameter.FEEDBACK_SCORE);
+            String content = requestUtil.getParameterAsString(request, RequestParameter.FEEDBACK_CONTENT);
             User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
             Feedback feedback = buildFeedback(score, content, movieId, user);
             feedbackService.addFeedback(feedback);

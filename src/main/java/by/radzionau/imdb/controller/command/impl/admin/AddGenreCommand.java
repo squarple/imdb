@@ -5,7 +5,7 @@ import by.radzionau.imdb.controller.command.PagePath;
 import by.radzionau.imdb.controller.command.RequestParameter;
 import by.radzionau.imdb.controller.command.Router;
 import by.radzionau.imdb.controller.command.Router.RouterType;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.service.GenreService;
@@ -26,7 +26,7 @@ public class AddGenreCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            String genreName = requestUtil.getString(request, RequestParameter.MOVIE_GENRE);
+            String genreName = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_GENRE);
             if (genreName.isEmpty()) {
                 return new Router(PagePath.ADD_GENRE_PAGE.getAddress(), RouterType.FORWARD);
             }

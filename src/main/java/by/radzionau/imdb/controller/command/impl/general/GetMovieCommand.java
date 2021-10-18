@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.*;
 import by.radzionau.imdb.model.service.FeedbackService;
@@ -32,7 +32,7 @@ public class GetMovieCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
+            Long movieId = requestUtil.getParameterAsLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
             List<Genre> genresList = genreService.findGenresOfMovieByMovieId(movieId);
             Double score = movieService.findMovieScore(movie);

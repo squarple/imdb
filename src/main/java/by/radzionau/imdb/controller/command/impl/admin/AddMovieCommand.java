@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.entity.Movie;
@@ -13,8 +13,6 @@ import by.radzionau.imdb.model.service.impl.MovieServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Optional;
 
 /**
  * The class AddMovieCommand.
@@ -29,11 +27,11 @@ public class AddMovieCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            String title = requestUtil.getString(request, RequestParameter.MOVIE_TITLE);
-            String logline = requestUtil.getString(request, RequestParameter.MOVIE_TITLE);
-            String genreName = requestUtil.getString(request, RequestParameter.MOVIE_GENRE);
-            int releaseYear = requestUtil.getInt(request, RequestParameter.MOVIE_RELEASE_YEAR);
-            MovieType movieType = requestUtil.getMovieType(request);
+            String title = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_TITLE);
+            String logline = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_TITLE);
+            String genreName = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_GENRE);
+            int releaseYear = requestUtil.getParameterAsInt(request, RequestParameter.MOVIE_RELEASE_YEAR);
+            MovieType movieType = requestUtil.getParameterAsMovieType(request);
             Genre genre = genreService.findGenreByName(genreName);
             Movie movie = Movie.builder()
                     .setTitle(title)

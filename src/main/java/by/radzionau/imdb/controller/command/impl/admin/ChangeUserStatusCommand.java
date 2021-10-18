@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.admin;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.entity.UserStatus;
@@ -25,7 +25,7 @@ public class ChangeUserStatusCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            String userLogin = requestUtil.getString(request, RequestParameter.LOGIN);
+            String userLogin = requestUtil.getParameterAsString(request, RequestParameter.LOGIN);
             User userToChange = userService.findUserByLogin(userLogin);
             UserStatus newUserStatus = userToChange.getStatus().equals(UserStatus.BANNED) ? UserStatus.ACTIVATED : UserStatus.BANNED;
             userService.updateStatus(userToChange, newUserStatus);

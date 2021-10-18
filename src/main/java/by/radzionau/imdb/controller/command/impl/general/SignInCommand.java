@@ -1,7 +1,7 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.util.RequestUtil;
+import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.User;
 import by.radzionau.imdb.model.entity.UserStatus;
@@ -23,8 +23,8 @@ public class SignInCommand implements Command {
         Router router;
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
-            String login = requestUtil.getString(request, RequestParameter.LOGIN);
-            String password = requestUtil.getString(request, RequestParameter.PASSWORD);
+            String login = requestUtil.getParameterAsString(request, RequestParameter.LOGIN);
+            String password = requestUtil.getParameterAsString(request, RequestParameter.PASSWORD);
             User user = service.signIn(login, password);
             if (user.getStatus() == UserStatus.NON_ACTIVATED || user.getStatus() == UserStatus.BANNED) {
                 request.setAttribute(RequestAttribute.ERROR_MESSAGE, "your account non activated or banned");
