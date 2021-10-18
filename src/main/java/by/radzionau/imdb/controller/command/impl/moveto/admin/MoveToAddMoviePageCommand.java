@@ -33,7 +33,7 @@ public class MoveToAddMoviePageCommand implements Command {
         } catch (ServiceException e) {
             logger.error("Error at MoveToAddMoviePageCommand", e);
             String pageTo = getPageFrom(request);
-            router = new Router(pageTo, Router.RouterType.FORWARD);
+            router = new Router(pageTo, Router.RouterType.REDIRECT);
         }
         return router;
     }

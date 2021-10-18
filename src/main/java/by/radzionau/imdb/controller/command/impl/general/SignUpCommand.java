@@ -36,7 +36,6 @@ public class SignUpCommand implements Command {
         try {
             User user = signUpUser(signupParameters);
             emailSenderUtil.sendAuthenticationMessage(user);
-            request.setAttribute(RequestAttribute.EMAIL_ADDRESS, user.getEmail());
             request.getSession().setAttribute(SessionAttribute.USER, user);
             router = new Router(PagePath.VERIFY_EMAIL_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException | MessagingException | IOException e) {

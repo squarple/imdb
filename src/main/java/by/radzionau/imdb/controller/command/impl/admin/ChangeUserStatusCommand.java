@@ -37,8 +37,7 @@ public class ChangeUserStatusCommand implements Command {
             router = new Router(pageTo, Router.RouterType.REDIRECT);
         } catch (ServiceException e) {
             logger.error("Error at ChangeUserStatusCommand", e);
-            String pageTo = getPageFrom(request);
-            router = new Router(pageTo, Router.RouterType.FORWARD);
+            router = new Router(PagePath.INDEX_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
         return router;
     }

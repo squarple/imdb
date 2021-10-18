@@ -41,8 +41,7 @@ public class AddMovieCoverCommand implements Command {
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException | ServletException | IOException e) {
             logger.error("Error at AddMovieCoverCommand", e);
-            String pageTo = getPageFrom(request);
-            router = new Router(pageTo, Router.RouterType.FORWARD);
+            router = new Router(PagePath.INDEX_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
         return router;
     }
