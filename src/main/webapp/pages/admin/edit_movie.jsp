@@ -15,17 +15,17 @@
                 <input type="hidden" name="movie_id" value="${movie.movieId}">
                 <div class=" mb-3">
                     <label for="floatingTitle"><fmt:message key="edit_movie.label.title"/></label>
-                    <input type="text" class="form-control" id="floatingTitle" placeholder="title" name="movie_title" value="${movie.title}"/>
+                    <input type="text" class="form-control" id="floatingTitle" placeholder="title" name="movie_title" value="${movie.title}" minlength="1"/>
                 </div>
 
                 <div class="mb-3">
                     <label for="floatingLogline" class="form-label"><fmt:message key="edit_movie.label.logline"/></label>
-                    <textarea type="text" class="form-control" id="floatingLogline" style="height: 150px" name="movie_logline">${movie.logline}</textarea>
+                    <textarea type="text" class="form-control" id="floatingLogline" style="height: 150px" name="movie_logline" minlength="1">${movie.logline}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="floatingReleaseYear"><fmt:message key="edit_movie.label.release.year"/></label>
-                    <input type="text" class="form-control" id="floatingReleaseYear" placeholder="title" name="movie_release_year" value="${movie.releaseYear}"/>
+                    <input type="text" class="form-control" id="floatingReleaseYear" placeholder="title" name="movie_release_year" value="${movie.releaseYear}" minlength="4" maxlength="4"/>
                 </div>
                 <button class="btn btn-primary" type="submit">Save</button>
             </form>

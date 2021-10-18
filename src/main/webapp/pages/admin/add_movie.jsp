@@ -15,21 +15,21 @@
             <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type="hidden" name="command" value="add_movie">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingTitle" name="movie_title"/>
+                    <input type="text" class="form-control" id="floatingTitle" name="movie_title" minlength="1"/>
                     <label for="floatingTitle">
                         <fmt:message key="add_movie.label.title"/>
                     </label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingLogline" name="movie_logline"/>
+                    <input type="text" class="form-control" id="floatingLogline" name="movie_logline" minlength="1"/>
                     <label for="floatingLogline">
                         <fmt:message key="add_movie.label.logline"/>
                     </label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingReleaseYear" name="movie_release_year"/>
+                    <input type="text" class="form-control" id="floatingReleaseYear" name="movie_release_year" minlength="4" maxlength="4"/>
                     <label for="floatingReleaseYear">
                         <fmt:message key="add_movie.label.release.year"/>
                     </label>

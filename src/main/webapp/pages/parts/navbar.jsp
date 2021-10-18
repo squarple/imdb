@@ -60,7 +60,7 @@
                 <div>
                     <form class="d-flex" action="${pageContext.request.contextPath}/controller" method="get">
                         <input type="hidden" name="command" value="search_movies">
-                        <input class="form-control me-2" type="search" name="search_query" placeholder="<fmt:message key="navbar.common.search"/>" aria-label="Search">
+                        <input class="form-control me-2" type="search" name="search_query" placeholder="<fmt:message key="navbar.common.search"/>" aria-label="Search" minlength="1">
                         <button class="btn btn-outline-success" type="submit">
                             <fmt:message key="navbar.common.search"/>
                         </button>

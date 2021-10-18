@@ -18,7 +18,7 @@
                     <label for="formFile" class="form-label">
                         <fmt:message key="add_movie_cover.label.cover.for"/> <fmt:message key="common.quotation.mark"/>${movie.title}<fmt:message key="common.quotation.mark"/>
                     </label>
-                    <input class="form-control" type="file" id="formFile" name="movie_cover" accept="image/png,image/jpeg">
+                    <input class="form-control" type="file" id="formFile" name="movie_cover" accept="image/png,image/jpeg" >
                 </div>
                 <button type="submit" class="btn btn-link">
                     <fmt:message key="add_movie_cover.button.submit"/>
@@ -37,5 +37,15 @@
                 window.location.hash = storedHash;
             }
         </script>
+    <script>
+        var uploadField = document.getElementById("formFile");
+
+        uploadField.onchange = function() {
+            if(this.files[0].size > 5242880){
+                alert("File is too big!");
+                this.value = "";
+            };
+        };
+    </script>
     </body>
 </html>

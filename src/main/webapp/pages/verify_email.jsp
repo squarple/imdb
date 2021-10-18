@@ -9,10 +9,10 @@
     </head>
     <body onload="changeHashOnLoad();">
         <jsp:include page="parts/navbar.jsp"/>
-        
+
         <div class="container">
             <b><fmt:message key="verify_email.label.verify.email.address"/></b>
-            <b><fmt:message key="verify_email.label.verify.email.address.definition"/> ${email_address}</b>
+            <b><fmt:message key="verify_email.label.verify.email.address.definition"/> ${user.email}</b>
         
             <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type="hidden" name="command" value="email_verification">
@@ -20,7 +20,7 @@
                     <b><fmt:message key="verify_email.label.enter.password.from.email"/></b>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingPassword" placeholder="password" name="password">
+                    <input type="text" class="form-control" id="floatingPassword" placeholder="password" name="password" minlength="1" maxlength="30">
                     <label for="floatingPassword">
                         <fmt:message key="verify_email.label.password"/>
                     </label>

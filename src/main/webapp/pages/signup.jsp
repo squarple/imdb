@@ -15,37 +15,37 @@
             <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type="hidden" name="command" value="sign_up">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingName" placeholder="<fmt:message key="signup.label.name"/>" name="first_name" <c:if test="${not empty first_name}">value="${first_name}"</c:if> >
+                    <input type="text" class="form-control" id="floatingName" placeholder="<fmt:message key="signup.label.name"/>" name="first_name" <c:if test="${not empty first_name}">value="${first_name}"</c:if> minlength="1" maxlength="30">
                     <label for="floatingName">
                         <fmt:message key="signup.label.name"/>
                     </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingSurname" placeholder="<fmt:message key="signup.label.surname"/>" name="surname" <c:if test="${not empty surname}">value="${surname}"</c:if>>
+                    <input type="text" class="form-control" id="floatingSurname" placeholder="<fmt:message key="signup.label.surname"/>" name="surname" <c:if test="${not empty surname}">value="${surname}"</c:if> minlength="1" maxlength="30">
                     <label for="floatingSurname">
                         <fmt:message key="signup.label.surname"/>
                     </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" name="email" <c:if test="${not empty email}">value="${email}"</c:if>>
+                    <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" name="email" <c:if test="${not empty email}">value="${email}"</c:if> minlength="1" maxlength="30" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$">
                     <label for="floatingEmail">
                         <fmt:message key="signup.label.email.address"/>
                     </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingLogin" placeholder="<fmt:message key="signup.label.login"/>" name="login" <c:if test="${not empty login}">value="${login}"</c:if>>
+                    <input type="text" class="form-control" id="floatingLogin" placeholder="<fmt:message key="signup.label.login"/>" name="login" <c:if test="${not empty login}">value="${login}"</c:if>  minlength="1" maxlength="30">
                     <label for="floatingLogin">
                         <fmt:message key="signup.label.login"/>
                     </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="<fmt:message key="signup.label.password"/>" name="password">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="<fmt:message key="signup.label.password"/>" name="password"  minlength="8" maxlength="30">
                     <label for="floatingPassword">
                         <fmt:message key="signup.label.password"/>
                     </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingRepeatPassword" placeholder="<fmt:message key="signup.label.password"/>" name="repeated_password">
+                    <input type="password" class="form-control" id="floatingRepeatPassword" placeholder="<fmt:message key="signup.label.password"/>" name="repeated_password"  minlength="8" maxlength="30">
                     <label for="floatingRepeatPassword">
                         <fmt:message key="signup.label.repeat.password"/>
                     </label>

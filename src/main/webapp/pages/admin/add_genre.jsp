@@ -14,7 +14,7 @@
             <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type="hidden" name="command" value="add_genre">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingGenreName" name="movie_genre"/>
+                    <input type="text" class="form-control" id="floatingGenreName" name="movie_genre" minlength="3"/>
                     <label for="floatingGenreName">
                         <fmt:message key="add_genre.label.genre.name"/>
                     </label>

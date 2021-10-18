@@ -32,7 +32,7 @@
                 </select>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label"><fmt:message key="add_feedback.feedback"/></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="feedback_content"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="feedback_content" maxlength="2000"></textarea>
                 </div>
                 <button type="submit" class="btn btn-link">
                     <fmt:message key="add_feedback.button.post"/>
