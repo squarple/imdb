@@ -41,8 +41,4 @@ public class EditMovieCommand implements Command {
         }
         return router;
     }
-
-    private String addDescriptionToCoverImage(String cover) {
-        return "data:image/jpeg;base64," + cover;
-    }
 }

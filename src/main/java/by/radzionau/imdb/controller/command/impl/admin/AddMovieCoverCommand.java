@@ -52,8 +52,4 @@ public class AddMovieCoverCommand implements Command {
             return "";
         }
     }
-
-    private String addDescriptionToCoverImage(String cover) {
-        return "data:image/jpeg;base64," + cover;
-    }
 }

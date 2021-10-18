@@ -40,8 +40,4 @@ public class MoveToMainPageCommand implements Command {
         }
         return new Router(PagePath.MAIN_PAGE.getAddress(), Router.RouterType.FORWARD);
     }
-
-    private String addDescriptionToCoverImage(String cover) {
-        return "data:image/jpeg;base64," + cover;
-    }
 }

@@ -63,8 +63,4 @@ public class AddFeedbackCommand implements Command {
                 .setFeedbackStatus(content.isEmpty() ? FeedbackStatus.APPROVED : FeedbackStatus.UNDER_CONSIDERATION)
                 .build();
     }
-
-    private String addDescriptionToCoverImage(String cover) {
-        return "data:image/jpeg;base64," + cover;
-    }
 }
