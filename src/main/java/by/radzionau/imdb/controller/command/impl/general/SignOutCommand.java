@@ -13,7 +13,6 @@ public class SignOutCommand implements Command {
     public Router execute(HttpServletRequest request) {
         deleteSession(request);
         createNewSession(request);
-
         return new Router(PagePath.INDEX_PAGE.getAddress(), Router.RouterType.REDIRECT);
     }
 

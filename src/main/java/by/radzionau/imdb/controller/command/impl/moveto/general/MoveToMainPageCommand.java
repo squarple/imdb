@@ -26,7 +26,6 @@ public class MoveToMainPageCommand implements Command {
             List<Movie> movieList = new ArrayList<>();
             movieList.addAll(movieService.findMoviesByMovieType(MovieType.FILM));
             movieList.addAll(movieService.findMoviesByMovieType(MovieType.SERIAL));
-
             List<String> movieCoversList = new ArrayList<>();
             List<Double> movieRatingList = new ArrayList<>();
             for (Movie movie : movieList) {

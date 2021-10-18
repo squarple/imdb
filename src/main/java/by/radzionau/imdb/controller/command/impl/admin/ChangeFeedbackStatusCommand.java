@@ -19,11 +19,11 @@ import java.util.List;
 public class ChangeFeedbackStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeFeedbackStatusCommand.class);
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             Long feedbackId = requestUtil.getLong(request, RequestParameter.FEEDBACK_ID);
             Feedback feedback = feedbackService.findFeedbackById(feedbackId);

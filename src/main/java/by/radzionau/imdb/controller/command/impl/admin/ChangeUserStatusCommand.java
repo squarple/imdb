@@ -19,17 +19,16 @@ import java.util.List;
 public class ChangeUserStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeUserStatusCommand.class);
     private static final UserService userService = UserServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             String userLogin = requestUtil.getString(request, RequestParameter.LOGIN);
             User userToChange = userService.findUserByLogin(userLogin);
             UserStatus newUserStatus = userToChange.getStatus().equals(UserStatus.BANNED) ? UserStatus.ACTIVATED : UserStatus.BANNED;
             userService.updateStatus(userToChange, newUserStatus);
-
             List<User> users = userService.findAll();
             removeCurrentUserFromList(request, users);
             request.setAttribute(RequestAttribute.USERS_LIST, users);

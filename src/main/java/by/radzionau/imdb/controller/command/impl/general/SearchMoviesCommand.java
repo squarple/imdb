@@ -19,11 +19,11 @@ import java.util.List;
 public class SearchMoviesCommand implements Command {
     private static final Logger logger = LogManager.getLogger(SearchMoviesCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             String searchQuery = requestUtil.getString(request, RequestParameter.SEARCH_QUERY);
             if (searchQuery.isEmpty()) {
@@ -37,7 +37,6 @@ public class SearchMoviesCommand implements Command {
                 movieCoversList.add(addDescriptionToCoverImage(movie.getCover()));
                 movieRatingList.add(movieService.findMovieScore(movie));
             }
-
             request.setAttribute(RequestAttribute.MOVIES_LIST, movieList);
             request.setAttribute(RequestAttribute.MOVIE_COVERS_LIST, movieCoversList);
             request.setAttribute(RequestAttribute.MOVIE_RATING_LIST, movieRatingList);

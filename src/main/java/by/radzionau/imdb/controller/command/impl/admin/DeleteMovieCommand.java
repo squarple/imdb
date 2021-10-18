@@ -20,11 +20,11 @@ import java.util.List;
 public class DeleteMovieCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteMovieCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);

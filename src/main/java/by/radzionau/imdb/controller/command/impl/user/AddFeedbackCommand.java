@@ -26,11 +26,11 @@ public class AddFeedbackCommand implements Command {
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
     private static final MovieService movieService = MovieServiceImpl.getInstance();
     private static final GenreService genreService = GenreServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             int score = requestUtil.getInt(request, RequestParameter.FEEDBACK_SCORE);
@@ -38,7 +38,6 @@ public class AddFeedbackCommand implements Command {
             User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
             Feedback feedback = buildFeedback(score, content, movieId, user);
             feedbackService.addFeedback(feedback);
-
             Movie movie = movieService.findMovieById(movieId);
             List<Genre> genresList = genreService.findGenresOfMovieByMovieId(movieId);
             Double movieScore = movieService.findMovieScore(movie);
@@ -46,7 +45,6 @@ public class AddFeedbackCommand implements Command {
             request.setAttribute(RequestAttribute.MOVIE, movie);
             request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
             request.setAttribute(RequestAttribute.GENRES_LIST, genresList);
-
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at AddFeedbackCommand", e);

@@ -17,11 +17,11 @@ import org.apache.logging.log4j.Logger;
 public class SignInCommand implements Command {
     private static final Logger logger = LogManager.getLogger(SignInCommand.class);
     private static final UserService service = UserServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             String login = requestUtil.getString(request, RequestParameter.LOGIN);
             String password = requestUtil.getString(request, RequestParameter.PASSWORD);

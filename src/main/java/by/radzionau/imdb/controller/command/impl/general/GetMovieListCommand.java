@@ -20,11 +20,11 @@ import java.util.List;
 public class GetMovieListCommand implements Command {
     private static final Logger logger = LogManager.getLogger(GetMovieListCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             MovieType movieType = requestUtil.getMovieType(request);
             List<Movie> movies = movieService.findMoviesByMovieType(movieType);

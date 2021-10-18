@@ -17,11 +17,11 @@ import org.apache.logging.log4j.Logger;
 public class EmailVerificationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EmailVerificationCommand.class);
     private static final UserService userService = UserServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
             int password = requestUtil.getInt(request, RequestParameter.PASSWORD);
@@ -43,7 +43,6 @@ public class EmailVerificationCommand implements Command {
     private void setSessionAttributes(HttpServletRequest request, User user) {
         request.getSession().removeAttribute(SessionAttribute.USER);
         request.getSession().setAttribute(SessionAttribute.USER, user);
-
         request.getSession().setAttribute(SessionAttribute.LOGIN, user.getLogin());
         request.getSession().setAttribute(SessionAttribute.ROLE, user.getRole());
     }

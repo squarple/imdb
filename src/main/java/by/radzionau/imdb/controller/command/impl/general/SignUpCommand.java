@@ -22,7 +22,6 @@ import java.util.Map;
 public class SignUpCommand implements Command {
     private static final Logger logger = LogManager.getLogger(SignUpCommand.class);
     private static final UserService userService = UserServiceImpl.getInstance();
-    private static final EmailSenderUtil emailSenderUtil = EmailSenderUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
@@ -35,7 +34,7 @@ public class SignUpCommand implements Command {
         }
         try {
             User user = signUpUser(signupParameters);
-            emailSenderUtil.sendAuthenticationMessage(user);
+            EmailSenderUtil.getInstance().sendAuthenticationMessage(user);
             request.getSession().setAttribute(SessionAttribute.USER, user);
             router = new Router(PagePath.VERIFY_EMAIL_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException | MessagingException | IOException e) {

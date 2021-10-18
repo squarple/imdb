@@ -23,11 +23,11 @@ public class AddMovieCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddMovieCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
     private static final GenreService genreService = GenreServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             String title = requestUtil.getString(request, RequestParameter.MOVIE_TITLE);
             String logline = requestUtil.getString(request, RequestParameter.MOVIE_TITLE);

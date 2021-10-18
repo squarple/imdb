@@ -20,11 +20,11 @@ import org.apache.logging.log4j.Logger;
 public class AddGenreCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddGenreCommand.class);
     private static final GenreService genreService = GenreServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             String genreName = requestUtil.getString(request, RequestParameter.MOVIE_GENRE);
             if (genreName.isEmpty()) {

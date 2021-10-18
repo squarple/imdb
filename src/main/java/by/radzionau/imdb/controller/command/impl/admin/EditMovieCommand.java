@@ -16,23 +16,21 @@ import org.apache.logging.log4j.Logger;
 public class EditMovieCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditMovieCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
             String newTitle = requestUtil.getString(request, RequestParameter.MOVIE_TITLE);
             String newLogline = requestUtil.getString(request, RequestParameter.MOVIE_LOGLINE);
             int newReleaseYear = requestUtil.getInt(request, RequestParameter.MOVIE_RELEASE_YEAR);
-
             movie.setTitle(newTitle);
             movie.setLogline(newLogline);
             movie.setReleaseYear(newReleaseYear);
             movieService.update(movie);
-
             request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
             request.setAttribute(RequestAttribute.MOVIE, movie);
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);

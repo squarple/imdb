@@ -26,11 +26,11 @@ public class GetMovieCommand implements Command {
     private static final MovieService movieService = MovieServiceImpl.getInstance();
     private static final GenreService genreService = GenreServiceImpl.getInstance();
     private static final FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
+        RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
@@ -40,7 +40,6 @@ public class GetMovieCommand implements Command {
             request.setAttribute(RequestAttribute.MOVIE, movie);
             request.setAttribute(RequestAttribute.GENRES_LIST, genresList);
             request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
-
             User currentUser = (User) request.getSession().getAttribute(SessionAttribute.USER);
             if (currentUser != null && currentUser.getRole() == UserRole.USER) {
                 List<Feedback> feedbackList = feedbackService.findFeedbacksByMovieId(movieId)

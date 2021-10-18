@@ -22,20 +22,17 @@ import java.util.Optional;
 public class AddMovieCoverCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddMovieCoverCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
-    private static final RequestUtil requestUtil = RequestUtil.getInstance();
-    private static final ImageInputStreamUtil inputStreamUtil = ImageInputStreamUtil.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) {
+        RequestUtil requestUtil = RequestUtil.getInstance();
         Router router;
-
         try {
             String cover = getMovieCover(request);
             Long movieId = requestUtil.getLong(request, RequestParameter.MOVIE_ID);
             Movie movie = movieService.findMovieById(movieId);
             movie.setCover(cover);
             movieService.update(movie);
-
             request.setAttribute(RequestAttribute.MOVIE, movie);
             request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
@@ -50,7 +47,7 @@ public class AddMovieCoverCommand implements Command {
         Optional<Part> part = request.getParts().stream()
                 .filter(p -> p.getName().equals(RequestParameter.MOVIE_COVER)).findFirst();
         if (part.isPresent()) {
-            return inputStreamUtil.getImageInputStreamAsString(part.get().getInputStream());
+            return ImageInputStreamUtil.getInstance().getImageInputStreamAsString(part.get().getInputStream());
         } else {
             return "";
         }
