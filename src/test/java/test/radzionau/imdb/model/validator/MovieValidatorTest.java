@@ -14,7 +14,6 @@ class MovieValidatorTest {
                 .setLogline("logline")
                 .setMovieType(MovieType.FILM)
                 .build();
-
         Assertions.assertTrue(MovieValidator.getInstance().isValid(movie));
     }
 
@@ -25,7 +24,6 @@ class MovieValidatorTest {
                 .setLogline("logline")
                 .setMovieType(MovieType.FILM)
                 .build();
-
         Assertions.assertFalse(MovieValidator.getInstance().isValid(movie));
     }
 }

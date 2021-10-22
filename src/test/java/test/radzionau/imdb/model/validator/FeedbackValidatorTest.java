@@ -20,7 +20,6 @@ class FeedbackValidatorTest {
                 .setUserId(1L)
                 .setFeedbackStatus(FeedbackStatus.APPROVED)
                 .build();
-
         Assertions.assertTrue(FeedbackValidator.getInstance().isValid(feedback));
     }
 
@@ -35,7 +34,6 @@ class FeedbackValidatorTest {
                 .setUserId(1L)
                 .setFeedbackStatus(FeedbackStatus.APPROVED)
                 .build();
-
         Assertions.assertFalse(FeedbackValidator.getInstance().isValid(feedback));
     }
 }
