@@ -27,8 +27,4 @@ public interface Command {
         }
         return pageTo;
     }
-
-    default String addDescriptionToCoverImage(String cover) {
-        return "data:image/jpeg;base64," + cover;
-    }
 }

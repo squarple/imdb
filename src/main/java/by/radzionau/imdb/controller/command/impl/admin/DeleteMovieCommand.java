@@ -7,6 +7,7 @@ import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.model.service.MovieService;
 import by.radzionau.imdb.model.service.impl.MovieServiceImpl;
+import by.radzionau.imdb.util.ImageInputStreamUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +34,7 @@ public class DeleteMovieCommand implements Command {
             List<Movie> movieList = movieService.findMoviesByMovieType(movieType);
             List<String> movieCoversList = new ArrayList<>();
             for (Movie currentMovie : movieList) {
-                movieCoversList.add(addDescriptionToCoverImage(currentMovie.getCover()));
+                movieCoversList.add(ImageInputStreamUtil.getInstance().addDescriptionToCoverImage(currentMovie.getCover()));
             }
             request.setAttribute(RequestAttribute.MOVIE_COVERS_LIST, movieCoversList);
             request.setAttribute(RequestAttribute.MOVIES_LIST, movieList);

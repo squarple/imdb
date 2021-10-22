@@ -6,6 +6,7 @@ import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
 import by.radzionau.imdb.model.service.impl.MovieServiceImpl;
+import by.radzionau.imdb.util.ImageInputStreamUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +32,7 @@ public class EditMovieCommand implements Command {
             movie.setLogline(newLogline);
             movie.setReleaseYear(newReleaseYear);
             movieService.update(movie);
-            request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
+            request.setAttribute(RequestAttribute.MOVIE_COVER, ImageInputStreamUtil.getInstance().addDescriptionToCoverImage(movie.getCover()));
             request.setAttribute(RequestAttribute.MOVIE, movie);
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {

@@ -6,6 +6,7 @@ import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.service.MovieService;
 import by.radzionau.imdb.model.service.impl.MovieServiceImpl;
+import by.radzionau.imdb.util.ImageInputStreamUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +35,7 @@ public class SearchMoviesCommand implements Command {
             List<String> movieCoversList = new ArrayList<>();
             List<Double> movieRatingList = new ArrayList<>();
             for (Movie movie : movieList) {
-                movieCoversList.add(addDescriptionToCoverImage(movie.getCover()));
+                movieCoversList.add(ImageInputStreamUtil.getInstance().addDescriptionToCoverImage(movie.getCover()));
                 movieRatingList.add(movieService.findMovieScore(movie));
             }
             request.setAttribute(RequestAttribute.MOVIES_LIST, movieList);

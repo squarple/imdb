@@ -10,6 +10,7 @@ import by.radzionau.imdb.model.service.MovieService;
 import by.radzionau.imdb.model.service.impl.FeedbackServiceImpl;
 import by.radzionau.imdb.model.service.impl.GenreServiceImpl;
 import by.radzionau.imdb.model.service.impl.MovieServiceImpl;
+import by.radzionau.imdb.util.ImageInputStreamUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,7 +43,7 @@ public class AddFeedbackCommand implements Command {
             Double movieScore = movieService.findMovieScore(movie);
             request.setAttribute(RequestAttribute.MOVIE_SCORE, movieScore);
             request.setAttribute(RequestAttribute.MOVIE, movie);
-            request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
+            request.setAttribute(RequestAttribute.MOVIE_COVER, ImageInputStreamUtil.getInstance().addDescriptionToCoverImage(movie.getCover()));
             request.setAttribute(RequestAttribute.GENRES_LIST, genresList);
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {

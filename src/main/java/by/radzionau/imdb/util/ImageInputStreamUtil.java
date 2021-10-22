@@ -15,6 +15,7 @@ import java.io.InputStream;
  */
 public final class ImageInputStreamUtil {
     private static final Logger logger = LogManager.getLogger(ImageInputStreamUtil.class);
+    private static final String IMAGE_DESCRIPTION = "data:image/jpeg;base64,";
 
     private static final class ImageInputStringUtilHolder {
         private static final ImageInputStreamUtil INSTANCE = new ImageInputStreamUtil();
@@ -65,5 +66,15 @@ public final class ImageInputStreamUtil {
         byte[] decodeImg = Base64.decodeBase64(encodeImg);
 
         return new ByteArrayInputStream(decodeImg);
+    }
+
+    /**
+     * Add description to cover image.
+     *
+     * @param cover the image as string
+     * @return the image as string with description
+     */
+    public String addDescriptionToCoverImage(String cover) {
+        return IMAGE_DESCRIPTION + cover;
     }
 }

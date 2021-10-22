@@ -34,7 +34,7 @@ public class AddMovieCoverCommand implements Command {
             movie.setCover(cover);
             movieService.update(movie);
             request.setAttribute(RequestAttribute.MOVIE, movie);
-            request.setAttribute(RequestAttribute.MOVIE_COVER, addDescriptionToCoverImage(movie.getCover()));
+            request.setAttribute(RequestAttribute.MOVIE_COVER, ImageInputStreamUtil.getInstance().addDescriptionToCoverImage(movie.getCover()));
             router = new Router(PagePath.GET_MOVIE_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException | ServletException | IOException e) {
             logger.error("Error at AddMovieCoverCommand", e);
