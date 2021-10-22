@@ -77,7 +77,7 @@ public class SignUpCommand implements Command {
             }
         }
 
-        if (UserValidator.getInstance().isLoginPresence(signupParameters.get(RequestParameter.LOGIN))) {
+        if (isLoginPresence(signupParameters.get(RequestParameter.LOGIN))) {
             signupParameters.put(RequestParameter.LOGIN, "");
             flag = false;
         }
@@ -92,6 +92,15 @@ public class SignUpCommand implements Command {
         }
 
         return flag;
+    }
+
+    private boolean isLoginPresence(String login) {
+        try {
+            userService.findUserByLogin(login);
+            return true;
+        } catch (ServiceException e) {
+            return false;
+        }
     }
 
     private void setSignupParameters(HttpServletRequest request, Map<String, String> signupParameters) {

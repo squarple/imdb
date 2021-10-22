@@ -24,22 +24,6 @@ public class GenreValidator implements Validator{
         return INSTANCE;
     }
 
-    /**
-     * Is genre presence already in database.
-     *
-     * @param genreName the genre name
-     * @return the true if already presence and false if not
-     */
-    public boolean isGenrePresence(String genreName) {
-        GenreService genreService = GenreServiceImpl.getInstance();
-        try {
-            genreService.findGenreByName(genreName);
-            return true;
-        } catch (ServiceException e) {
-            return false;
-        }
-    }
-
     @Override
     public boolean isValid(Object object) {
         if (object == null || object.getClass() != Genre.class)

@@ -43,10 +43,6 @@ public class GenreServiceImpl implements GenreService {
             logger.error("Invalid genre");
             throw new ServiceException("Invalid genre");
         }
-        if (GenreValidator.getInstance().isGenrePresence(genre.getName())) {
-            logger.error("Genre already presence");
-            throw new ServiceException("Genre already presence");
-        }
         try {
             genreDao.add(genre);
         } catch (DaoException e) {

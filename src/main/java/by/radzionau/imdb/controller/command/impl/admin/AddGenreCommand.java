@@ -27,7 +27,7 @@ public class AddGenreCommand implements Command {
         RequestUtil requestUtil = RequestUtil.getInstance();
         try {
             String genreName = requestUtil.getParameterAsString(request, RequestParameter.MOVIE_GENRE);
-            if (genreName.isEmpty()) {
+            if (genreName.isEmpty() || isGenrePresence(genreName)) {
                 return new Router(PagePath.ADD_GENRE_PAGE.getAddress(), RouterType.FORWARD);
             }
             Genre genre = Genre.builder()
@@ -40,5 +40,14 @@ public class AddGenreCommand implements Command {
             router = new Router(PagePath.ADD_GENRE_PAGE.getAddress(), Router.RouterType.FORWARD);
         }
         return router;
+    }
+
+    public boolean isGenrePresence(String genreName) {
+        try {
+            genreService.findGenreByName(genreName);
+            return true;
+        } catch (ServiceException e) {
+            return false;
+        }
     }
 }

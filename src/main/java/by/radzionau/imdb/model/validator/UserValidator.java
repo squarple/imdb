@@ -40,22 +40,6 @@ public class UserValidator implements Validator {
         return matcher.matches();
     }
 
-    /**
-     * Is login presence already in database.
-     *
-     * @param login the login
-     * @return the true if login already presence and false if not
-     */
-    public boolean isLoginPresence(String login) {
-        UserService userService = UserServiceImpl.getInstance();
-        try {
-            userService.findUserByLogin(login);
-            return true;
-        } catch (ServiceException e) {
-            return false;
-        }
-    }
-
     @Override
     public boolean isValid(Object object) {
         if (object == null || object.getClass() != User.class)
