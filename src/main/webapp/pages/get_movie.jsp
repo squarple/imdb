@@ -48,7 +48,16 @@
             <h5><b><fmt:message key="get_movie.text.movie.title"/></b> ${movie.title}</h5>
             <h5><b><fmt:message key="get_movie.text.movie.logline"/></b> ${movie.logline}</h5>
             <h5><b><fmt:message key="get_movie.text.movie.release.year"/></b> ${movie.releaseYear}</h5>
-            <h5><b><fmt:message key="get_movie.text.movie.score"/></b> ${movie_score}</h5>
+            <h5>
+                <c:choose>
+                    <c:when test="${role == 'ADMIN' || role == 'USER'}">
+                        <b><fmt:message key="get_movie.text.movie.score"/></b> ${movie_score}
+                    </c:when>
+                    <c:otherwise>
+                        <b><fmt:message key="get_movie_list.sign.in.to.see.rating"/></b>
+                    </c:otherwise>
+                </c:choose>
+            </h5>
             <b><fmt:message key="get_movie.text.movie.genre"/></b></h5>
             <c:forEach items="${genres_list}" var="genre">
                 <h5>${genre.name}</h5>
