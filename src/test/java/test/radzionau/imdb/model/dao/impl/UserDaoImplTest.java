@@ -23,96 +23,140 @@ class UserDaoImplTest {
     }
 
     @Test
-    void add_Positive() throws DaoException {
+    void add_Positive() {
         User user = new User();
         String hashedPassword = "passwd";
-        Mockito.when(userDao.add(user, hashedPassword)).thenReturn(1);
-        int actualResult = userDao.add(user, hashedPassword);
-        Assertions.assertEquals(1, actualResult);
+        try {
+            Mockito.when(userDao.add(user, hashedPassword)).thenReturn(1);
+            int actualResult = userDao.add(user, hashedPassword);
+            Assertions.assertEquals(1, actualResult);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void add_Negative() throws DaoException {
+    void add_Negative() {
         User user = new User();
         String hashedPassword = "passwd";
-        Mockito.when(userDao.add(user, hashedPassword)).thenReturn(0);
-        int actualResult = userDao.add(user, hashedPassword);
-        Assertions.assertEquals(0, actualResult);
+        try {
+            Mockito.when(userDao.add(user, hashedPassword)).thenReturn(0);
+            int actualResult = userDao.add(user, hashedPassword);
+            Assertions.assertEquals(0, actualResult);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void update_Positive() throws DaoException {
+    void update_Positive() {
         User user = new User();
-        Mockito.when(userDao.update(user)).thenReturn(1);
-        int actualResult = userDao.update(user);
-        Assertions.assertEquals(1, actualResult);
+        try {
+            Mockito.when(userDao.update(user)).thenReturn(1);
+            int actualResult = userDao.update(user);
+            Assertions.assertEquals(1, actualResult);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void update_Negative() throws DaoException {
+    void update_Negative() {
         User user = new User();
-        Mockito.when(userDao.update(user)).thenReturn(0);
-        int actualResult = userDao.update(user);
-        Assertions.assertEquals(0, actualResult);
+        try {
+            Mockito.when(userDao.update(user)).thenReturn(0);
+            int actualResult = userDao.update(user);
+            Assertions.assertEquals(0, actualResult);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findUserByLogin_Positive() throws DaoException {
+    void findUserByLogin_Positive() {
         User user = new User();
         String login = "login";
-        Mockito.when(userDao.findUserByLogin(login)).thenReturn(Optional.of(user));
-        Optional<User> actualUser = userDao.findUserByLogin(login);
-        Assertions.assertTrue(actualUser.isPresent());
+        try {
+            Mockito.when(userDao.findUserByLogin(login)).thenReturn(Optional.of(user));
+            Optional<User> actualUser = userDao.findUserByLogin(login);
+            Assertions.assertTrue(actualUser.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findUserByLogin_Negative() throws DaoException {
+    void findUserByLogin_Negative() {
         String login = "login";
-        Mockito.when(userDao.findUserByLogin(login)).thenReturn(Optional.empty());
-        Optional<User> actualUser = userDao.findUserByLogin(login);
-        Assertions.assertFalse(actualUser.isPresent());
+        try {
+            Mockito.when(userDao.findUserByLogin(login)).thenReturn(Optional.empty());
+            Optional<User> actualUser = userDao.findUserByLogin(login);
+            Assertions.assertFalse(actualUser.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findUserPasswordByLogin_Positive() throws DaoException {
+    void findUserPasswordByLogin_Positive() {
         String login = "login";
         String password = "password";
-        Mockito.when(userDao.findUserPasswordByLogin(login)).thenReturn(Optional.of(password));
-        Optional<String> actualPassword = userDao.findUserPasswordByLogin(login);
-        Assertions.assertTrue(actualPassword.isPresent());
+        try {
+            Mockito.when(userDao.findUserPasswordByLogin(login)).thenReturn(Optional.of(password));
+            Optional<String> actualPassword = userDao.findUserPasswordByLogin(login);
+            Assertions.assertTrue(actualPassword.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findUserPasswordByLogin_Negative() throws DaoException {
+    void findUserPasswordByLogin_Negative() {
         String login = "login";
-        Mockito.when(userDao.findUserPasswordByLogin(login)).thenReturn(Optional.empty());
-        Optional<String> actualUser = userDao.findUserPasswordByLogin(login);
-        Assertions.assertFalse(actualUser.isPresent());
+        try {
+            Mockito.when(userDao.findUserPasswordByLogin(login)).thenReturn(Optional.empty());
+            Optional<String> actualUser = userDao.findUserPasswordByLogin(login);
+            Assertions.assertFalse(actualUser.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findUsersByStatus_Positive() throws DaoException {
+    void findUsersByStatus_Positive() {
         List<User> userList = new ArrayList<>();
         UserStatus userStatus = UserStatus.ACTIVATED;
-        Mockito.when(userDao.findUsersByStatus(userStatus)).thenReturn(userList);
-        List<User> actualUserList = userDao.findUsersByStatus(userStatus);
-        Assertions.assertEquals(userList, actualUserList);
+        try {
+            Mockito.when(userDao.findUsersByStatus(userStatus)).thenReturn(userList);
+            List<User> actualUserList = userDao.findUsersByStatus(userStatus);
+            Assertions.assertEquals(userList, actualUserList);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findUsersByRole_Positive() throws DaoException {
+    void findUsersByRole_Positive() {
         List<User> userList = new ArrayList<>();
         UserRole userRole = UserRole.USER;
-        Mockito.when(userDao.findUsersByRole(userRole)).thenReturn(userList);
-        List<User> actualUserList = userDao.findUsersByRole(userRole);
-        Assertions.assertEquals(userList, actualUserList);
+        try {
+            Mockito.when(userDao.findUsersByRole(userRole)).thenReturn(userList);
+            List<User> actualUserList = userDao.findUsersByRole(userRole);
+            Assertions.assertEquals(userList, actualUserList);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findAll_Positive() throws DaoException {
+    void findAll_Positive() {
         List<User> userList = new ArrayList<>();
-        Mockito.when(userDao.findAll()).thenReturn(userList);
-        List<User> actualUserList = userDao.findAll();
-        Assertions.assertEquals(userList, actualUserList);
+        try {
+            Mockito.when(userDao.findAll()).thenReturn(userList);
+            List<User> actualUserList = userDao.findAll();
+            Assertions.assertEquals(userList, actualUserList);
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 }

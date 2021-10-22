@@ -23,110 +23,166 @@ class MovieDaoImplTest {
     }
 
     @Test
-    void add_Positive() throws DaoException {
+    void add_Positive() {
         Movie movie = new Movie();
-        Mockito.when(movieDao.add(movie)).thenReturn(1);
-        Assertions.assertEquals(1, movieDao.add(movie));
+        try {
+            Mockito.when(movieDao.add(movie)).thenReturn(1);
+            Assertions.assertEquals(1, movieDao.add(movie));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void add_Negative() throws DaoException {
+    void add_Negative() {
         Movie movie = new Movie();
-        Mockito.when(movieDao.add(movie)).thenReturn(0);
-        Assertions.assertNotEquals(1, movieDao.add(movie));
+        try {
+            Mockito.when(movieDao.add(movie)).thenReturn(0);
+            Assertions.assertNotEquals(1, movieDao.add(movie));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void update_Positive() throws DaoException {
+    void update_Positive() {
         Movie movie = new Movie();
-        Mockito.when(movieDao.update(movie)).thenReturn(1);
-        Assertions.assertEquals(1, movieDao.update(movie));
+        try {
+            Mockito.when(movieDao.update(movie)).thenReturn(1);
+            Assertions.assertEquals(1, movieDao.update(movie));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void update_Negative() throws DaoException {
+    void update_Negative() {
         Movie movie = new Movie();
-        Mockito.when(movieDao.update(movie)).thenReturn(0);
-        Assertions.assertNotEquals(1, movieDao.update(movie));
+        try {
+            Mockito.when(movieDao.update(movie)).thenReturn(0);
+            Assertions.assertNotEquals(1, movieDao.update(movie));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void delete_Positive() throws DaoException {
+    void delete_Positive() {
         Movie movie = new Movie();
-        Mockito.when(movieDao.delete(movie)).thenReturn(1);
-        Assertions.assertEquals(1, movieDao.delete(movie));
+        try {
+            Mockito.when(movieDao.delete(movie)).thenReturn(1);
+            Assertions.assertEquals(1, movieDao.delete(movie));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void delete_Negative() throws DaoException {
+    void delete_Negative() {
         Movie movie = new Movie();
-        Mockito.when(movieDao.delete(movie)).thenReturn(0);
-        Assertions.assertNotEquals(1, movieDao.update(movie));
+        try {
+            Mockito.when(movieDao.delete(movie)).thenReturn(0);
+            Assertions.assertNotEquals(1, movieDao.update(movie));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMovieById_Positive() throws DaoException {
+    void findMovieById_Positive() {
         Long movieId = 1L;
         Movie movie = new Movie();
-        Mockito.when(movieDao.findMovieById(movieId)).thenReturn(Optional.of(movie));
-        Optional<Movie> optionalMovie = movieDao.findMovieById(movieId);
-        Assertions.assertTrue(optionalMovie.isPresent());
+        try {
+            Mockito.when(movieDao.findMovieById(movieId)).thenReturn(Optional.of(movie));
+            Optional<Movie> optionalMovie = movieDao.findMovieById(movieId);
+            Assertions.assertTrue(optionalMovie.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMovieById_Negative() throws DaoException {
+    void findMovieById_Negative() {
         Long movieId = 1L;
-        Mockito.when(movieDao.findMovieById(movieId)).thenReturn(Optional.empty());
-        Optional<Movie> optionalMovie = movieDao.findMovieById(movieId);
-        Assertions.assertFalse(optionalMovie.isPresent());
+        try {
+            Mockito.when(movieDao.findMovieById(movieId)).thenReturn(Optional.empty());
+            Optional<Movie> optionalMovie = movieDao.findMovieById(movieId);
+            Assertions.assertFalse(optionalMovie.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMoviesByTitle_Positive() throws DaoException {
+    void findMoviesByTitle_Positive() {
         String title = "title";
         List<Movie> movieList = new ArrayList<>();
-        Mockito.when(movieDao.findMoviesByTitle(title)).thenReturn(movieList);
-        Assertions.assertEquals(movieList, movieDao.findMoviesByTitle(title));
+        try {
+            Mockito.when(movieDao.findMoviesByTitle(title)).thenReturn(movieList);
+            Assertions.assertEquals(movieList, movieDao.findMoviesByTitle(title));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMoviesByYear_Positive() throws DaoException {
+    void findMoviesByYear_Positive() {
         int year = 2016;
         List<Movie> movieList = new ArrayList<>();
-        Mockito.when(movieDao.findMoviesByYear(year)).thenReturn(movieList);
-        Assertions.assertEquals(movieList, movieDao.findMoviesByYear(year));
+        try {
+            Mockito.when(movieDao.findMoviesByYear(year)).thenReturn(movieList);
+            Assertions.assertEquals(movieList, movieDao.findMoviesByYear(year));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMoviesByGenre_Positive() throws DaoException {
+    void findMoviesByGenre_Positive() {
         Genre genre = new Genre();
         List<Movie> movieList = new ArrayList<>();
-        Mockito.when(movieDao.findMoviesByGenre(genre)).thenReturn(movieList);
-        Assertions.assertEquals(movieList, movieDao.findMoviesByGenre(genre));
+        try {
+            Mockito.when(movieDao.findMoviesByGenre(genre)).thenReturn(movieList);
+            Assertions.assertEquals(movieList, movieDao.findMoviesByGenre(genre));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMoviesByMovieType_Positive() throws DaoException {
+    void findMoviesByMovieType_Positive() {
         MovieType movieType = MovieType.FILM;
         List<Movie> movieList = new ArrayList<>();
-        Mockito.when(movieDao.findMoviesByMovieType(movieType)).thenReturn(movieList);
-        Assertions.assertEquals(movieList, movieDao.findMoviesByMovieType(movieType));
+        try {
+            Mockito.when(movieDao.findMoviesByMovieType(movieType)).thenReturn(movieList);
+            Assertions.assertEquals(movieList, movieDao.findMoviesByMovieType(movieType));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMovieScoreByMovieId_Positive() throws DaoException {
+    void findMovieScoreByMovieId_Positive() {
         Long movieId = 1L;
         Double score = 5.6d;
-        Mockito.when(movieDao.findMovieScoreByMovieId(movieId)).thenReturn(Optional.of(score));
-        Optional<Double> optionalDouble = movieDao.findMovieScoreByMovieId(movieId);
-        Assertions.assertTrue(optionalDouble.isPresent());
+        try {
+            Mockito.when(movieDao.findMovieScoreByMovieId(movieId)).thenReturn(Optional.of(score));
+            Optional<Double> optionalDouble = movieDao.findMovieScoreByMovieId(movieId);
+            Assertions.assertTrue(optionalDouble.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findMovieScoreByMovieId_Negative() throws DaoException {
+    void findMovieScoreByMovieId_Negative() {
         Long movieId = 1L;
-        Mockito.when(movieDao.findMovieScoreByMovieId(movieId)).thenReturn(Optional.empty());
-        Optional<Double> optionalDouble = movieDao.findMovieScoreByMovieId(movieId);
-        Assertions.assertFalse(optionalDouble.isPresent());
+        try {
+            Mockito.when(movieDao.findMovieScoreByMovieId(movieId)).thenReturn(Optional.empty());
+            Optional<Double> optionalDouble = movieDao.findMovieScoreByMovieId(movieId);
+            Assertions.assertFalse(optionalDouble.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 }

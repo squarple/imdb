@@ -21,66 +21,98 @@ class GenreDaoImplTest {
     }
 
     @Test
-    void add_Positive() throws DaoException {
+    void add_Positive() {
         Genre genre = new Genre();
-        Mockito.when(genreDao.add(genre)).thenReturn(1);
-        Assertions.assertEquals(1, genreDao.add(genre));
+        try {
+            Mockito.when(genreDao.add(genre)).thenReturn(1);
+            Assertions.assertEquals(1, genreDao.add(genre));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void add_Negative() throws DaoException {
+    void add_Negative() {
         Genre genre = new Genre();
-        Mockito.when(genreDao.add(genre)).thenReturn(0);
-        Assertions.assertNotEquals(1, genreDao.add(genre));
+        try {
+            Mockito.when(genreDao.add(genre)).thenReturn(0);
+            Assertions.assertNotEquals(1, genreDao.add(genre));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findAll_Positive() throws DaoException {
+    void findAll_Positive() {
         List<Genre> genreList = new ArrayList<>();
-        Mockito.when(genreDao.findAll()).thenReturn(genreList);
-        Assertions.assertEquals(genreList, genreDao.findAll());
+        try {
+            Mockito.when(genreDao.findAll()).thenReturn(genreList);
+            Assertions.assertEquals(genreList, genreDao.findAll());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findGenresOfMovieByMovieId_Positive() throws DaoException {
+    void findGenresOfMovieByMovieId_Positive() {
         Long movieId = 1L;
         List<Genre> genreList = new ArrayList<>();
-        Mockito.when(genreDao.findGenresOfMovieByMovieId(movieId)).thenReturn(genreList);
-        Assertions.assertEquals(genreList, genreDao.findGenresOfMovieByMovieId(movieId));
+        try {
+            Mockito.when(genreDao.findGenresOfMovieByMovieId(movieId)).thenReturn(genreList);
+            Assertions.assertEquals(genreList, genreDao.findGenresOfMovieByMovieId(movieId));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findGenreByName_Positive() throws DaoException {
+    void findGenreByName_Positive() {
         String genreName = "genre";
         Genre genre = new Genre();
-        Mockito.when(genreDao.findGenreByName(genreName)).thenReturn(Optional.of(genre));
-        Optional<Genre> optionalGenre = genreDao.findGenreByName(genreName);
-        Assertions.assertTrue(optionalGenre.isPresent());
+        try {
+            Mockito.when(genreDao.findGenreByName(genreName)).thenReturn(Optional.of(genre));
+            Optional<Genre> optionalGenre = genreDao.findGenreByName(genreName);
+            Assertions.assertTrue(optionalGenre.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void findGenreByName_Negative() throws DaoException {
+    void findGenreByName_Negative() {
         String genreName = "genre";
-        Mockito.when(genreDao.findGenreByName(genreName)).thenReturn(Optional.empty());
-        Optional<Genre> optionalGenre = genreDao.findGenreByName(genreName);
-        Assertions.assertFalse(optionalGenre.isPresent());
+        try {
+            Mockito.when(genreDao.findGenreByName(genreName)).thenReturn(Optional.empty());
+            Optional<Genre> optionalGenre = genreDao.findGenreByName(genreName);
+            Assertions.assertFalse(optionalGenre.isPresent());
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void addGenreForMovieByMovieId_Positive() throws DaoException {
+    void addGenreForMovieByMovieId_Positive() {
         Long movieId = 1L;
         Genre genre = new Genre();
         GenreDao genreDao = Mockito.mock(GenreDao.class);
-        Mockito.when(genreDao.addGenreForMovieByMovieId(movieId, genre)).thenReturn(1);
-        Assertions.assertEquals(1, genreDao.addGenreForMovieByMovieId(movieId, genre));
+        try {
+            Mockito.when(genreDao.addGenreForMovieByMovieId(movieId, genre)).thenReturn(1);
+            Assertions.assertEquals(1, genreDao.addGenreForMovieByMovieId(movieId, genre));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 
     @Test
-    void addGenreForMovieByMovieId_Negative() throws DaoException {
+    void addGenreForMovieByMovieId_Negative() {
         Long movieId = 1L;
         Genre genre = new Genre();
         GenreDao genreDao = Mockito.mock(GenreDao.class);
-        Mockito.when(genreDao.addGenreForMovieByMovieId(movieId, genre)).thenReturn(0);
-        Assertions.assertNotEquals(1, genreDao.addGenreForMovieByMovieId(movieId, genre));
+        try {
+            Mockito.when(genreDao.addGenreForMovieByMovieId(movieId, genre)).thenReturn(0);
+            Assertions.assertNotEquals(1, genreDao.addGenreForMovieByMovieId(movieId, genre));
+        } catch (DaoException e) {
+            Assertions.fail();
+        }
     }
 }
