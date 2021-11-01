@@ -2,8 +2,6 @@ package by.radzionau.imdb.model.dao;
 
 import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.entity.User;
-import by.radzionau.imdb.model.entity.UserRole;
-import by.radzionau.imdb.model.entity.UserStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,38 +50,10 @@ public interface UserDao {
     Optional<String> findUserPasswordByLogin(String login) throws DaoException;
 
     /**
-     * Find users by status. Throws DaoException if reading of data source throws exception.
-     *
-     * @param userStatus the user status
-     * @return the list of users
-     * @throws DaoException if reading of data source throws exception
-     */
-    List<User> findUsersByStatus(UserStatus userStatus) throws DaoException;
-
-    /**
-     * Find users by role. Throws DaoException if reading of data source throws exception.
-     *
-     * @param userRole the user role
-     * @return the list of users
-     * @throws DaoException if reading of data source throws exception
-     */
-    List<User> findUsersByRole(UserRole userRole) throws DaoException;
-
-    /**
      * Find all users. Throws DaoException if reading of data source throws exception.
      *
      * @return the list of users
      * @throws DaoException if reading of data source throws exception
      */
     List<User> findAll() throws DaoException;
-
-
-    /**
-     * Find user by id. Throws DaoException if reading of data source throws exception.
-     *
-     * @param userId the user id
-     * @return the optional of user
-     * @throws DaoException if reading of data source throws exception
-     */
-    Optional<User> findUserById(Long userId) throws DaoException;
 }

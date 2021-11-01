@@ -1,7 +1,6 @@
 package by.radzionau.imdb.model.service;
 
 import by.radzionau.imdb.exception.ServiceException;
-import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.entity.MovieType;
 
@@ -54,24 +53,6 @@ public interface MovieService {
     List<Movie> findMoviesByTitle(String title) throws ServiceException;
 
     /**
-     * Find movies by release year. Throws ServiceException if year is null or if reading from data source throws the exception.
-     *
-     * @param year the year
-     * @return the list of movies
-     * @throws ServiceException if year is null or if reading from data source throws the exception
-     */
-    List<Movie> findMoviesByYear(int year) throws ServiceException;
-
-    /**
-     * Find movies by genre. Throws ServiceException if genre is null or if reading from data source throws the exception.
-     *
-     * @param genre the genre
-     * @return the list of movies
-     * @throws ServiceException if genre is null or if reading from data source throws the exception
-     */
-    List<Movie> findMoviesByGenre(Genre genre) throws ServiceException;
-
-    /**
      * Find movies by movie type. Throws ServiceException if movie type is null or if reading from data source throws the exception.
      *
      * @param movieType the movie type
@@ -97,13 +78,4 @@ public interface MovieService {
      * @throws ServiceException if movie is null or if movie does not exist or if reading from data source throws the exception
      */
     Double findMovieScore(Movie movie) throws ServiceException;
-
-    /**
-     * Find genres of movie. Throws ServiceException if movie is null or if reading from data source throws the exception.
-     *
-     * @param movie the movie
-     * @return the list of movies
-     * @throws ServiceException if movie is null or if reading from data source throws the exception
-     */
-    List<Genre> findGenresOfMovie(Movie movie) throws ServiceException;
 }

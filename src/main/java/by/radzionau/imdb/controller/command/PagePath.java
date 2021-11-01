@@ -24,7 +24,7 @@ public enum PagePath {
         ERROR_500_PAGE("pages/error/error500.jsp"),
         ERROR_404_PAGE("pages/error/error404.jsp");
 
-        private String address;
+        private final String address;
 
         PagePath(String address) {
                 this.address = address;

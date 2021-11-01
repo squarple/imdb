@@ -122,34 +122,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> findMoviesByYear(int year) throws ServiceException {
-        List<Movie> movies;
-        try {
-            movies = movieDao.findMoviesByYear(year);
-        } catch (DaoException e) {
-            logger.error("Can't handle findMoviesByYear request at MovieService", e);
-            throw new ServiceException("Can't handle findMoviesByYear request at MovieService", e);
-        }
-        return movies;
-    }
-
-    @Override
-    public List<Movie> findMoviesByGenre(Genre genre) throws ServiceException {
-        if (!GenreValidator.getInstance().isValid(genre)) {
-            logger.error("Invalid genre");
-            throw new ServiceException("Invalid genre");
-        }
-        List<Movie> movies;
-        try {
-            movies = movieDao.findMoviesByGenre(genre);
-        } catch (DaoException e) {
-            logger.error("Can't handle findMoviesByGenre request at MovieService", e);
-            throw new ServiceException("Can't handle findMoviesByGenre request at MovieService", e);
-        }
-        return movies;
-    }
-
-    @Override
     public List<Movie> findMoviesByMovieType(MovieType movieType) throws ServiceException {
         if (movieType == null) {
             logger.error("MovieType doesn't present");
@@ -192,21 +164,5 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("Invalid movie");
         }
         return findMovieScoreByMovieId(movie.getMovieId());
-    }
-
-    @Override
-    public List<Genre> findGenresOfMovie(Movie movie) throws ServiceException {
-        if (!MovieValidator.getInstance().isValid(movie)) {
-            logger.error("Invalid movie");
-            throw new ServiceException("Invalid movie");
-        }
-        List<Genre> genres;
-        try {
-            genres = genreDao.findGenresOfMovieByMovieId(movie.getMovieId());
-        } catch (DaoException e) {
-            logger.error("Can't handle findGenresOfMovie request at MovieService", e);
-            throw new ServiceException("Can't handle findGenresOfMovie request at MovieService", e);
-        }
-        return genres;
     }
 }

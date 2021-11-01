@@ -56,24 +56,6 @@ public interface UserService {
     User updateRole(User user, UserRole userRole) throws ServiceException;
 
     /**
-     * Find users by status. Throws ServiceException if user status is null or if reading of data source throws exception.
-     *
-     * @param userStatus the user status
-     * @return the list of users
-     * @throws ServiceException if user status is null or if reading of data source throws exception
-     */
-    List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException;
-
-    /**
-     * Find users by role. Throws ServiceException if user role is null or if reading of data source throws exception.
-     *
-     * @param userRole the user role
-     * @return the list of users
-     * @throws ServiceException if user role is null or if reading of data source throws exception
-     */
-    List<User> findUsersByRole(UserRole userRole) throws ServiceException;
-
-    /**
      * Find user by user login. Throws ServiceException if login is null or if user does not exist or if reading of data source throws exception.
      *
      * @param login the login
@@ -89,14 +71,4 @@ public interface UserService {
      * @throws ServiceException if reading of data source throws exception
      */
     List<User> findAll() throws ServiceException;
-
-
-    /**
-     * Find user by user id. Throws ServiceException if user does not exist or if reading of data source throws exception.
-     *
-     * @param userId the user id
-     * @return the user
-     * @throws ServiceException if user does not exist or if reading of data source throws exception
-     */
-    User findUserById(Long userId) throws ServiceException;
 }

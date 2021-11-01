@@ -142,25 +142,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findUserById(Long userId) throws DaoException {
-        try (
-                Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_BY_ID)
-        ) {
-            statement.setLong(1, userId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return Optional.of(createUser(resultSet));
-                }
-            }
-        } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a user", e);
-            throw new DaoException("Error while selecting a user", e);
-        }
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<String> findUserPasswordByLogin(String login) throws DaoException {
         try (
                 Connection connection = pool.getConnection();
@@ -178,46 +159,6 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException("Error while selecting a password", e);
         }
         return Optional.empty();
-    }
-
-    @Override
-    public List<User> findUsersByStatus(UserStatus userStatus) throws DaoException {
-        List<User> users = new ArrayList<>();
-        try (
-                Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USERS_BY_STATUS)
-        ) {
-            statement.setLong(1, userStatus.getId());
-            try(ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(createUser(resultSet));
-                }
-            }
-        } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a users", e);
-            throw new DaoException("Error while selecting a users", e);
-        }
-        return users;
-    }
-
-    @Override
-    public List<User> findUsersByRole(UserRole userRole) throws DaoException {
-        List<User> users = new ArrayList<>();
-        try (
-                Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USERS_BY_ROLE)
-        ) {
-            statement.setLong(1, userRole.getId());
-            try(ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(createUser(resultSet));
-                }
-            }
-        } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a users", e);
-            throw new DaoException("Error while selecting a users", e);
-        }
-        return users;
     }
 
     @Override

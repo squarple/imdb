@@ -76,20 +76,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void deleteFeedback(Feedback feedback) throws ServiceException {
-        if (!FeedbackValidator.getInstance().isValid(feedback)) {
-            logger.error("Invalid feedback");
-            throw new ServiceException("Invalid feedback");
-        }
-        try {
-            feedbackDao.delete(feedback);
-        } catch (DaoException e) {
-            logger.error("Can't handle deleteFeedback request at FeedbackService", e);
-            throw new ServiceException("Can't handle deleteFeedback request at FeedbackService", e);
-        }
-    }
-
-    @Override
     public Feedback findFeedbackById(Long feedbackId) throws ServiceException {
         if (feedbackId == null) {
             logger.error("Feedback id doesn't present");
@@ -123,15 +109,6 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new ServiceException("Can't handle findFeedbacksByMovieId request at FeedbackService", e);
         }
         return feedbacks;
-    }
-
-    @Override
-    public List<Feedback> findFeedbacksByMovie(Movie movie) throws ServiceException {
-        if (!MovieValidator.getInstance().isValid(movie)) {
-            logger.error("Invalid movie");
-            throw new ServiceException("Invalid movie");
-        }
-        return findFeedbacksByMovieId(movie.getMovieId());
     }
 
     @Override

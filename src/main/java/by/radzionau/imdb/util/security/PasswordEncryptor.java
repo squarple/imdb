@@ -5,7 +5,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  * The class PasswordEncryptor.
  */
-public class PasswordEncryptor {
+public final class PasswordEncryptor {
     private static final PasswordEncryptor INSTANCE = new PasswordEncryptor();
 
     private PasswordEncryptor() {

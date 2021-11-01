@@ -1,7 +1,6 @@
 package by.radzionau.imdb.model.dao;
 
 import by.radzionau.imdb.exception.DaoException;
-import by.radzionau.imdb.model.entity.Genre;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.entity.MovieType;
 
@@ -58,24 +57,6 @@ public interface MovieDao {
      * @throws DaoException if reading of data source throws exception
      */
     List<Movie> findMoviesByTitle(String title) throws DaoException;
-
-    /**
-     * Find movies by release year. Throws DaoException if reading of data source throws exception.
-     *
-     * @param year the release year
-     * @return the list of movies
-     * @throws DaoException if reading of data source throws exception
-     */
-    List<Movie> findMoviesByYear(int year) throws DaoException;
-
-    /**
-     * Find movies by genre. Throws DaoException if reading of data source throws exception.
-     *
-     * @param genre the genre
-     * @return the list of movies
-     * @throws DaoException if reading of data source throws exception
-     */
-    List<Movie> findMoviesByGenre(Genre genre) throws DaoException;
 
     /**
      * Find movies by movie type. Throws DaoException if reading of data source throws exception.

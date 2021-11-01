@@ -125,9 +125,7 @@ public class Movie {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-
         Movie movie = (Movie) o;
-
         return movieId.equals(movie.movieId)
                 && title.equals(movie.title)
                 && logline.equals(movie.logline)

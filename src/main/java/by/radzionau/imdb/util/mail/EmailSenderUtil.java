@@ -12,11 +12,14 @@ import java.util.Properties;
 /**
  * The class EmailSenderUtil.
  */
-public class EmailSenderUtil {
-    private Properties properties;
-    private static final String MESSAGE_SUBJECT = "IMDb verification";
-    private static final String MESSAGE_CONTENT = "To verify your account, please use the following password: \n";
+public final class EmailSenderUtil {
+    private static final String EMAIL_PROPERTY_PATH = "email/email.properties";
+    private static final String MAIL_USERNAME = "mail.username";
+    private static final String MAIL_PASSWORD = "mail.password";
     private static final String MESSAGE_CONTENT_TYPE = "text/html";
+    private static final String MESSAGE_CONTENT = "To verify your account, please use the following password: \n";
+    private static final String MESSAGE_SUBJECT = "IMDb verification";
+    private Properties properties;
 
     private static final class EmailSenderUtilInstanceHolder {
         private static final EmailSenderUtil INSTANCE = new EmailSenderUtil();
@@ -46,9 +49,9 @@ public class EmailSenderUtil {
         if (properties == null) {
             setProperties();
         }
-        String username = properties.getProperty("mail.username");
-        String password = properties.getProperty("mail.password");
-        String from = properties.getProperty("mail.username");
+        String username = properties.getProperty(MAIL_USERNAME);
+        String password = properties.getProperty(MAIL_PASSWORD);
+        String from = properties.getProperty(MAIL_USERNAME);
         String to = user.getEmail();
         Session session = getSession(properties, username, password);
         Message message = buildMessage(session, user, from, to);
@@ -56,7 +59,7 @@ public class EmailSenderUtil {
     }
 
     private void setProperties() throws IOException {
-        properties = PropertyLoader.loadProperty("email/email.properties");
+        properties = PropertyLoader.loadProperty(EMAIL_PROPERTY_PATH);
     }
 
     private Session getSession(Properties properties, String username, String password) {

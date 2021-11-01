@@ -1,11 +1,10 @@
 package by.radzionau.imdb.model.dao.impl;
 
-import by.radzionau.imdb.model.dao.MovieDao;
-import by.radzionau.imdb.model.entity.Genre;
-import by.radzionau.imdb.model.entity.Movie;
-import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.exception.ConnectionPoolException;
 import by.radzionau.imdb.exception.DaoException;
+import by.radzionau.imdb.model.dao.MovieDao;
+import by.radzionau.imdb.model.entity.Movie;
+import by.radzionau.imdb.model.entity.MovieType;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import by.radzionau.imdb.util.ImageInputStreamUtil;
 import org.apache.logging.log4j.LogManager;
@@ -169,46 +168,6 @@ public class MovieDaoImpl implements MovieDao {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_TITLE)
         ) {
             statement.setString(1, title);
-            try(ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    movies.add(createMovie(resultSet));
-                }
-            }
-        } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie", e);
-            throw new DaoException("Error while selecting a movie", e);
-        }
-        return movies;
-    }
-
-    @Override
-    public List<Movie> findMoviesByYear(int year) throws DaoException {
-        List<Movie> movies = new ArrayList<>();
-        try (
-                Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_YEAR)
-        ) {
-            statement.setInt(1, year);
-            try(ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    movies.add(createMovie(resultSet));
-                }
-            }
-        } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while selecting a movie", e);
-            throw new DaoException("Error while selecting a movie", e);
-        }
-        return movies;
-    }
-
-    @Override
-    public List<Movie> findMoviesByGenre(Genre genre) throws DaoException {
-        List<Movie> movies = new ArrayList<>();
-        try (
-                Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_MOVIES_BY_GENRE)
-        ) {
-            statement.setLong(1, genre.getGenreId());
             try(ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     movies.add(createMovie(resultSet));

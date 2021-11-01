@@ -132,58 +132,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsersByStatus(UserStatus userStatus) throws ServiceException {
-        if (userStatus == null) {
-            logger.error("User status doesn't present");
-            throw new ServiceException("User status doesn't present");
-        }
-        List<User> users;
-        try {
-            users = userDao.findUsersByStatus(userStatus);
-        } catch (DaoException e) {
-            logger.error("Can't handle findUsersByStatus request at UserService", e);
-            throw new ServiceException("Can't handle findUsersByStatus request at UserService", e);
-        }
-        return users;
-    }
-
-    @Override
-    public List<User> findUsersByRole(UserRole userRole) throws ServiceException {
-        if (userRole == null) {
-            logger.error("User role doesn't present");
-            throw new ServiceException("User role doesn't present");
-        }
-        List<User> users;
-        try {
-            users = userDao.findUsersByRole(userRole);
-        } catch (DaoException e) {
-            logger.error("Can't handle findUsersByRole request at UserService", e);
-            throw new ServiceException("Can't handle findUsersByRole request at UserService", e);
-        }
-        return users;
-    }
-
-    @Override
-    public User findUserById(Long userId) throws ServiceException {
-        if (userId == null) {
-            logger.error("Id doesn't present");
-            throw new ServiceException("Id doesn't present");
-        }
-        try {
-            Optional<User> optionalUser = userDao.findUserById(userId);
-            if (optionalUser.isPresent()) {
-                return optionalUser.get();
-            } else {
-                logger.error("User with id {} does not exist", userId);
-                throw new ServiceException("User with id " + userId + " does not exist");
-            }
-        } catch (DaoException e) {
-            logger.error("User  with id {} does not exist", userId, e);
-            throw new ServiceException("User with id " + userId + " does not exist");
-        }
-    }
-
-    @Override
     public User findUserByLogin(String login) throws ServiceException {
         if (!isStringValid(login)) {
             logger.error("Login doesn't present");

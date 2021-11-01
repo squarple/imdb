@@ -3,7 +3,6 @@ package by.radzionau.imdb.model.service;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Feedback;
 import by.radzionau.imdb.model.entity.FeedbackStatus;
-import by.radzionau.imdb.model.entity.Movie;
 
 import java.util.List;
 
@@ -30,14 +29,6 @@ public interface FeedbackService {
     Feedback updateFeedbackStatus(Feedback feedback, FeedbackStatus feedbackStatus) throws ServiceException;
 
     /**
-     * Delete feedback. Throws ServiceException if feedback is null or if updating of data source throws an exception.
-     *
-     * @param feedback the feedback to delete
-     * @throws ServiceException if feedback is null or if writing to data source throws an exception
-     */
-    void deleteFeedback(Feedback feedback) throws ServiceException;
-
-    /**
      * Find feedback by id of the feedback. Throws ServiceException if feedback id is null or if feedback is not presented at data source or if reading from data source throws an exception.
      *
      * @param feedbackId the feedback id
@@ -54,15 +45,6 @@ public interface FeedbackService {
      * @throws ServiceException if reading from data source throws an exception
      */
     List<Feedback> findFeedbacksByMovieId(Long movieId) throws ServiceException;
-
-    /**
-     * Find feedbacks by movie. Throws ServiceException if movie id is null or if reading from data source throws an exception.
-     *
-     * @param movie the movie
-     * @return the list
-     * @throws ServiceException if reading from data source throws an exception
-     */
-    List<Feedback> findFeedbacksByMovie(Movie movie) throws ServiceException;
 
     /**
      * Find feedbacks by status of feedback. Throws ServiceException if feedbackStatus is null or if reading from data source throws an exception.

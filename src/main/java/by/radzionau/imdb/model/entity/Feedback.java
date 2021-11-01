@@ -146,9 +146,7 @@ public class Feedback {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-
         Feedback feedback = (Feedback) o;
-
         return feedbackId.equals(feedback.feedbackId)
                 && feedbackDate.equals(feedback.feedbackDate)
                 && score == feedback.score

@@ -5,7 +5,7 @@ import by.radzionau.imdb.model.entity.Feedback;
 /**
  * The class Feedback validator.
  */
-public class FeedbackValidator implements Validator {
+public final class FeedbackValidator implements Validator {
     private static final FeedbackValidator INSTANCE = new FeedbackValidator();
 
     private FeedbackValidator() {

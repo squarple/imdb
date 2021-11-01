@@ -6,8 +6,7 @@ import java.util.Properties;
 /**
  * The class PropertyLoader.
  */
-public class PropertyLoader {
-
+public final class PropertyLoader {
     private PropertyLoader() {
 
     }

@@ -1,10 +1,10 @@
 package by.radzionau.imdb.model.dao.impl;
 
+import by.radzionau.imdb.exception.ConnectionPoolException;
+import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.dao.FeedbackDao;
 import by.radzionau.imdb.model.entity.Feedback;
 import by.radzionau.imdb.model.entity.FeedbackStatus;
-import by.radzionau.imdb.exception.ConnectionPoolException;
-import by.radzionau.imdb.exception.DaoException;
 import by.radzionau.imdb.model.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,20 +101,6 @@ public class FeedbackDaoImpl implements FeedbackDao {
         } catch (SQLException | ConnectionPoolException e) {
             logger.error("Error while updating a feedback", e);
             throw new DaoException("Error while updating a feedback", e);
-        }
-    }
-
-    @Override
-    public int delete(Feedback feedback) throws DaoException {
-        try (
-                Connection connection = pool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_DELETE_FEEDBACK)
-        ) {
-            statement.setLong(1, feedback.getFeedbackId());
-            return statement.executeUpdate();
-        } catch (SQLException | ConnectionPoolException e) {
-            logger.error("Error while deleting a feedback={}", feedback, e);
-            throw new DaoException("Error while deleting a feedback=" + feedback, e);
         }
     }
 

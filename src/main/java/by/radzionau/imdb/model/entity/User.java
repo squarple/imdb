@@ -144,9 +144,7 @@ public class User {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-
         User user = (User) o;
-
         return userId.equals(user.userId)
                 && login.equals(user.login)
                 && email.equals(user.email)

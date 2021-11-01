@@ -1,9 +1,6 @@
 package by.radzionau.imdb.model.validator;
 
-import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.User;
-import by.radzionau.imdb.model.service.UserService;
-import by.radzionau.imdb.model.service.impl.UserServiceImpl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * The class UserValidator.
  */
-public class UserValidator implements Validator {
+public final class UserValidator implements Validator {
     private static final UserValidator INSTANCE = new UserValidator();
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 

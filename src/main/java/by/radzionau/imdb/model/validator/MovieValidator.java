@@ -5,7 +5,7 @@ import by.radzionau.imdb.model.entity.Movie;
 /**
  * The class Movie validator.
  */
-public class MovieValidator implements Validator {
+public final class MovieValidator implements Validator {
     private static final MovieValidator INSTANCE = new MovieValidator();
 
     private MovieValidator() {

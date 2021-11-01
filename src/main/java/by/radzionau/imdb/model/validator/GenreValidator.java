@@ -8,7 +8,7 @@ import by.radzionau.imdb.model.service.impl.GenreServiceImpl;
 /**
  * The class Genre validator.
  */
-public class GenreValidator implements Validator{
+public final class GenreValidator implements Validator{
     private static final GenreValidator INSTANCE = new GenreValidator();
 
     private GenreValidator() {

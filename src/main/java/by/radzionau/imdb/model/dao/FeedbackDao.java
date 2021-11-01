@@ -33,15 +33,6 @@ public interface FeedbackDao {
     int updateFeedbackStatus(Long feedbackId, FeedbackStatus feedbackStatus) throws DaoException;
 
     /**
-     * Delete feedback. Throws DaoException if writing to data source throws exception.
-     *
-     * @param feedback the feedback to delete
-     * @return the count of updated rows
-     * @throws DaoException if writing to data source throws exception
-     */
-    int delete(Feedback feedback) throws DaoException;
-
-    /**
      * Find feedback by feedback id. Throws DaoException if reading from data source throws exception.
      *
      * @param feedbackId the feedback id

@@ -49,9 +49,7 @@ public class Genre {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-
         Genre genre = (Genre) o;
-
         return genreId.equals(genre.genreId)
                 && name.equals(genre.name);
     }
