@@ -123,32 +123,6 @@ class UserDaoImplTest {
     }
 
     @Test
-    void findUsersByStatus_Positive() {
-        List<User> userList = new ArrayList<>();
-        UserStatus userStatus = UserStatus.ACTIVATED;
-        try {
-            Mockito.when(userDao.findUsersByStatus(userStatus)).thenReturn(userList);
-            List<User> actualUserList = userDao.findUsersByStatus(userStatus);
-            Assertions.assertEquals(userList, actualUserList);
-        } catch (DaoException e) {
-            Assertions.fail();
-        }
-    }
-
-    @Test
-    void findUsersByRole_Positive() {
-        List<User> userList = new ArrayList<>();
-        UserRole userRole = UserRole.USER;
-        try {
-            Mockito.when(userDao.findUsersByRole(userRole)).thenReturn(userList);
-            List<User> actualUserList = userDao.findUsersByRole(userRole);
-            Assertions.assertEquals(userList, actualUserList);
-        } catch (DaoException e) {
-            Assertions.fail();
-        }
-    }
-
-    @Test
     void findAll_Positive() {
         List<User> userList = new ArrayList<>();
         try {

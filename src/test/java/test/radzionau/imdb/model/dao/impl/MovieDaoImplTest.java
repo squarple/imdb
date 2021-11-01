@@ -126,30 +126,6 @@ class MovieDaoImplTest {
     }
 
     @Test
-    void findMoviesByYear_Positive() {
-        int year = 2016;
-        List<Movie> movieList = new ArrayList<>();
-        try {
-            Mockito.when(movieDao.findMoviesByYear(year)).thenReturn(movieList);
-            Assertions.assertEquals(movieList, movieDao.findMoviesByYear(year));
-        } catch (DaoException e) {
-            Assertions.fail();
-        }
-    }
-
-    @Test
-    void findMoviesByGenre_Positive() {
-        Genre genre = new Genre();
-        List<Movie> movieList = new ArrayList<>();
-        try {
-            Mockito.when(movieDao.findMoviesByGenre(genre)).thenReturn(movieList);
-            Assertions.assertEquals(movieList, movieDao.findMoviesByGenre(genre));
-        } catch (DaoException e) {
-            Assertions.fail();
-        }
-    }
-
-    @Test
     void findMoviesByMovieType_Positive() {
         MovieType movieType = MovieType.FILM;
         List<Movie> movieList = new ArrayList<>();

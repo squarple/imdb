@@ -68,28 +68,6 @@ class FeedbackDaoImplTest {
     }
 
     @Test
-    void delete_Positive() {
-        Feedback feedback = new Feedback();
-        try {
-            Mockito.when(feedbackDao.delete(feedback)).thenReturn(1);
-            Assertions.assertEquals(1, feedbackDao.delete(feedback));
-        } catch (DaoException e) {
-            Assertions.fail();
-        }
-    }
-
-    @Test
-    void delete_Negative() {
-        Feedback feedback = new Feedback();
-        try {
-            Mockito.when(feedbackDao.delete(feedback)).thenReturn(0);
-            Assertions.assertNotEquals(1, feedbackDao.delete(feedback));
-        } catch (DaoException e) {
-            Assertions.fail();
-        }
-    }
-
-    @Test
     void findFeedbackById_Positive() {
         Long feedbackId = 1L;
         Feedback feedback = new Feedback();
