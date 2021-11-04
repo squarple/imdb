@@ -15,13 +15,13 @@
             <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type="hidden" name="command" value="sign_in">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="<fmt:message key="login.label.login"/>" name="login" minlength="1" maxlength="30"/>
+                    <input type="text" class="form-control" id="floatingInput" placeholder="<fmt:message key="login.label.login"/>" name="login" required minlength="1" maxlength="30"/>
                     <label for="floatingInput">
                         <fmt:message key="login.label.login"/>
                     </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="<fmt:message key="login.label.password"/>" name="password"  minlength="8" maxlength="30"/>
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="<fmt:message key="login.label.password"/>" name="password"  required minlength="8" maxlength="30"/>
                     <label for="floatingPassword">
                         <fmt:message key="login.label.password"/>
                     </label>

@@ -20,7 +20,7 @@
                     <b><fmt:message key="verify_email.label.enter.password.from.email"/></b>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingPassword" placeholder="password" name="password" minlength="1" maxlength="30">
+                    <input type="text" class="form-control" id="floatingPassword" placeholder="password" name="password" required minlength="1" maxlength="30">
                     <label for="floatingPassword">
                         <fmt:message key="verify_email.label.password"/>
                     </label>
