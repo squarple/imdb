@@ -2,6 +2,7 @@
 <a href="https://app.circleci.com/pipelines/github/squarple/imdb?branch=master">
         <img src="https://img.shields.io/circleci/project/github/squarple/imdb/master" alt="build status"></a>
 
+#Курсач по ОПР 
 # Internet Movie Database
 **IMDb** — the web application that collects information about movies and TV series, their rating and reviews about them.
 
