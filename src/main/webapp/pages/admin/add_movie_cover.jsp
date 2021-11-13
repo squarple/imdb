@@ -18,7 +18,7 @@
                     <label for="formFile" class="form-label">
                         <fmt:message key="add_movie_cover.label.cover.for"/> <fmt:message key="common.quotation.mark"/>${movie.title}<fmt:message key="common.quotation.mark"/>
                     </label>
-                    <input class="form-control" type="file" id="formFile" name="movie_cover" accept="image/png,image/jpeg" >
+                    <input class="form-control" type="file" id="formFile" name="movie_cover" accept="image/png,image/jpeg" required>
                 </div>
                 <button type="submit" class="btn btn-link">
                     <fmt:message key="add_movie_cover.button.submit"/>
