@@ -58,6 +58,6 @@ class ConnectionFactory {
      * @throws SQLException if a database access error occurs
      */
     static ProxyConnection createConnection() throws SQLException {
-        return new ProxyConnection(DriverManager.getConnection("mysql://b0583793e23759:74722dc3@us-cdbr-east-04.cleardb.com/heroku_7491f5a9c407923?reconnect=true"));
+        return new ProxyConnection(DriverManager.getConnection("mysql://b263e859015477:3d881422@us-cdbr-east-04.cleardb.com/heroku_05bb384fd3ec211?reconnect=true"));
     }
 }
