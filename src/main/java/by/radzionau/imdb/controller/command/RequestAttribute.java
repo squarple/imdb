@@ -7,6 +7,7 @@ public final class RequestAttribute {
     public static final String MOVIE = "movie";
     public static final String PAGE_FROM = "page_from";
     public static final String USERS_LIST = "users_list";
+    public static final String PAIR_LIST = "pair_list";
     public static final String MOVIES_LIST = "movies_list";
     public static final String GENRES_LIST = "genres_list";
     public static final String MOVIE_SCORE = "movie_score";

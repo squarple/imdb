@@ -31,6 +31,10 @@ public class Main {
             System.out.println();
         }
 
+
+
+
+
         int[] prices = new int[movieList.size()];
         for (int i = 0; i < prices.length; i++) {
             int price = 0;

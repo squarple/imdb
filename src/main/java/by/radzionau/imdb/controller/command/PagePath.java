@@ -11,7 +11,11 @@ public enum PagePath {
         GET_MOVIE_PAGE("pages/get_movie.jsp"),
         VERIFY_EMAIL_PAGE("pages/verify_email.jsp"),
         SEARCH_MOVIES_PAGE("pages/search_movies.jsp"),
+        TOP_METHODS_PAGE("pages/opr/top_methods.jsp"),
         GET_MOVIE_LIST_PAGE("pages/get_movie_list.jsp"),
+        PAIRED_COMPARISONS_PAGE("pages/opr/paired_comparisons.jsp"),
+        TOP_RESULT_PAGE("pages/opr/top_result.jsp"),
+        SEQUENTIAL_COMPARISONS_PAGE("page/opr/sequential_comparisons.jsp"),
 
         ADD_MOVIE_PAGE("pages/admin/add_movie.jsp"),
         ADD_GENRE_PAGE("pages/admin/add_genre.jsp"),

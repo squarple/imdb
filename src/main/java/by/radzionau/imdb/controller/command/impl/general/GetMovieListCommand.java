@@ -1,7 +1,6 @@
 package by.radzionau.imdb.controller.command.impl.general;
 
 import by.radzionau.imdb.controller.command.*;
-import by.radzionau.imdb.controller.command.RequestUtil;
 import by.radzionau.imdb.exception.ServiceException;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.model.entity.MovieType;
@@ -39,6 +38,7 @@ public class GetMovieListCommand implements Command {
             request.setAttribute(RequestAttribute.MOVIE_COVERS_LIST, movieCoversList);
             request.setAttribute(RequestAttribute.MOVIE_RATING_LIST, movieRatingList);
             router = new Router(PagePath.GET_MOVIE_LIST_PAGE.getAddress(), Router.RouterType.FORWARD);
+
         } catch (ServiceException e) {
             logger.error("Error at GetMovieListCommand", e);
             String pageTo = getPageFrom(request);

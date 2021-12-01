@@ -30,6 +30,12 @@
                             <a class="nav-link active" href=# onclick="document.getElementById('serials').submit()" tabindex="-1" aria-disabled="true"><fmt:message key="navbar.common.serials"/></a>
                         </form>
                     </li>
+                    <li class="nav-item">
+                        <form id="top" action="${pageContext.request.contextPath}/controller" method="get">
+                            <input type="hidden" name="command" value="move_to_top_methods">
+                            <a class="nav-link active" href=# onclick="document.getElementById('top').submit()" tabindex="-1" aria-disabled="true">Top methods</a>
+                        </form>
+                    </li>
                     <c:if test="${role == 'ADMIN'}">
                         <li class="nav-item">
                             <form id="users_list" action="${pageContext.request.contextPath}/controller" method="get">

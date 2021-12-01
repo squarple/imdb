@@ -3,7 +3,6 @@ package by.radzionau.imdb.opr;
 import by.radzionau.imdb.model.entity.Movie;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class PairUtil {
