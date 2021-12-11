@@ -22,6 +22,11 @@ public class UserDaoImpl implements UserDao {
     private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
     private final CustomConnectionPool pool = CustomConnectionPool.getInstance();
 
+    private static final String SQL_GET_USER_WEIGHT =
+            "SELECT weight FROM competence " +
+                    "WHERE competence_id = " +
+                    "(SELECT usr.competence_id FROM usr " +
+                    "WHERE usr_id = ?)";
     private static final String SQL_INSERT_USER =
             "INSERT INTO usr (login, password, mail, first_name, surname, usr_role_id, usr_status_id) " +
                     "VALUES (?,?,?,?,?,?,?)";
@@ -177,6 +182,29 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException("Error while selecting a users", e);
         }
         return users;
+    }
+
+    @Override
+    public Integer getUserWeight(Long id) throws DaoException {
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_GET_USER_WEIGHT)
+        ) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+                else {
+                    logger.error("getUserWeight exception");
+                    throw new DaoException("getUserWeight exception");
+                }
+            }
+
+        } catch (SQLException | ConnectionPoolException e) {
+            logger.error("getUserWeight exception", e);
+            throw new DaoException("getUserWeight exception", e);
+        }
     }
 
     private User createUser(ResultSet resultSet) throws SQLException {

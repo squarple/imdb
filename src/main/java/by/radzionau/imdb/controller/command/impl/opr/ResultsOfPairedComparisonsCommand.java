@@ -7,12 +7,14 @@ import by.radzionau.imdb.controller.command.SessionAttribute;
 import by.radzionau.imdb.model.entity.Movie;
 import by.radzionau.imdb.opr.Pair;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class GetTopPairedComparisons implements Command {
+public class ResultsOfPairedComparisonsCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(ResultsOfPairedComparisonsCommand.class);
+
     @Override
     public Router execute(HttpServletRequest request) {
         Router router;
@@ -29,11 +31,15 @@ public class GetTopPairedComparisons implements Command {
             }
 
             double[] normPrices = getNormPrices(n, matrix);
+            Map<Double, Movie> treeMap = new TreeMap<>(Comparator.reverseOrder());
+            for (int i = 0; i < normPrices.length; i++) {
+                treeMap.put(normPrices[i], movieList.get(i));
+            }
 
-            request.setAttribute("norm_prices", normPrices);
-            router = new Router(PagePath.TOP_RESULT_PAGE.getAddress(), Router.RouterType.FORWARD);
+            request.setAttribute("norm_prices", treeMap);
+            router = new Router(PagePath.RESULTS_OF_PAIRED_COMPARISONS_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (Exception e) {
-            //todo
+            logger.error("Error at ResultsOfPairedComparisonsCommand", e);
             router = new Router(null, null);
         }
         return router;
@@ -57,13 +63,12 @@ public class GetTopPairedComparisons implements Command {
             prices[i] = price;
         }
 
-        double[] norm_prices = new double[prices.length];
-        int prices_sum = Arrays.stream(prices).sum();
-        for (int i = 0; i < norm_prices.length; i++) {
-            norm_prices[i] = ((double)prices[i]) / prices_sum;
+        double[] normPrices = new double[prices.length];
+        int pricesSum = Arrays.stream(prices).sum();
+        for (int i = 0; i < normPrices.length; i++) {
+            normPrices[i] = ((double)prices[i]) / pricesSum;
         }
 
-        return norm_prices;
+        return normPrices;
     }
-
 }

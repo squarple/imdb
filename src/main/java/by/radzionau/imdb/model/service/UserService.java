@@ -71,4 +71,6 @@ public interface UserService {
      * @throws ServiceException if reading of data source throws exception
      */
     List<User> findAll() throws ServiceException;
+
+    Integer getUserWeight(Long id);
 }

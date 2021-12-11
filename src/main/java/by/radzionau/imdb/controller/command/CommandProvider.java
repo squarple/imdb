@@ -9,11 +9,11 @@ import by.radzionau.imdb.controller.command.impl.moveto.admin.MoveToEditMoviePag
 import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToLoginPageCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToMainPageCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.general.MoveToSignupPageCommand;
-import by.radzionau.imdb.controller.command.impl.moveto.user.MoveToAddFeedbackPageCommand;
+import by.radzionau.imdb.controller.command.impl.moveto.opr.MoveToMethodOfPairedComparisonsCommand;
 import by.radzionau.imdb.controller.command.impl.moveto.opr.MoveToTopMethodsCommand;
-import by.radzionau.imdb.controller.command.impl.opr.GetTopPairedComparisons;
-import by.radzionau.imdb.controller.command.impl.opr.MethodOfPairedComparisonsCommand;
-import by.radzionau.imdb.controller.command.impl.opr.MethodOfWeighingAssessmentsCommand;
+import by.radzionau.imdb.controller.command.impl.moveto.user.MoveToAddFeedbackPageCommand;
+import by.radzionau.imdb.controller.command.impl.opr.ResultsOfPairedComparisonsCommand;
+import by.radzionau.imdb.controller.command.impl.opr.ResultsOfWeighingAssessmentsCommand;
 import by.radzionau.imdb.controller.command.impl.user.AddFeedbackCommand;
 
 import java.util.EnumMap;
@@ -102,8 +102,8 @@ public class CommandProvider {
 
     private void addOprCommands() {
         commands.put(CommandType.MOVE_TO_TOP_METHODS, new MoveToTopMethodsCommand());
-        commands.put(CommandType.METHOD_OF_PAIRED_COMPARISONS, new MethodOfPairedComparisonsCommand());
-        commands.put(CommandType.METHOD_OF_WEIGHING_ASSESSMENTS, new MethodOfWeighingAssessmentsCommand());
-        commands.put(CommandType.GET_TOP_PAIRED_COMPARISONS, new GetTopPairedComparisons());
+        commands.put(CommandType.MOVE_TO_METHOD_OF_PAIRED_COMPARISONS, new MoveToMethodOfPairedComparisonsCommand());
+        commands.put(CommandType.RESULTS_OF_PAIRED_COMPARISONS, new ResultsOfPairedComparisonsCommand());
+        commands.put(CommandType.RESULTS_OF_WEIGHING_ASSESSMENTS, new ResultsOfWeighingAssessmentsCommand());
     }
 }

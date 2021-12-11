@@ -1,4 +1,4 @@
-package by.radzionau.imdb.controller.command.impl.opr;
+package by.radzionau.imdb.controller.command.impl.moveto.opr;
 
 import by.radzionau.imdb.controller.command.*;
 import by.radzionau.imdb.exception.ServiceException;
@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MethodOfPairedComparisonsCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(MethodOfPairedComparisonsCommand.class);
+public class MoveToMethodOfPairedComparisonsCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(MoveToMethodOfPairedComparisonsCommand.class);
     private static final MovieService movieService = MovieServiceImpl.getInstance();
 
     @Override
@@ -34,7 +34,7 @@ public class MethodOfPairedComparisonsCommand implements Command {
 
             router = new Router(PagePath.PAIRED_COMPARISONS_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
-            logger.error("Error at MethodOfPairedComparisonsCommand", e);
+            logger.error("Error at ResultsOfPairedComparisonsCommand", e);
             String pageTo = getPageFrom(request);
             router = new Router(pageTo, Router.RouterType.REDIRECT);
         }

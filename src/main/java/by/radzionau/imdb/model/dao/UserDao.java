@@ -56,4 +56,6 @@ public interface UserDao {
      * @throws DaoException if reading of data source throws exception
      */
     List<User> findAll() throws DaoException;
+
+    Integer getUserWeight(Long id) throws DaoException;
 }

@@ -9,7 +9,7 @@
     <div class="container">
         <div>
             <form method="get" action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="command" value="method_of_paired_comparisons">
+                <input type="hidden" name="command" value="move_to_method_of_paired_comparisons">
                 <button type="submit" class="btn btn-link">
                     metod parnyh sravneniy
                 </button>
@@ -18,7 +18,7 @@
 
         <div>
             <form method="get" action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="command" value="method_of_weighing_assessments">
+                <input type="hidden" name="command" value="results_of_weighing_assessments">
                 <button type="submit" class="btn btn-link">
                     The method of weighing assessments / metod vzveshivaniya ocenok
                 </button>
@@ -35,13 +35,7 @@
     <jsp:include page="../parts/footer.jsp"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="text/javascript">
-        var storedHash = window.location.hash;
-        function changeHashOnLoad() {
-            window.location.hash = "1";
-        }
-        window.onhashchange = function () {
-            window.location.hash = storedHash;
-        }
+        <%@include file="../../script/returnScript.js"%>
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="refresh" content="0; url=http://localhost:8080/imdb_war_exploded/controller?command=move_to_main_page">
+        <meta http-equiv="refresh" content="0; url=http://localhost:8080/controller?command=move_to_main_page">
     </head>
     <body>
     

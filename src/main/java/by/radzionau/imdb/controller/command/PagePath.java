@@ -13,9 +13,9 @@ public enum PagePath {
         SEARCH_MOVIES_PAGE("pages/search_movies.jsp"),
         TOP_METHODS_PAGE("pages/opr/top_methods.jsp"),
         GET_MOVIE_LIST_PAGE("pages/get_movie_list.jsp"),
-        PAIRED_COMPARISONS_PAGE("pages/opr/paired_comparisons.jsp"),
-        TOP_RESULT_PAGE("pages/opr/top_result.jsp"),
-        SEQUENTIAL_COMPARISONS_PAGE("page/opr/sequential_comparisons.jsp"),
+        PAIRED_COMPARISONS_PAGE("pages/opr/paired_comparisons/paired_comparisons.jsp"),
+        RESULTS_OF_PAIRED_COMPARISONS_PAGE("pages/opr/paired_comparisons/results_of_paired_comparisons.jsp"),
+        RESULTS_OF_WEIGHING_ASSESSMENTS("pages/opr/weighing_assessments/results_of_weighing_assessments.jsp"),
 
         ADD_MOVIE_PAGE("pages/admin/add_movie.jsp"),
         ADD_GENRE_PAGE("pages/admin/add_genre.jsp"),

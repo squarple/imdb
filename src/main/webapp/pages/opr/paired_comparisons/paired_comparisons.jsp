@@ -6,10 +6,10 @@
         <title>Paired comparisons</title>
     </head>
     <body onload="changeHashOnLoad();">
-        <jsp:include page="../parts/navbar.jsp"/>
+        <jsp:include page="../../parts/navbar.jsp"/>
         <div class="container">
             <form method="post" action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="command" value="get_top_paired_comparisons">
+                <input type="hidden" name="command" value="results_of_paired_comparisons">
                 <c:forEach items="${pair_list}" var="pair" varStatus="status">
                     <div>
                         ${pair.movie1.title} or ${pair.movie2.title}?
@@ -33,7 +33,7 @@
             </form>
 
         </div>
-        <jsp:include page="../parts/footer.jsp"/>
+        <jsp:include page="../../parts/footer.jsp"/>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script type="text/javascript">
             var storedHash = window.location.hash;

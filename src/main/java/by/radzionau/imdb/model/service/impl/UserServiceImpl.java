@@ -163,6 +163,18 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    @Override
+    public Integer getUserWeight(Long id) {
+        Integer weight = 0;
+        try {
+            weight = userDao.getUserWeight(id);
+        } catch (DaoException e) {
+            logger.error("service: get user weight exception", e);
+            throw new RuntimeException("service: get user weight exception", e);
+        }
+        return weight;
+    }
+
     private User buildUser(Long userId, String login, String email, String name, String surname, UserRole role, UserStatus userStatus) {
         return User.builder()
                 .setUserId(userId)
