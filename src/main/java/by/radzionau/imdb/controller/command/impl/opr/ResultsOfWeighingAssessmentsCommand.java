@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class ResultsOfWeighingAssessmentsCommand implements Command {
         try{
             List<Movie> movieList = movieService.findMoviesByMovieType(MovieType.FILM).stream()
                     .limit(10)
+                    .sorted(Comparator.comparing(Movie::getTitle))
                     .collect(Collectors.toList());
             for (Movie movie : movieList) {
                 movie.setCover(ImageInputStreamUtil.getInstance().addDescriptionToCoverImage(movie.getCover()));
@@ -40,15 +42,17 @@ public class ResultsOfWeighingAssessmentsCommand implements Command {
                     .collect(Collectors.toList());
             List<Feedback> feedbackList = feedbackService.findFeedbacksByStatus(FeedbackStatus.APPROVED);
             Map<User, Map<Movie, Double>> userScoresMap = getUserScoresMap(userList, movieList, feedbackList);
+
             Map<User, Double> userCompetencyMap = getUserCompetency(userList);
             Map<Movie, Double> movieWeightMap = getMovieWeights(movieList, userList, userScoresMap, userCompetencyMap);
 
             Map<Double, Movie> resultMap = new TreeMap<>(Comparator.reverseOrder());
             movieWeightMap.keySet().forEach(e -> resultMap.put(movieWeightMap.get(e), e));
 
-            //todo вынести название of attribute!!!!!!!
+            request.setAttribute("movie_list", movieList);
+            request.setAttribute("user_scores", userScoresMap);
+            request.setAttribute("user_competency", userCompetencyMap);
             request.setAttribute("movie_weight_map", resultMap);
-
             router = new Router(PagePath.RESULTS_OF_WEIGHING_ASSESSMENTS.getAddress(), Router.RouterType.FORWARD);
         } catch (ServiceException e) {
             logger.error("Error at ResultsOfWeighingAssessmentsCommand", e);
@@ -59,7 +63,7 @@ public class ResultsOfWeighingAssessmentsCommand implements Command {
     }
 
     private Map<Movie, Double> getMovieWeights(List<Movie> movieList, List<User> userList, Map<User, Map<Movie, Double>> userScoresMap, Map<User, Double> userCompetencyMap) {
-        Map<Movie, Double> movieWeightMap = new HashMap<>();
+        Map<Movie, Double> movieWeightMap = new TreeMap<>(Comparator.comparing(Movie::getTitle));
         for (Movie movie : movieList) {
             double movieWeight = 0d;
             for (User user : userList) {
@@ -85,7 +89,7 @@ public class ResultsOfWeighingAssessmentsCommand implements Command {
     private Map<User, Map<Movie, Double>> getUserScoresMap(List<User> userList, List<Movie> movieList, List<Feedback> feedbackList) {
         Map<User, Map<Movie, Double>> userScoresMap = new HashMap<>();
         for (User user : userList) {
-            Map<Movie, Double> userMovieScoresMap = new HashMap<>();
+            Map<Movie, Double> userMovieScoresMap = new TreeMap<>(Comparator.comparing(Movie::getTitle));
             for (Movie movie : movieList) {
                 userMovieScoresMap.put(movie, (double) feedbackList
                         .stream()
@@ -98,13 +102,15 @@ public class ResultsOfWeighingAssessmentsCommand implements Command {
             userScoresMap.put(user, userMovieScoresMap);
         }
 
+        DecimalFormat decimalFormat = new DecimalFormat("#.###");
         for (Map<Movie, Double> valueMap : userScoresMap.values()) {
             Double sum = valueMap.values().stream().mapToDouble(e -> e).sum();
             for (Movie movie : movieList) {
                 Double newValue = valueMap.get(movie) / sum;
-                valueMap.put(movie, newValue);
+                valueMap.put(movie, Double.valueOf(decimalFormat.format(newValue)));
             }
         }
+
         return userScoresMap;
     }
 }

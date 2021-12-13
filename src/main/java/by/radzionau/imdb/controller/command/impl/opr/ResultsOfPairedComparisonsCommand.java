@@ -31,12 +31,14 @@ public class ResultsOfPairedComparisonsCommand implements Command {
             }
 
             double[] normPrices = getNormPrices(n, matrix);
-            Map<Double, Movie> treeMap = new TreeMap<>(Comparator.reverseOrder());
+            List<WeightMoviePair> weightMoviePairList = new ArrayList<>();
             for (int i = 0; i < normPrices.length; i++) {
-                treeMap.put(normPrices[i], movieList.get(i));
+                weightMoviePairList.add(new WeightMoviePair(normPrices[i], movieList.get(i)));
             }
+            weightMoviePairList.sort((e1,e2) -> e2.getWeight().compareTo(e1.getWeight()));
 
-            request.setAttribute("norm_prices", treeMap);
+            request.setAttribute("matrix", matrix);
+            request.setAttribute("norm_prices", weightMoviePairList);
             router = new Router(PagePath.RESULTS_OF_PAIRED_COMPARISONS_PAGE.getAddress(), Router.RouterType.FORWARD);
         } catch (Exception e) {
             logger.error("Error at ResultsOfPairedComparisonsCommand", e);
@@ -70,5 +72,31 @@ public class ResultsOfPairedComparisonsCommand implements Command {
         }
 
         return normPrices;
+    }
+
+    public static class WeightMoviePair {
+        private Double weight;
+        private Movie movie;
+
+        public WeightMoviePair(Double weight, Movie movie) {
+            this.weight = weight;
+            this.movie = movie;
+        }
+
+        public Double getWeight() {
+            return weight;
+        }
+
+        public void setWeight(Double weight) {
+            this.weight = weight;
+        }
+
+        public Movie getMovie() {
+            return movie;
+        }
+
+        public void setMovie(Movie movie) {
+            this.movie = movie;
+        }
     }
 }
