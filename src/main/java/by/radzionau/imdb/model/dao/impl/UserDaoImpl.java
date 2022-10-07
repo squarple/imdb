@@ -23,10 +23,10 @@ public class UserDaoImpl implements UserDao {
     private final CustomConnectionPool pool = CustomConnectionPool.getInstance();
 
     private static final String SQL_INSERT_USER =
-            "INSERT INTO usr (login, password, mail, name, surname, usr_role_id, usr_status_id) " +
+            "INSERT INTO usr (login, password, mail, first_name, surname, usr_role_id, usr_status_id) " +
                     "VALUES (?,?,?,?,?,?,?)";
     private static final String SQL_UPDATE_USER =
-            "UPDATE usr SET login=?, mail=?, name=?, surname=?, usr_role_id=?, usr_status_id=? " +
+            "UPDATE usr SET login=?, mail=?, first_name=?, surname=?, usr_role_id=?, usr_status_id=? " +
                     "WHERE usr_id=?";
     private static final String SQL_SELECT_USER_BY_ID =
             "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
                     "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
                     "WHERE usr_id=?";
     private static final String SQL_SELECT_USER_BY_LOGIN =
-            "SELECT usr_id, login, mail, name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
+            "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
                     "FROM usr " +
                     "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
                     "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
                     "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id " +
                     "WHERE usr.usr_role_id=?";
     private static final String SQL_SELECT_ALL_USERS =
-            "SELECT usr_id, login, mail, name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
+            "SELECT usr_id, login, mail, first_name, surname, usr_role.name AS role_name, usr_status.name AS user_status " +
                     "FROM usr " +
                     "JOIN usr_role ON usr_role.usr_role_id=usr.usr_role_id " +
                     "JOIN usr_status ON usr_status.usr_status_id=usr.usr_status_id ";
